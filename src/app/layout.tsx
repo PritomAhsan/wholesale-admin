@@ -3,10 +3,20 @@ import './globals.css';
 import "flatpickr/dist/flatpickr.css";
 import { SidebarProvider } from '@/context/SidebarContext';
 import { ThemeProvider } from '@/context/ThemeContext';
+import type { Metadata } from "next";
 
 const outfit = Outfit({
   subsets: ["latin"],
 });
+
+export const metadata: Metadata = {
+  title: {
+    default: "B2B Marketplace Admin",
+    template: "%s | B2B Marketplace Admin",
+  },
+  description: "Administration Portal for B2B Marketplace",
+  applicationName: "B2B Marketplace Admin",
+};
 
 export default function RootLayout({
   children,
