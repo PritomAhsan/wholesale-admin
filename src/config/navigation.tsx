@@ -49,23 +49,23 @@ export const OWNER_NAVIGATION: NavigationGroup[] = [
         subItems: [
           {
             name: "Products",
-            path: "/catalog/products",
+            path: "/products",
           },
           {
             name: "Categories",
-            path: "/catalog/categories",
+            path: "/categories",
           },
           {
             name: "Brands",
-            path: "/catalog/brands",
+            path: "/brands",
           },
           {
             name: "Units",
-            path: "/catalog/units",
+            path: "/units",
           },
           {
             name: "Attributes",
-            path: "/catalog/attributes",
+            path: "/attributes",
           },
         ],
       },
