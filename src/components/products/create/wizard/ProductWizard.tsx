@@ -14,8 +14,8 @@ import StepVariants from "./steps/StepVariants";
 import StepInventory from "./steps/StepInventory";
 import StepShipping from "./steps/StepShipping";
 import StepMedia from "./steps/StepMedia";
-// import StepSEO from "./steps/StepSEO";
-// import StepReview from "./steps/StepReview";
+import StepSEO from "./steps/StepSeo";
+import StepReview from "./steps/StepReview";
 
 const wizardSteps = [
   StepBasic,
@@ -25,8 +25,8 @@ const wizardSteps = [
   StepInventory,
   StepShipping,
   StepMedia,
-//   StepSEO,
-//   StepReview,
+  StepSEO,
+  StepReview,
 ];
 
 export default function ProductWizard() {

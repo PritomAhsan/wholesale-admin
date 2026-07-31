@@ -1,3 +1,6 @@
+import type { ProductSEO } from "@/components/products/create/wizard/steps/seo/seoTypes";
+
+
 export interface ProductBasicInfo {
   productName: string;
   slug: string;
@@ -5,7 +8,8 @@ export interface ProductBasicInfo {
   description: string;
   productType: string;
   condition: string;
-  sku: string
+  sku: string,
+  status: "draft" | "pending" | "published";
 }
 
 export interface ProductCategoryInfo {
@@ -208,11 +212,21 @@ export interface ProductMedia {
   images: ProductImage[];
 }
 
-export interface ProductSeoInfo {
-  metaTitle: string;
-  metaDescription: string;
-  keywords: string;
-}
+// export interface ProductSEO {
+//   title: string;
+//   slug: string;
+//   description: string;
+//   keywords: string[];
+//   canonicalUrl: string;
+//   index: boolean;
+//   follow: boolean;
+//   ogTitle: string;
+//   ogDescription: string;
+//   ogImage: string;
+//   twitterTitle: string;
+//   twitterDescription: string;
+//   twitterImage: string;
+// }
 
 export interface ProductWizardData {
   basic: ProductBasicInfo;
@@ -225,5 +239,5 @@ export interface ProductWizardData {
 
   shipping: ProductShippingInfo;
   media: ProductMedia;
-  seo: ProductSeoInfo;
+  seo: ProductSEO;
 }

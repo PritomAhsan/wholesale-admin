@@ -1,5 +1,5 @@
 "use client";
-
+import type { ProductSEO } from "@/components/products/create/wizard/steps/seo/seoTypes";
 import {
   createContext,
   useContext,
@@ -17,7 +17,7 @@ import {
   ProductInventoryInfo,
   ProductShippingInfo,
   ProductMedia,
-  ProductSeoInfo,
+  // ProductSEO,
   ProductWarehouseManagement,
 } from "@/types/productWizard";
 
@@ -29,7 +29,8 @@ const initialProduct: ProductWizardData = {
     description: "",
     productType: "physical",
     condition: "new",
-    sku: ""
+    sku: "",
+    status: "draft",
   },
 
   category: {
@@ -144,15 +145,27 @@ media: {
   images: [],
 },
 
-  seo: {
-    metaTitle: "",
-    metaDescription: "",
-    keywords: "",
-  },
+seo: {
+  title: "",
+
+  slug: "",
+
+  description: "",
+
+  keywords: [],
+
+  canonicalUrl: "",
+
+  index: true,
+
+  follow: true,
+},
 };
 
 interface ProductWizardContextValue {
   product: ProductWizardData;
+
+  updateProduct(data: Partial<ProductWizardData>): void;
 
   setProduct: React.Dispatch<
     React.SetStateAction<ProductWizardData>
@@ -190,8 +203,8 @@ interface ProductWizardContextValue {
     data: Partial<ProductMedia>
   ) => void;
 
-  updateSeo: (
-    data: Partial<ProductSeoInfo>
+  updateSEO: (
+    data: Partial<ProductSEO>
   ) => void;
 
   resetProduct: () => void;
@@ -213,6 +226,15 @@ export function ProductWizardProvider({
 }) {
   const [product, setProduct] =
     useState<ProductWizardData>(initialProduct);
+
+    const updateProduct = (
+  data: Partial<ProductWizardData>
+) => {
+  setProduct((prev) => ({
+    ...prev,
+    ...data,
+  }));
+};
 
   const updateBasic = (
     data: Partial<ProductBasicInfo>
@@ -358,17 +380,19 @@ const deleteImage = (id: string) => {
   });
 };
 
-  const updateSeo = (
-    data: Partial<ProductSeoInfo>
-  ) => {
-    setProduct((prev) => ({
-      ...prev,
-      seo: {
-        ...prev.seo,
-        ...data,
-      },
-    }));
-  };
+const updateSEO = (
+  data: Partial<ProductSEO>
+) => {
+  setProduct((previous) => ({
+    ...previous,
+
+    seo: {
+      ...previous.seo,
+
+      ...data,
+    },
+  }));
+};
 
   const resetProduct = () => {
     setProduct(initialProduct);
@@ -377,6 +401,7 @@ const deleteImage = (id: string) => {
   const value = useMemo(
     () => ({
       product,
+      updateProduct,
       setProduct,
       updateBasic,
       updateCategory,
@@ -386,7 +411,7 @@ const deleteImage = (id: string) => {
       updateWarehouse,
       updateShipping,
       updateMedia,
-      updateSeo,
+      updateSEO,
       resetProduct,
       setPrimaryImage,
 deleteImage,
