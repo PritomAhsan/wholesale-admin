@@ -12,8 +12,8 @@ import StepCategory from "./steps/StepCategory";
 import StepPricing from "./steps/StepPricing";
 import StepVariants from "./steps/StepVariants";
 import StepInventory from "./steps/StepInventory";
-// import StepShipping from "./steps/StepShipping";
-// import StepMedia from "./steps/StepMedia";
+import StepShipping from "./steps/StepShipping";
+import StepMedia from "./steps/StepMedia";
 // import StepSEO from "./steps/StepSEO";
 // import StepReview from "./steps/StepReview";
 
@@ -23,8 +23,8 @@ const wizardSteps = [
   StepPricing,
   StepVariants,
   StepInventory,
-//   StepShipping,
-//   StepMedia,
+  StepShipping,
+  StepMedia,
 //   StepSEO,
 //   StepReview,
 ];

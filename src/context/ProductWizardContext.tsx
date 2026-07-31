@@ -16,7 +16,7 @@ import {
   ProductVariantInfo,
   ProductInventoryInfo,
   ProductShippingInfo,
-  ProductMediaInfo,
+  ProductMedia,
   ProductSeoInfo,
   ProductWarehouseManagement,
 } from "@/types/productWizard";
@@ -109,18 +109,40 @@ warehouse: {
   warehouses: [],
 },
 
-  shipping: {
-    weight: 0,
-    length: 0,
-    width: 0,
-    height: 0,
-  },
+shipping: {
+  weight: 0,
+  weightUnit: "kg",
 
-  media: {
-    images: [],
-    videos: [],
-    documents: [],
-  },
+  length: 0,
+  width: 0,
+  height: 0,
+
+  dimensionUnit: "cm",
+
+  volumetricWeight: 0,
+
+  productionLeadTime: 7,
+
+  dispatchTime: 2,
+
+  leadTimeUnit: "days",
+
+  readyToShip: false,
+
+  domesticShipping: true,
+
+  internationalShipping: true,
+
+  pickupAvailable: false,
+
+  freeShipping: false,
+
+  shippingNotes: "",
+},
+
+media: {
+  images: [],
+},
 
   seo: {
     metaTitle: "",
@@ -165,7 +187,7 @@ interface ProductWizardContextValue {
   ) => void;
 
   updateMedia: (
-    data: Partial<ProductMediaInfo>
+    data: Partial<ProductMedia>
   ) => void;
 
   updateSeo: (
@@ -173,6 +195,10 @@ interface ProductWizardContextValue {
   ) => void;
 
   resetProduct: () => void;
+
+  setPrimaryImage(id: string): void;
+
+deleteImage(id: string): void;
 }
 
 const ProductWizardContext =
@@ -281,17 +307,56 @@ const updateWarehouse = (
     }));
   };
 
-  const updateMedia = (
-    data: Partial<ProductMediaInfo>
-  ) => {
-    setProduct((prev) => ({
+const updateMedia = (
+  data: Partial<ProductMedia>
+) => {
+  setProduct((prev) => ({
+    ...prev,
+    media: {
+      ...prev.media,
+      ...data,
+    },
+  }));
+};
+
+const setPrimaryImage = (id: string) => {
+  setProduct((prev) => ({
+    ...prev,
+    media: {
+      ...prev.media,
+      images: prev.media.images.map((image) => ({
+        ...image,
+        isPrimary: image.id === id,
+      })),
+    },
+  }));
+};
+
+const deleteImage = (id: string) => {
+  setProduct((prev) => {
+    const images = prev.media.images
+      .filter((image) => image.id !== id)
+      .map((image, index) => ({
+        ...image,
+        sortOrder: index,
+      }));
+
+    if (
+      images.length > 0 &&
+      !images.some((image) => image.isPrimary)
+    ) {
+      images[0].isPrimary = true;
+    }
+
+    return {
       ...prev,
       media: {
         ...prev.media,
-        ...data,
+        images,
       },
-    }));
-  };
+    };
+  });
+};
 
   const updateSeo = (
     data: Partial<ProductSeoInfo>
@@ -323,6 +388,8 @@ const updateWarehouse = (
       updateMedia,
       updateSeo,
       resetProduct,
+      setPrimaryImage,
+deleteImage,
     }),
     [product]
   );

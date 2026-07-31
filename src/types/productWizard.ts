@@ -154,15 +154,58 @@ export interface ProductWarehouseManagement {
 
 export interface ProductShippingInfo {
   weight: number;
+
+  weightUnit: "kg" | "g" | "lb";
+
   length: number;
+
   width: number;
+
   height: number;
+
+  dimensionUnit: "cm" | "m" | "inch";
+
+  volumetricWeight: number;
+
+  productionLeadTime: number;
+
+dispatchTime: number;
+
+leadTimeUnit: "days" | "weeks";
+
+readyToShip: boolean;
+
+domesticShipping: boolean;
+
+internationalShipping: boolean;
+
+pickupAvailable: boolean;
+
+freeShipping: boolean;
+
+shippingNotes: string;
 }
 
-export interface ProductMediaInfo {
-  images: string[];
-  videos: string[];
-  documents: string[];
+export interface ProductImage {
+  id: string;
+
+  file?: File;
+
+  url: string;
+
+  name: string;
+
+  size: number;
+
+  type: string;
+
+  isPrimary: boolean;
+
+  sortOrder: number;
+}
+
+export interface ProductMedia {
+  images: ProductImage[];
 }
 
 export interface ProductSeoInfo {
@@ -181,6 +224,6 @@ export interface ProductWizardData {
   warehouse: ProductWarehouseManagement;
 
   shipping: ProductShippingInfo;
-  media: ProductMediaInfo;
+  media: ProductMedia;
   seo: ProductSeoInfo;
 }
