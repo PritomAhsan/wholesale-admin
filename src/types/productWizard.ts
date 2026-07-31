@@ -5,6 +5,7 @@ export interface ProductBasicInfo {
   description: string;
   productType: string;
   condition: string;
+  sku: string
 }
 
 export interface ProductCategoryInfo {
@@ -113,8 +114,42 @@ export interface ProductVariantInfo {
 
 export interface ProductInventoryInfo {
   sku: string;
+
   quantity: number;
+
+  reservedQuantity: number;
+
+  availableQuantity: number;
+
+  incomingQuantity: number;
+
+  lowStockThreshold: number;
+
   trackInventory: boolean;
+
+  allowBackorders: boolean;
+
+  continueSellingWhenOutOfStock: boolean;
+}
+
+export interface ProductWarehouseInfo {
+  id: string;
+
+  warehouseId: number | null;
+
+  warehouseName: string;
+
+  quantity: number;
+
+  reservedQuantity: number;
+
+  availableQuantity: number;
+
+  isPrimary: boolean;
+}
+
+export interface ProductWarehouseManagement {
+  warehouses: ProductWarehouseInfo[];
 }
 
 export interface ProductShippingInfo {
@@ -142,6 +177,9 @@ export interface ProductWizardData {
   pricing: ProductPricingInfo;
   variants: ProductVariantInfo;
   inventory: ProductInventoryInfo;
+
+  warehouse: ProductWarehouseManagement;
+
   shipping: ProductShippingInfo;
   media: ProductMediaInfo;
   seo: ProductSeoInfo;

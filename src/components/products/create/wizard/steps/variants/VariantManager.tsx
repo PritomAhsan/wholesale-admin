@@ -1,16 +1,42 @@
 "use client";
 
+import { useEffect } from "react";
+
+import ComponentCard from "@/components/common/ComponentCard";
 import { useProductWizard } from "@/context/ProductWizardContext";
 
 import VariantHeader from "./VariantHeader";
 import VariantStatistics from "./VariantStatistics";
 import VariantEmptyState from "./VariantEmptyState";
 import VariantAttributeBuilder from "./VariantAttributeBuilder";
-
-import ComponentCard from "@/components/common/ComponentCard";
+import VariantCombinationTable from "./VariantCombinationTable";
+import { generateVariantCombinations } from "./variantGenerator";
+import SkuSettings from "./SkuSettings";
+import VariantSummary from "./VariantSummary";
 
 export default function VariantManager() {
   const { product, updateVariants } = useProductWizard();
+
+  useEffect(() => {
+    if (!product.variants.enabled) return;
+
+    const items = generateVariantCombinations(
+      product.variants.attributes
+    );
+
+    // Preserve edited values
+    const merged = items.map((item) => {
+      const existing = product.variants.items.find(
+        (variant) => variant.title === item.title
+      );
+
+      return existing ?? item;
+    });
+
+    updateVariants({
+      items: merged,
+    });
+  }, [product.variants.attributes]);
 
   return (
     <div className="space-y-6">
@@ -50,14 +76,22 @@ export default function VariantManager() {
 
       {product.variants.enabled && (
         <>
-          <VariantStatistics />
+  <VariantStatistics />
 
-          <VariantAttributeBuilder />
+  <VariantAttributeBuilder />
 
-          {product.variants.attributes.length === 0 ? (
-            <VariantEmptyState />
-        ) : null}
-        </>
+  {product.variants.attributes.length === 0 ? (
+    <VariantEmptyState />
+  ) : (
+    <>
+      <SkuSettings />
+
+      <VariantSummary />
+
+      <VariantCombinationTable />
+    </>
+  )}
+</>
       )}
 
     </div>

@@ -10,8 +10,8 @@ import WizardFooter from "./WizardFooter";
 import StepBasic from "./steps/StepBasic";
 import StepCategory from "./steps/StepCategory";
 import StepPricing from "./steps/StepPricing";
-// import StepVariants from "./steps/StepVariants";
-// import StepInventory from "./steps/StepInventory";
+import StepVariants from "./steps/StepVariants";
+import StepInventory from "./steps/StepInventory";
 // import StepShipping from "./steps/StepShipping";
 // import StepMedia from "./steps/StepMedia";
 // import StepSEO from "./steps/StepSEO";
@@ -21,8 +21,8 @@ const wizardSteps = [
   StepBasic,
   StepCategory,
   StepPricing,
-//   StepVariants,
-//   StepInventory,
+  StepVariants,
+  StepInventory,
 //   StepShipping,
 //   StepMedia,
 //   StepSEO,

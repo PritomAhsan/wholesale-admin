@@ -18,6 +18,7 @@ import {
   ProductShippingInfo,
   ProductMediaInfo,
   ProductSeoInfo,
+  ProductWarehouseManagement,
 } from "@/types/productWizard";
 
 const initialProduct: ProductWizardData = {
@@ -28,6 +29,7 @@ const initialProduct: ProductWizardData = {
     description: "",
     productType: "physical",
     condition: "new",
+    sku: ""
   },
 
   category: {
@@ -83,11 +85,29 @@ variants: {
   autoGenerateSku: true,
 },
 
-  inventory: {
-    sku: "",
-    quantity: 0,
-    trackInventory: true,
-  },
+inventory: {
+  sku: "",
+
+  quantity: 0,
+
+  reservedQuantity: 0,
+
+  availableQuantity: 0,
+
+  incomingQuantity: 0,
+
+  lowStockThreshold: 10,
+
+  trackInventory: true,
+
+  allowBackorders: false,
+
+  continueSellingWhenOutOfStock: false,
+},
+
+warehouse: {
+  warehouses: [],
+},
 
   shipping: {
     weight: 0,
@@ -135,6 +155,10 @@ interface ProductWizardContextValue {
   updateInventory: (
     data: Partial<ProductInventoryInfo>
   ) => void;
+
+  updateWarehouse: (
+  data: Partial<ProductWarehouseManagement>
+) => void;
 
   updateShipping: (
     data: Partial<ProductShippingInfo>
@@ -212,17 +236,38 @@ export function ProductWizardProvider({
     }));
   };
 
-  const updateInventory = (
-    data: Partial<ProductInventoryInfo>
-  ) => {
-    setProduct((prev) => ({
+const updateInventory = (
+  data: Partial<ProductInventoryInfo>
+) => {
+  setProduct((prev) => {
+    const inventory = {
+      ...prev.inventory,
+      ...data,
+    };
+
+    inventory.availableQuantity = Math.max(
+      0,
+      inventory.quantity - inventory.reservedQuantity
+    );
+
+    return {
       ...prev,
-      inventory: {
-        ...prev.inventory,
-        ...data,
-      },
-    }));
-  };
+      inventory,
+    };
+  });
+};
+
+const updateWarehouse = (
+  data: Partial<ProductWarehouseManagement>
+) => {
+  setProduct((prev) => ({
+    ...prev,
+    warehouse: {
+      ...prev.warehouse,
+      ...data,
+    },
+  }));
+};
 
   const updateShipping = (
     data: Partial<ProductShippingInfo>
@@ -273,6 +318,7 @@ export function ProductWizardProvider({
       updatePricing,
       updateVariants,
       updateInventory,
+      updateWarehouse,
       updateShipping,
       updateMedia,
       updateSeo,
