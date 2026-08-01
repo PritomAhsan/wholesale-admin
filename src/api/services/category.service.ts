@@ -1,18 +1,19 @@
 import api from "../axios";
 
-export interface CategoryQueryParams {
-  page?: number;
-  search?: string;
-  sort?: string;
-  order?: "asc" | "desc";
-  status?: boolean | "";
-}
+import {
+  ServerTableQuery,
+  ServerTableResponse,
+} from "@/types/server-table";
+
+import { Category } from "@/types/category";
 
 class CategoryService {
   /**
    * Category List
    */
-  async getAll(params?: CategoryQueryParams) {
+  async getAll(
+    params?: ServerTableQuery
+  ): Promise<ServerTableResponse<Category>> {
     const { data } = await api.get(
       "/v1/admin/categories",
       {
@@ -20,13 +21,18 @@ class CategoryService {
       }
     );
 
-    return data.data;
+    return {
+      items: data.data.categories,
+      pagination: data.data.pagination,
+    };
   }
 
   /**
    * Single Category
    */
-  async get(uuid: string) {
+  async get(
+    uuid: string
+  ): Promise<Category> {
     const { data } = await api.get(
       `/v1/admin/categories/${uuid}`
     );
@@ -35,9 +41,11 @@ class CategoryService {
   }
 
   /**
-   * Create Category
+   * Create
    */
-  async create(payload: FormData) {
+  async create(
+    payload: FormData
+  ) {
     const { data } = await api.post(
       "/v1/admin/categories",
       payload,
@@ -53,7 +61,7 @@ class CategoryService {
   }
 
   /**
-   * Update Category
+   * Update
    */
   async update(
     uuid: string,
@@ -74,9 +82,11 @@ class CategoryService {
   }
 
   /**
-   * Delete Category
+   * Delete
    */
-  async delete(uuid: string) {
+  async delete(
+    uuid: string
+  ) {
     const { data } = await api.delete(
       `/v1/admin/categories/${uuid}`
     );

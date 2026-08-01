@@ -2,23 +2,20 @@
 
 import ComponentCard from "@/components/common/ComponentCard";
 
+import { useServerTable } from "@/hooks/useServerTable";
+
+import CategoryService from "@/api/services/category.service";
+
+import { Category } from "@/types/category";
+
 import CategoryToolbar from "./components/CategoryToolbar";
 import CategoryTable from "./components/CategoryTable";
 
-import { useCategories } from "@/hooks/useCategories";
-
 export default function CategoryManager() {
-  const {
-    categories,
-    pagination,
-    loading,
-    error,
-
-    search,
-    changeStatus,
-    changePage,
-    refresh,
-  } = useCategories();
+  const table =
+    useServerTable<Category>({
+      fetcher: CategoryService.getAll,
+    });
 
   return (
     <ComponentCard
@@ -26,17 +23,25 @@ export default function CategoryManager() {
       desc="Manage all marketplace categories."
     >
       <CategoryToolbar
-        onSearch={search}
-        onStatusChange={changeStatus}
-      />
+  onSearch={table.search}
+  onStatusChange={table.changeStatus}
+  onSortChange={table.changeSort}
+  onPerPageChange={table.changePerPage}
+  onRefresh={table.refresh}
+  onReset={table.reset}
+/>
 
       <CategoryTable
-        categories={categories}
-        pagination={pagination}
-        loading={loading}
-        error={error}
-        onRefresh={refresh}
-        onPageChange={changePage}
+        categories={table.items}
+        pagination={
+          table.pagination
+        }
+        loading={table.loading}
+        error={table.error}
+        onRefresh={table.refresh}
+        onPageChange={
+          table.changePage
+        }
       />
     </ComponentCard>
   );
