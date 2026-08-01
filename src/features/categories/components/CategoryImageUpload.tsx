@@ -1,18 +1,30 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ImagePlus, Trash2 } from "lucide-react";
 
 import ComponentCard from "@/components/common/ComponentCard";
 import Button from "@/components/ui/button/Button";
 
-export default function CategoryImageUpload() {
+interface Props {
+  image?: string | null;
+  onChange: (file: File | null) => void;
+}
+
+export default function CategoryImageUpload({
+  image = null,
+  onChange,
+}: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [preview, setPreview] = useState<string | null>(
-    null
+    image
   );
+
+  useEffect(() => {
+    setPreview(image);
+  }, [image]);
 
   const handleSelect = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -21,11 +33,46 @@ export default function CategoryImageUpload() {
 
     if (!file) return;
 
-    setPreview(URL.createObjectURL(file));
+    // Validation
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      alert(
+        "Only JPG, PNG and WEBP images are allowed."
+      );
+
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Maximum image size is 2 MB.");
+
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+
+    setPreview(previewUrl);
+
+    onChange(file);
   };
 
   const removeImage = () => {
     setPreview(null);
+
+    onChange(null);
 
     if (inputRef.current) {
       inputRef.current.value = "";
@@ -46,6 +93,7 @@ export default function CategoryImageUpload() {
               width={192}
               height={192}
               className="h-full w-full object-cover"
+              unoptimized
             />
           ) : (
             <div className="text-center text-gray-500">
@@ -62,13 +110,14 @@ export default function CategoryImageUpload() {
         <input
           ref={inputRef}
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp"
           hidden
           onChange={handleSelect}
         />
 
         <div className="flex gap-3">
           <Button
+            type="button"
             onClick={() => inputRef.current?.click()}
           >
             Choose Image
@@ -76,6 +125,7 @@ export default function CategoryImageUpload() {
 
           {preview && (
             <Button
+              type="button"
               variant="outline"
               onClick={removeImage}
             >
@@ -83,14 +133,13 @@ export default function CategoryImageUpload() {
                 size={16}
                 className="mr-2"
               />
-
               Remove
             </Button>
           )}
         </div>
 
         <p className="text-center text-sm text-gray-500">
-          Recommended size: 600 × 600 px
+          Recommended size: <b>600 × 600 px</b>
           <br />
           JPG, PNG or WEBP (Max 2 MB)
         </p>
