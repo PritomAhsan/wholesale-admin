@@ -8,9 +8,12 @@ import InputField from "@/components/form/input/InputField";
 import TextArea from "@/components/form/input/TextArea";
 import Switch from "@/components/form/switch/Switch";
 import Button from "@/components/ui/button/Button";
-import { Brand } from "../types";
+
+import BrandService from "@/api/services/brand.service";
 
 import BrandLogoUpload from "./BrandLogoUpload";
+
+import { Brand } from "@/types/brand";
 
 interface Props {
   mode?: "create" | "edit";
@@ -21,79 +24,222 @@ export default function BrandForm({
   mode = "create",
   initialData,
 }: Props) {
-
   const router = useRouter();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] =
+    useState(false);
 
-const [form, setForm] = useState({
-  name: initialData?.name ?? "",
-  slug: initialData?.slug ?? "",
-  description: "",
-  status: initialData?.status === "active",
-});
+  const [logo, setLogo] =
+  useState<File | null>(null);
 
-  const [errors, setErrors] = useState({
-    name: "",
-    slug: "",
-  });
+const [removeLogo, setRemoveLogo] =
+  useState(false);
 
-  const validateForm = () => {
-    const newErrors = {
-      name: "",
-      slug: "",
-    };
+  const [form, setForm] =
+    useState({
+      name:
+        initialData?.name ?? "",
 
-    let valid = true;
+      slug:
+        initialData?.slug ?? "",
 
-    if (!form.name.trim()) {
-      newErrors.name = "Brand name is required.";
-      valid = false;
-    }
+      website:
+        initialData?.website ??
+        "",
 
-    if (!form.slug.trim()) {
-      newErrors.slug = "Slug is required.";
-      valid = false;
-    }
+      description:
+        initialData?.description ??
+        "",
 
-    setErrors(newErrors);
+      featured:
+        initialData?.featured ??
+        false,
 
-    return valid;
-  };
+      status:
+        initialData?.status ??
+        true,
+    });
 
-  const handleSave = async () => {
-    if (!validateForm()) return;
+  const [errors, setErrors] =
+    useState<
+      Record<string, string>
+    >({});
 
-    try {
-      setLoading(true);
+  const validateForm =
+    () => {
+      const validationErrors:
+        Record<
+          string,
+          string
+        > = {};
 
-      console.log(form);
+      if (
+        !form.name.trim()
+      ) {
+        validationErrors.name =
+          "Brand name is required.";
+      }
 
-      await new Promise((resolve) =>
-        setTimeout(resolve, 800)
+      if (
+        !form.slug.trim()
+      ) {
+        validationErrors.slug =
+          "Slug is required.";
+      }
+
+      if (
+        form.website &&
+        !/^https?:\/\//.test(
+          form.website
+        )
+      ) {
+        validationErrors.website =
+          "Website must start with http:// or https://";
+      }
+
+      setErrors(
+        validationErrors
       );
 
-      alert(
-  mode === "edit"
-    ? "Brand updated successfully."
-    : "Brand created successfully."
-);
+      return (
+        Object.keys(
+          validationErrors
+        ).length === 0
+      );
+    };
 
-      router.push("/brands");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const handleSave =
+    async () => {
+      if (
+        !validateForm()
+      )
+        return;
 
-  return (
+      try {
+        setLoading(true);
+
+        const payload =
+          new FormData();
+
+        payload.append(
+          "name",
+          form.name
+        );
+
+        payload.append(
+          "slug",
+          form.slug
+        );
+
+        payload.append(
+          "website",
+          form.website
+        );
+
+        payload.append(
+          "description",
+          form.description
+        );
+
+        payload.append(
+          "featured",
+          form.featured
+            ? "1"
+            : "0"
+        );
+
+        payload.append(
+          "status",
+          form.status
+            ? "1"
+            : "0"
+        );
+
+        if (logo) {
+  payload.append(
+    "logo",
+    logo
+  );
+}
+
+if (
+  mode === "edit" &&
+  removeLogo
+) {
+  payload.append(
+    "remove_logo",
+    "1"
+  );
+}
+
+        if (
+          mode ===
+          "create"
+        ) {
+          await BrandService.create(
+            payload
+          );
+
+          alert(
+            "Brand created successfully."
+          );
+        } else {
+          await BrandService.update(
+            initialData!.uuid,
+            payload
+          );
+
+          alert(
+            "Brand updated successfully."
+          );
+        }
+
+        router.push(
+          "/brands"
+        );
+      } catch (error: any) {
+  console.error(error);
+
+  if (error.response?.status === 422) {
+    const validationErrors =
+      error.response.data.errors ?? {};
+
+    const formattedErrors: Record<
+      string,
+      string
+    > = {};
+
+    Object.keys(validationErrors).forEach(
+      (key) => {
+        formattedErrors[key] =
+          validationErrors[key][0];
+      }
+    );
+
+    setErrors(formattedErrors);
+
+    return;
+  }
+
+  alert(
+    error.response?.data?.message ??
+      "Something went wrong."
+  );
+} finally {
+  setLoading(false);
+}
+    };
+
+      return (
     <div className="space-y-8">
-      <div className="grid grid-cols-1 gap-6">
+      {/* Brand Information */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div>
-          <Label>Brand Name</Label>
+          <Label>Brand Name *</Label>
 
           <InputField
-            defaultValue={form.name}
             placeholder="Enter brand name"
+            value={form.name}
             onChange={(e) =>
               setForm({
                 ...form,
@@ -110,11 +256,11 @@ const [form, setForm] = useState({
         </div>
 
         <div>
-          <Label>Slug</Label>
+          <Label>Slug *</Label>
 
           <InputField
-            defaultValue={form.slug}
             placeholder="brand-slug"
+            value={form.slug}
             onChange={(e) =>
               setForm({
                 ...form,
@@ -130,31 +276,113 @@ const [form, setForm] = useState({
           )}
         </div>
 
-        <div>
+        <div className="lg:col-span-2">
+          <Label>Website</Label>
+
+          <InputField
+            placeholder="https://example.com"
+            value={form.website}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                website:
+                  e.target.value,
+              })
+            }
+          />
+
+          {errors.website && (
+            <p className="mt-1 text-sm text-error-500">
+              {errors.website}
+            </p>
+          )}
+        </div>
+
+        <div className="lg:col-span-2">
           <Label>Description</Label>
 
           <TextArea
             rows={5}
-            defaultValue={form.description}
-            placeholder="Brand description"
+            placeholder="Enter brand description"
+            value={
+              form.description
+            }
+            onChange={(value) =>
+              setForm({
+                ...form,
+                description:
+                  value,
+              })
+            }
           />
+
+          {errors.description && (
+            <p className="mt-1 text-sm text-error-500">
+              {
+                errors.description
+              }
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Brand Settings */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div>
+          <Label>
+            Featured Brand
+          </Label>
+
+          <div className="mt-3">
+            <Switch
+    checked={
+        form.featured
+    }
+    onChange={(checked) =>
+        setForm({
+            ...form,
+            featured: checked,
+        })
+    }
+/>
+          </div>
         </div>
 
         <div>
           <Label>Status</Label>
 
           <div className="mt-3">
-            <Switch label="" defaultChecked={form.status} />
+            <Switch
+    checked={
+        form.status
+    }
+    onChange={(checked) =>
+        setForm({
+            ...form,
+            status: checked,
+        })
+    }
+/>
           </div>
         </div>
       </div>
 
-      <BrandLogoUpload />
+      {/* Brand Logo */}
+      <BrandLogoUpload
+  image={initialData?.logo}
+  onChange={(file) => {
+    setLogo(file);
 
+    setRemoveLogo(file === null);
+  }}
+/>
+
+            {/* Actions */}
       <div className="flex justify-end gap-3 border-t border-gray-200 pt-6 dark:border-gray-800">
         <Button
           variant="outline"
           onClick={() => router.back()}
+          disabled={loading}
         >
           Cancel
         </Button>
@@ -164,12 +392,12 @@ const [form, setForm] = useState({
           disabled={loading}
         >
           {loading
-  ? mode === "edit"
-    ? "Updating..."
-    : "Saving..."
-  : mode === "edit"
-    ? "Update Brand"
-    : "Save Brand"}
+            ? mode === "edit"
+              ? "Updating..."
+              : "Saving..."
+            : mode === "edit"
+            ? "Update Brand"
+            : "Save Brand"}
         </Button>
       </div>
     </div>

@@ -3,7 +3,7 @@
 import Badge from "@/components/ui/badge/Badge";
 
 interface Props {
-  status: "active" | "inactive";
+  status: boolean;
 }
 
 export default function BrandStatusBadge({
@@ -12,9 +12,15 @@ export default function BrandStatusBadge({
   return (
     <Badge
       size="sm"
-      color={status === "active" ? "success" : "error"}
+      color={
+        status
+          ? "success"
+          : "error"
+      }
     >
-      {status === "active" ? "Active" : "Inactive"}
+      {status
+        ? "Active"
+        : "Inactive"}
     </Badge>
   );
 }
