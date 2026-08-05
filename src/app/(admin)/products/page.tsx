@@ -4,6 +4,7 @@ import ProductFilters from "@/components/products/ProductFilters";
 import ProductsTable from "@/components/products/ProductsTable";
 import BulkActions from "@/components/products/BulkActions";
 import { useState } from "react";
+import ProductManager from "@/components/products/ProductManager";
 
 export default function ProductsPage() {
     const [search, setSearch] = useState("");
@@ -12,14 +13,14 @@ export default function ProductsPage() {
     <div className="space-y-6">
       <ProductsPageHeader />
 
-      <ProductFilters
+      {/* <ProductFilters
         search={search}
         setSearch={setSearch}
-        />
+        /> */}
 
-        <BulkActions />
+        {/* <BulkActions /> */}
 
-      <ProductsTable />
+      <ProductManager />
     </div>
   );
 }

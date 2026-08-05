@@ -145,6 +145,14 @@ class BrandService {
 
     return data;
   }
+
+  async getOptions() {
+  const { data } = await api.get(
+    "/v1/admin/brands/options"
+  );
+
+  return data.data;
+}
 }
 
 export default new BrandService();

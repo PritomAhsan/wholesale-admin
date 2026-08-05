@@ -11,15 +11,27 @@ export interface ServerTableResponse<T> {
 }
 
 export interface ServerTableQuery {
-  page?: number;
+  page: number;
 
-  search?: string;
+  per_page: number;
 
-  sort?: string;
+  search: string;
 
-  order?: "asc" | "desc";
+  sort: string;
 
-  status?: boolean | "";
+  order: "asc" | "desc";
 
-  per_page?: number;
+  status: boolean | "";
+
+  supplier_id?: number;
+
+  brand_id?: number;
+
+  featured?: boolean;
+
+  stock?: string;
+
+  min_price?: number;
+
+  max_price?: number;
 }
