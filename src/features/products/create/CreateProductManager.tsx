@@ -207,7 +207,8 @@ const {
 
   const submit = async () => {
   try {
-    const payload = new FormData();
+    const payload =
+      new FormData();
 
     /*
     |--------------------------------------------------------------------------
@@ -215,13 +216,30 @@ const {
     |--------------------------------------------------------------------------
     */
 
-    payload.append("name", form.name);
-    payload.append("slug", form.slug);
-    payload.append("sku", form.sku);
+    payload.append(
+      "name",
+      form.name
+    );
+
+    if (form.slug) {
+      payload.append(
+        "slug",
+        form.slug
+      );
+    }
+
+    if (form.sku) {
+      payload.append(
+        "sku",
+        form.sku
+      );
+    }
+
     payload.append(
       "short_description",
       form.short_description
     );
+
     payload.append(
       "description",
       form.description
@@ -258,12 +276,14 @@ const {
     |--------------------------------------------------------------------------
     */
 
-    form.category_ids.forEach((id, index) => {
-      payload.append(
-        `category_ids[${index}]`,
-        String(id)
-      );
-    });
+    form.category_ids.forEach(
+      (id, index) => {
+        payload.append(
+          `category_ids[${index}]`,
+          String(id)
+        );
+      }
+    );
 
     /*
     |--------------------------------------------------------------------------
@@ -281,7 +301,9 @@ const {
       form.selling_price
     );
 
-    if (form.compare_at_price) {
+    if (
+      form.compare_at_price
+    ) {
       payload.append(
         "compare_at_price",
         form.compare_at_price
@@ -309,7 +331,9 @@ const {
       form.min_order_quantity
     );
 
-    if (form.max_order_quantity) {
+    if (
+      form.max_order_quantity
+    ) {
       payload.append(
         "max_order_quantity",
         form.max_order_quantity
@@ -323,16 +347,28 @@ const {
     */
 
     if (form.weight)
-      payload.append("weight", form.weight);
+      payload.append(
+        "weight",
+        form.weight
+      );
 
     if (form.length)
-      payload.append("length", form.length);
+      payload.append(
+        "length",
+        form.length
+      );
 
     if (form.width)
-      payload.append("width", form.width);
+      payload.append(
+        "width",
+        form.width
+      );
 
     if (form.height)
-      payload.append("height", form.height);
+      payload.append(
+        "height",
+        form.height
+      );
 
     /*
     |--------------------------------------------------------------------------
@@ -342,12 +378,16 @@ const {
 
     payload.append(
       "featured",
-      form.featured ? "1" : "0"
+      form.featured
+        ? "1"
+        : "0"
     );
 
     payload.append(
       "is_digital",
-      form.is_digital ? "1" : "0"
+      form.is_digital
+        ? "1"
+        : "0"
     );
 
     payload.append(
@@ -374,21 +414,27 @@ const {
     |--------------------------------------------------------------------------
     */
 
-    if (form.meta_title) {
+    if (
+      form.meta_title
+    ) {
       payload.append(
         "meta_title",
         form.meta_title
       );
     }
 
-    if (form.meta_description) {
+    if (
+      form.meta_description
+    ) {
       payload.append(
         "meta_description",
         form.meta_description
       );
     }
 
-    if (form.meta_keywords) {
+    if (
+      form.meta_keywords
+    ) {
       payload.append(
         "meta_keywords",
         form.meta_keywords
@@ -402,14 +448,19 @@ const {
     */
 
     attributes.forEach(
-      (attribute, index) => {
+      (
+        attribute,
+        index
+      ) => {
         if (
           attribute.attribute_id &&
           attribute.attribute_value_id
         ) {
           payload.append(
             `attributes[${index}][attribute_id]`,
-            String(attribute.attribute_id)
+            String(
+              attribute.attribute_id
+            )
           );
 
           payload.append(
@@ -423,9 +474,9 @@ const {
     );
 
     const product =
-  await create(payload);
+      await create(payload);
 
-/*
+      /*
 |--------------------------------------------------------------------------
 | Upload Images
 |--------------------------------------------------------------------------
@@ -443,46 +494,178 @@ if (images.length > 0) {
 
     imagePayload.append(
       "alt_text[]",
-      form.name
+       form.name
     );
   });
 
-  await ProductService.uploadImages(
-    product.uuid,
-    imagePayload
-  );
-}
+  try {
 
-/*
+    if (images.length) {
+
+        await ProductService.uploadImages(
+            product.uuid,
+            imagePayload
+        );
+
+    }
+
+} catch {
+
+    toast.warning(
+        "Product created, but image upload failed."
+    );
+
+}
+}
+  /*
 |--------------------------------------------------------------------------
 | Create Variants
 |--------------------------------------------------------------------------
 */
 
-for (const variant of variants) {
-  await ProductService.createVariant(
-    product.uuid,
-    variant
-  );
+// for (const variant of variants) {
+//   await ProductService.createVariant(
+//     product.uuid,
+//     {
+//       product_id: product.id,
+
+//       sku: variant.sku,
+
+//       barcode: variant.barcode,
+
+//       cost_price:
+//         variant.cost_price,
+
+//       selling_price:
+//         variant.selling_price,
+
+//       compare_at_price:
+//         variant.compare_at_price,
+
+//       wholesale_price:
+//         variant.wholesale_price,
+
+//       stock_quantity:
+//         variant.stock_quantity,
+
+//       low_stock_quantity:
+//         variant.low_stock_quantity,
+
+//       minimum_order_quantity:
+//         variant.min_order_quantity,
+
+//       maximum_order_quantity:
+//         variant.max_order_quantity,
+
+//       is_default:
+//         variant.is_default,
+
+//       is_active:
+//         variant.is_active,
+
+//       attributes:
+//         variant.attributes,
+//     }
+//   );
+// }
+
+try {
+
+    for (const variant of variants) {
+
+        await ProductService.createVariant(
+            product.uuid,
+            {
+      product_id: product.id,
+
+      sku: variant.sku,
+
+      barcode: variant.barcode,
+
+      cost_price:
+        variant.cost_price,
+
+      selling_price:
+        variant.selling_price,
+
+      compare_at_price:
+        variant.compare_at_price,
+
+      wholesale_price:
+        variant.wholesale_price,
+
+      stock_quantity:
+        variant.stock_quantity,
+
+      low_stock_quantity:
+        variant.low_stock_quantity,
+
+      minimum_order_quantity:
+        variant.min_order_quantity,
+
+      maximum_order_quantity:
+        variant.max_order_quantity,
+
+      is_default:
+        variant.is_default,
+
+      is_active:
+        variant.is_active,
+
+      attributes:
+        variant.attributes,
+    }
+        );
+
+    }
+
+} catch {
+
+    toast.warning(
+        "Product created, but one or more variants failed."
+    );
+
 }
 
-toast.success(
-  "Product created successfully."
-);
+  
 
-/*
-|--------------------------------------------------------------------------
-| Redirect
-|--------------------------------------------------------------------------
-*/
+
+    console.log(
+      "Created Product:",
+      product
+    );
+
+    toast.success(
+    "Product created successfully."
+);
 
 router.push(
-  `/products/${product.uuid}/edit`
+    `/products/${product.uuid}/edit`
 );
 
-  } catch (error) {
+return product;
+
+  } catch (error: any) {
+
     console.error(error);
-  }
+
+    if (
+        error.response?.data?.message
+    ) {
+
+        toast.error(
+            error.response.data.message
+        );
+
+    } else {
+
+        toast.error(
+            "Something went wrong while creating the product."
+        );
+
+    }
+
+}
 };
 
   return (

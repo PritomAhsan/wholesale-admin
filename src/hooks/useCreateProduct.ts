@@ -9,9 +9,9 @@ export default function useCreateProduct() {
     useState(false);
 
   const [errors, setErrors] =
-    useState<Record<string, string[]>>(
-      {}
-    );
+    useState<
+      Record<string, string[]>
+    >({});
 
   const create = async (
     payload: FormData
@@ -42,9 +42,7 @@ export default function useCreateProduct() {
 
   return {
     loading,
-
     errors,
-
     create,
   };
 }
