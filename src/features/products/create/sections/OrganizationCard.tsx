@@ -18,23 +18,107 @@ interface Props {
     value: ProductFormData[K]
   ) => void;
 
-  brands?: Option[];
+  categories?: Option[];
 
-  suppliers?: Option[];
+  brands?: Option[];
 
   units?: Option[];
 
-  categories?: Option[];
+  suppliers?: Option[];
+
+  loading?: boolean;
+
+  errors?: {
+
+      categories?: string | null;
+
+      brands?: string | null;
+
+      suppliers?: string | null;
+
+      units?: string | null;
+
+  };
 }
 
 export default function OrganizationCard({
-  form,
-  onChange,
-  brands = [],
-  suppliers = [],
-  units = [],
-  categories = [],
+    form,
+    onChange,
+    categories = [],
+    brands = [],
+    units = [],
+    suppliers = [],
+    loading = false,
+    errors,
 }: Props) {
+
+  if (loading) {
+  return (
+    <div className="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+      <div className="flex items-center gap-3">
+
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-brand-500 border-t-transparent" />
+
+        <span className="text-sm text-gray-500">
+          Loading categories, brands,
+          suppliers and units...
+        </span>
+
+      </div>
+    </div>
+  );
+}
+
+if (
+  errors?.categories ||
+  errors?.brands ||
+  errors?.units ||
+  errors?.suppliers
+) {
+  return (
+    <div className="rounded-xl border border-red-200 bg-red-50 p-6 dark:border-red-800 dark:bg-red-950/20">
+
+      <h3 className="font-semibold text-red-600">
+        Failed to load lookup data
+      </h3>
+
+      <p className="mt-2 text-sm text-red-500">
+        One or more lookup APIs failed.
+        Please refresh the page.
+      </p>
+
+      <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-red-500">
+
+        {errors.categories && (
+          <li>
+            Categories: {errors.categories}
+          </li>
+        )}
+
+        {errors.brands && (
+          <li>
+            Brands: {errors.brands}
+          </li>
+        )}
+
+        {errors.units && (
+          <li>
+            Units: {errors.units}
+          </li>
+        )}
+
+        {errors.suppliers && (
+          <li>
+            Suppliers: {errors.suppliers}
+          </li>
+        )}
+
+      </ul>
+
+    </div>
+  );
+}
+
   return (
     <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
       <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-800">

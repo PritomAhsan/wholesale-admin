@@ -153,6 +153,17 @@ class BrandService {
 
   return data.data;
 }
+
+/**
+ * Brand Lookup
+ */
+async lookup() {
+  const { data } = await api.get(
+    "/lookups/brands"
+  );
+
+  return data.data;
+}
 }
 
 export default new BrandService();

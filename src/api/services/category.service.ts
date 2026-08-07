@@ -93,6 +93,17 @@ class CategoryService {
 
     return data;
   }
+
+  /**
+ * Category Lookup
+ */
+async lookup() {
+  const { data } = await api.get(
+    "/lookups/categories"
+  );
+
+  return data.data;
+}
 }
 
 export default new CategoryService();

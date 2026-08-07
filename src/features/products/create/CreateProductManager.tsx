@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import useProductLookups from "../../../hooks/useProductLookups";
 
 import BasicInformationCard from "./sections/BasicInformationCard";
 import OrganizationCard from "./sections/OrganizationCard";
@@ -160,7 +161,7 @@ export default function CreateProductManager() {
 
 const {
   loading,
-  errors,
+  // errors,
   create,
 } = useCreateProduct();
 
@@ -188,6 +189,21 @@ const {
       [field]: value,
     }));
   };
+
+  /*
+|--------------------------------------------------------------------------
+| Lookups
+|--------------------------------------------------------------------------
+*/
+
+const {
+  categories,
+  brands,
+  units,
+  suppliers,
+  loading: lookupsLoading,
+  errors,
+} = useProductLookups();
 
   const submit = async () => {
   try {
@@ -474,14 +490,20 @@ router.push(
 
       <BasicInformationCard
         form={form}
-        errors={errors}
+        // errors={errors}
         onChange={updateField}
       />
 
       <OrganizationCard
-        form={form}
-        onChange={updateField}
-      />
+    form={form}
+    onChange={updateField}
+    categories={categories}
+    brands={brands}
+    units={units}
+    suppliers={suppliers}
+    loading={lookupsLoading}
+    errors={errors}
+/>
 
       <PricingCard
         form={form}
