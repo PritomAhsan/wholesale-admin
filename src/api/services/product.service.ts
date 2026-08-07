@@ -60,26 +60,37 @@ class ProductService {
         return data.data.product;
     }
 
-  /**
-   * Update
-   */
-  async update(
+/**
+ * Update Product
+ */
+async update(
     uuid: string,
     payload: FormData
-  ) {
-    const { data } = await api.post(
-      `/v1/admin/products/${uuid}?_method=PUT`,
-      payload,
-      {
-        headers: {
-          "Content-Type":
-            "multipart/form-data",
-        },
-      }
-    );
+) {
 
-    return data;
-  }
+    const { data } =
+        await api.post(
+
+            `/v1/admin/products/${uuid}`,
+
+            payload,
+
+            {
+
+                headers: {
+
+                    "Content-Type":
+                        "multipart/form-data",
+
+                },
+
+            }
+
+        );
+
+    return data.data.product;
+
+}
 
   /**
    * Delete

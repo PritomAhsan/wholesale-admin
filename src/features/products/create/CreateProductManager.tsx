@@ -1,6 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import useProductLookups from "../../../hooks/useProductLookups";
 
 import BasicInformationCard from "./sections/BasicInformationCard";
@@ -18,6 +22,7 @@ import VariantsCard, {
 import SeoCard from "./sections/SeoCard";
 import PublishCard from "./sections/PublishCard";
 import useCreateProduct from "../../../hooks/useCreateProduct";
+import useUpdateProduct from "../hooks/useUpdateProduct";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import ProductService from "@/api/services/product.service";
@@ -148,35 +153,188 @@ export interface ProductImageFile {
   isPrimary: boolean;
 }
 
-export default function CreateProductManager() {
-    const router = useRouter();
-    
+interface Props {
+  mode?: "create" | "edit";
+  product?: any;
+}
+
+export default function CreateProductManager({
+  mode = "create",
+  product,
+}: Props) {
+  const router = useRouter();
+
   const [form, setForm] =
     useState<ProductFormData>(
       initialState
     );
 
-//   const [loading, setLoading] =
-//     useState(false);
+  //   const [loading, setLoading] =
+  //     useState(false);
 
-const {
-  loading,
-  // errors,
-  create,
-} = useCreateProduct();
+  const {
+    loading,
+    // errors,
+    create,
+  } = useCreateProduct();
 
-    const [images, setImages] = useState<ProductImageFile[]>([]);
+  const {
+    loading: updating,
+    update,
+  } = useUpdateProduct();
 
-    const [attributes, setAttributes] =
-  useState<ProductAttributeRow[]>([]);
+  const [images, setImages] = useState<ProductImageFile[]>([]);
+
+  const [attributes, setAttributes] =
+    useState<ProductAttributeRow[]>([]);
 
   const [variants, setVariants] =
-  useState<ProductVariant[]>([]);
+    useState<ProductVariant[]>([]);
 
-//   const [errors, setErrors] =
-//     useState<
-//       Record<string, string[]>
-//     >({});
+  const [
+    existingImages,
+    setExistingImages,
+  ] = useState(product?.images ?? []);
+
+  const [
+    deletedImageIds,
+    setDeletedImageIds,
+  ] = useState<number[]>([]);
+
+  //   const [errors, setErrors] =
+  //     useState<
+  //       Record<string, string[]>
+  //     >({});
+
+  useEffect(() => {
+
+    if (mode !== "edit") {
+
+      return;
+    }
+
+    if (!product) {
+
+      return;
+    }
+
+    setForm((prev) => ({
+
+      ...prev,
+
+      name: product.name ?? prev.name,
+
+      slug: product.slug ?? prev.slug,
+
+      sku: product.sku ?? prev.sku,
+
+      supplier_id:
+        product.supplier?.id ??
+        prev.supplier_id,
+
+      brand_id:
+        product.brand?.id ??
+        prev.brand_id,
+
+      unit_id:
+        product.unit?.id ??
+        prev.unit_id,
+
+      category_ids:
+        product.categories?.map(
+          (category: any) => category.id
+        ) ?? prev.category_ids,
+
+      short_description:
+        product.short_description ??
+        prev.short_description,
+
+      description:
+        product.description ??
+        prev.description,
+
+      cost_price:
+        String(product.cost_price ?? ""),
+
+      selling_price:
+        String(product.selling_price ?? ""),
+
+      compare_at_price:
+        String(
+          product.compare_at_price ?? ""
+        ),
+
+      currency:
+        product.currency ??
+        prev.currency,
+
+      stock_quantity:
+        String(
+          product.stock_quantity ?? ""
+        ),
+
+      min_order_quantity:
+        String(
+          product.min_order_quantity ?? "1"
+        ),
+
+      max_order_quantity:
+        String(
+          product.max_order_quantity ?? ""
+        ),
+
+      weight:
+        String(product.weight ?? ""),
+
+      length:
+        String(product.length ?? ""),
+
+      width:
+        String(product.width ?? ""),
+
+      height:
+        String(product.height ?? ""),
+
+      featured:
+        product.featured ?? false,
+
+      is_digital:
+        product.is_digital ?? false,
+
+      requires_shipping:
+        product.requires_shipping ?? true,
+
+      status:
+        product.status ??
+        prev.status,
+
+      meta_title:
+        product.meta_title ??
+        prev.meta_title,
+
+      meta_description:
+        product.meta_description ??
+        prev.meta_description,
+
+      meta_keywords:
+        product.meta_keywords ??
+        prev.meta_keywords,
+
+    }));
+
+  }, [mode, product]);
+
+  useEffect(() => {
+    if (mode !== "edit") return;
+
+    setExistingImages(
+      product?.images ?? []
+    );
+
+    setDeletedImageIds([]);
+  }, [mode, product]);
+
+  console.log(form);
 
   const updateField = <
     K extends keyof ProductFormData
@@ -196,477 +354,517 @@ const {
 |--------------------------------------------------------------------------
 */
 
-const {
-  categories,
-  brands,
-  units,
-  suppliers,
-  loading: lookupsLoading,
-  errors,
-} = useProductLookups();
+  const {
+    categories,
+    brands,
+    units,
+    suppliers,
+    loading: lookupsLoading,
+    errors,
+  } = useProductLookups();
 
-  const submit = async () => {
-  try {
-    const payload =
-      new FormData();
-
-    /*
-    |--------------------------------------------------------------------------
-    | Basic
-    |--------------------------------------------------------------------------
-    */
-
-    payload.append(
-      "name",
-      form.name
-    );
-
-    if (form.slug) {
-      payload.append(
-        "slug",
-        form.slug
-      );
-    }
-
-    if (form.sku) {
-      payload.append(
-        "sku",
-        form.sku
-      );
-    }
-
-    payload.append(
-      "short_description",
-      form.short_description
-    );
-
-    payload.append(
-      "description",
-      form.description
-    );
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relationships
-    |--------------------------------------------------------------------------
-    */
-
-    payload.append(
-      "supplier_id",
-      String(form.supplier_id)
-    );
-
-    if (form.brand_id) {
-      payload.append(
-        "brand_id",
-        String(form.brand_id)
-      );
-    }
-
-    if (form.unit_id) {
-      payload.append(
-        "unit_id",
-        String(form.unit_id)
-      );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Categories
-    |--------------------------------------------------------------------------
-    */
-
-    form.category_ids.forEach(
-      (id, index) => {
-        payload.append(
-          `category_ids[${index}]`,
-          String(id)
-        );
-      }
-    );
-
-    /*
-    |--------------------------------------------------------------------------
-    | Pricing
-    |--------------------------------------------------------------------------
-    */
-
-    payload.append(
-      "cost_price",
-      form.cost_price
-    );
-
-    payload.append(
-      "selling_price",
-      form.selling_price
-    );
-
-    if (
-      form.compare_at_price
-    ) {
-      payload.append(
-        "compare_at_price",
-        form.compare_at_price
-      );
-    }
-
-    payload.append(
-      "currency",
-      form.currency
-    );
-
-    /*
-    |--------------------------------------------------------------------------
-    | Inventory
-    |--------------------------------------------------------------------------
-    */
-
-    payload.append(
-      "stock_quantity",
-      form.stock_quantity
-    );
-
-    payload.append(
-      "min_order_quantity",
-      form.min_order_quantity
-    );
-
-    if (
-      form.max_order_quantity
-    ) {
-      payload.append(
-        "max_order_quantity",
-        form.max_order_quantity
-      );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Dimensions
-    |--------------------------------------------------------------------------
-    */
-
-    if (form.weight)
-      payload.append(
-        "weight",
-        form.weight
-      );
-
-    if (form.length)
-      payload.append(
-        "length",
-        form.length
-      );
-
-    if (form.width)
-      payload.append(
-        "width",
-        form.width
-      );
-
-    if (form.height)
-      payload.append(
-        "height",
-        form.height
-      );
-
-    /*
-    |--------------------------------------------------------------------------
-    | Flags
-    |--------------------------------------------------------------------------
-    */
-
-    payload.append(
-      "featured",
-      form.featured
-        ? "1"
-        : "0"
-    );
-
-    payload.append(
-      "is_digital",
-      form.is_digital
-        ? "1"
-        : "0"
-    );
-
-    payload.append(
-      "requires_shipping",
-      form.requires_shipping
-        ? "1"
-        : "0"
-    );
-
-    /*
-    |--------------------------------------------------------------------------
-    | Status
-    |--------------------------------------------------------------------------
-    */
-
-    payload.append(
-      "status",
-      form.status
-    );
-
-    /*
-    |--------------------------------------------------------------------------
-    | SEO
-    |--------------------------------------------------------------------------
-    */
-
-    if (
-      form.meta_title
-    ) {
-      payload.append(
-        "meta_title",
-        form.meta_title
-      );
-    }
-
-    if (
-      form.meta_description
-    ) {
-      payload.append(
-        "meta_description",
-        form.meta_description
-      );
-    }
-
-    if (
-      form.meta_keywords
-    ) {
-      payload.append(
-        "meta_keywords",
-        form.meta_keywords
-      );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Product Attributes
-    |--------------------------------------------------------------------------
-    */
-
-    attributes.forEach(
-      (
-        attribute,
-        index
-      ) => {
-        if (
-          attribute.attribute_id &&
-          attribute.attribute_value_id
-        ) {
-          payload.append(
-            `attributes[${index}][attribute_id]`,
-            String(
-              attribute.attribute_id
-            )
-          );
-
-          payload.append(
-            `attributes[${index}][attribute_value_id]`,
-            String(
-              attribute.attribute_value_id
-            )
-          );
-        }
-      }
-    );
-
-    const product =
-      await create(payload);
-
-      /*
-|--------------------------------------------------------------------------
-| Upload Images
-|--------------------------------------------------------------------------
-*/
-
-if (images.length > 0) {
-  const imagePayload =
-    new FormData();
-
-  images.forEach((image) => {
-    imagePayload.append(
-      "images[]",
-      image.file
-    );
-
-    imagePayload.append(
-      "alt_text[]",
-       form.name
-    );
+  console.log({
+    existingImages,
+    deletedImageIds,
+    newImages: images,
   });
 
-  try {
+  const submit = async () => {
+    try {
+      const payload =
+        new FormData();
 
-    if (images.length) {
+      /*
+      |--------------------------------------------------------------------------
+      | Basic
+      |--------------------------------------------------------------------------
+      */
 
-        await ProductService.uploadImages(
-            product.uuid,
-            imagePayload
+      payload.append(
+        "name",
+        form.name
+      );
+
+      if (form.slug) {
+        payload.append(
+          "slug",
+          form.slug
+        );
+      }
+
+      if (form.sku) {
+        payload.append(
+          "sku",
+          form.sku
+        );
+      }
+
+      payload.append(
+        "short_description",
+        form.short_description
+      );
+
+      payload.append(
+        "description",
+        form.description
+      );
+
+      /*
+      |--------------------------------------------------------------------------
+      | Relationships
+      |--------------------------------------------------------------------------
+      */
+
+      payload.append(
+        "supplier_id",
+        String(form.supplier_id)
+      );
+
+      if (form.brand_id) {
+        payload.append(
+          "brand_id",
+          String(form.brand_id)
+        );
+      }
+
+      if (form.unit_id) {
+        payload.append(
+          "unit_id",
+          String(form.unit_id)
+        );
+      }
+
+      /*
+      |--------------------------------------------------------------------------
+      | Categories
+      |--------------------------------------------------------------------------
+      */
+
+      form.category_ids.forEach(
+        (id, index) => {
+          payload.append(
+            `category_ids[${index}]`,
+            String(id)
+          );
+        }
+      );
+
+      /*
+      |--------------------------------------------------------------------------
+      | Pricing
+      |--------------------------------------------------------------------------
+      */
+
+      payload.append(
+        "cost_price",
+        form.cost_price
+      );
+
+      payload.append(
+        "selling_price",
+        form.selling_price
+      );
+
+      if (
+        form.compare_at_price
+      ) {
+        payload.append(
+          "compare_at_price",
+          form.compare_at_price
+        );
+      }
+
+      payload.append(
+        "currency",
+        form.currency
+      );
+
+      /*
+      |--------------------------------------------------------------------------
+      | Inventory
+      |--------------------------------------------------------------------------
+      */
+
+      payload.append(
+        "stock_quantity",
+        form.stock_quantity
+      );
+
+      payload.append(
+        "min_order_quantity",
+        form.min_order_quantity
+      );
+
+      if (
+        form.max_order_quantity
+      ) {
+        payload.append(
+          "max_order_quantity",
+          form.max_order_quantity
+        );
+      }
+
+      /*
+      |--------------------------------------------------------------------------
+      | Dimensions
+      |--------------------------------------------------------------------------
+      */
+
+      if (form.weight)
+        payload.append(
+          "weight",
+          form.weight
         );
 
-    }
+      if (form.length)
+        payload.append(
+          "length",
+          form.length
+        );
 
-} catch {
+      if (form.width)
+        payload.append(
+          "width",
+          form.width
+        );
 
-    toast.warning(
-        "Product created, but image upload failed."
-    );
+      if (form.height)
+        payload.append(
+          "height",
+          form.height
+        );
 
-}
-}
-  /*
-|--------------------------------------------------------------------------
-| Create Variants
-|--------------------------------------------------------------------------
-*/
+      /*
+      |--------------------------------------------------------------------------
+      | Flags
+      |--------------------------------------------------------------------------
+      */
 
-// for (const variant of variants) {
-//   await ProductService.createVariant(
-//     product.uuid,
-//     {
-//       product_id: product.id,
+      payload.append(
+        "featured",
+        form.featured
+          ? "1"
+          : "0"
+      );
 
-//       sku: variant.sku,
+      payload.append(
+        "is_digital",
+        form.is_digital
+          ? "1"
+          : "0"
+      );
 
-//       barcode: variant.barcode,
+      payload.append(
+        "requires_shipping",
+        form.requires_shipping
+          ? "1"
+          : "0"
+      );
 
-//       cost_price:
-//         variant.cost_price,
+      /*
+      |--------------------------------------------------------------------------
+      | Status
+      |--------------------------------------------------------------------------
+      */
 
-//       selling_price:
-//         variant.selling_price,
+      payload.append(
+        "status",
+        form.status
+      );
 
-//       compare_at_price:
-//         variant.compare_at_price,
+      /*
+      |--------------------------------------------------------------------------
+      | SEO
+      |--------------------------------------------------------------------------
+      */
 
-//       wholesale_price:
-//         variant.wholesale_price,
+      if (
+        form.meta_title
+      ) {
+        payload.append(
+          "meta_title",
+          form.meta_title
+        );
+      }
 
-//       stock_quantity:
-//         variant.stock_quantity,
+      if (
+        form.meta_description
+      ) {
+        payload.append(
+          "meta_description",
+          form.meta_description
+        );
+      }
 
-//       low_stock_quantity:
-//         variant.low_stock_quantity,
+      if (
+        form.meta_keywords
+      ) {
+        payload.append(
+          "meta_keywords",
+          form.meta_keywords
+        );
+      }
 
-//       minimum_order_quantity:
-//         variant.min_order_quantity,
+      /*
+      |--------------------------------------------------------------------------
+      | Product Attributes
+      |--------------------------------------------------------------------------
+      */
 
-//       maximum_order_quantity:
-//         variant.max_order_quantity,
+      attributes.forEach(
+        (
+          attribute,
+          index
+        ) => {
+          if (
+            attribute.attribute_id &&
+            attribute.attribute_value_id
+          ) {
+            payload.append(
+              `attributes[${index}][attribute_id]`,
+              String(
+                attribute.attribute_id
+              )
+            );
 
-//       is_default:
-//         variant.is_default,
+            payload.append(
+              `attributes[${index}][attribute_value_id]`,
+              String(
+                attribute.attribute_value_id
+              )
+            );
+          }
+        }
+      );
 
-//       is_active:
-//         variant.is_active,
+      // const product =
+      //   await create(payload);
 
-//       attributes:
-//         variant.attributes,
-//     }
-//   );
-// }
 
-try {
 
-    for (const variant of variants) {
+      /*
+      |--------------------------------------------------------------------------
+      | Upload Images
+      |--------------------------------------------------------------------------
+      */
 
-        await ProductService.createVariant(
+      if (images.length > 0) {
+        const imagePayload =
+          new FormData();
+
+        images.forEach((image) => {
+          imagePayload.append(
+            "images[]",
+            image.file
+          );
+
+          imagePayload.append(
+            "alt_text[]",
+            form.name
+          );
+        });
+
+        try {
+
+          if (images.length) {
+
+            await ProductService.uploadImages(
+              product.uuid,
+              imagePayload
+            );
+
+          }
+
+        } catch {
+
+          toast.warning(
+            "Product created, but image upload failed."
+          );
+
+        }
+      }
+      /*
+      |--------------------------------------------------------------------------
+      | Create Variants
+      |--------------------------------------------------------------------------
+      */
+
+      try {
+
+        for (const variant of variants) {
+
+          await ProductService.createVariant(
             product.uuid,
             {
-      product_id: product.id,
+              product_id: product.id,
 
-      sku: variant.sku,
+              sku: variant.sku,
 
-      barcode: variant.barcode,
+              barcode: variant.barcode,
 
-      cost_price:
-        variant.cost_price,
+              cost_price:
+                variant.cost_price,
 
-      selling_price:
-        variant.selling_price,
+              selling_price:
+                variant.selling_price,
 
-      compare_at_price:
-        variant.compare_at_price,
+              compare_at_price:
+                variant.compare_at_price,
 
-      wholesale_price:
-        variant.wholesale_price,
+              wholesale_price:
+                variant.wholesale_price,
 
-      stock_quantity:
-        variant.stock_quantity,
+              stock_quantity:
+                variant.stock_quantity,
 
-      low_stock_quantity:
-        variant.low_stock_quantity,
+              low_stock_quantity:
+                variant.low_stock_quantity,
 
-      minimum_order_quantity:
-        variant.min_order_quantity,
+              minimum_order_quantity:
+                variant.min_order_quantity,
 
-      maximum_order_quantity:
-        variant.max_order_quantity,
+              maximum_order_quantity:
+                variant.max_order_quantity,
 
-      is_default:
-        variant.is_default,
+              is_default:
+                variant.is_default,
 
-      is_active:
-        variant.is_active,
+              is_active:
+                variant.is_active,
 
-      attributes:
-        variant.attributes,
-    }
+              attributes:
+                variant.attributes,
+            }
+          );
+
+        }
+
+        let savedProduct;
+
+        if (mode === "create") {
+
+          savedProduct =
+            await create(payload);
+
+        } else {
+
+          payload.append(
+            "_method",
+            "PUT"
+          );
+
+          /*
+          |--------------------------------------------------------------------------
+          | Deleted Images
+          |--------------------------------------------------------------------------
+          */
+
+          deletedImageIds.forEach((id) => {
+
+            payload.append(
+              "deleted_image_ids[]",
+              String(id)
+            );
+
+          });
+
+          /*
+          |--------------------------------------------------------------------------
+          | Primary Image
+          |--------------------------------------------------------------------------
+          */
+
+          const primaryImage =
+            existingImages.find(
+              (image) =>
+                image.is_primary
+            );
+
+          if (primaryImage) {
+
+            payload.append(
+              "primary_image_id",
+              String(primaryImage.id)
+            );
+
+          }
+
+          /*
+          |--------------------------------------------------------------------------
+          | New Images
+          |--------------------------------------------------------------------------
+          */
+
+          images.forEach((image) => {
+
+            payload.append(
+              "images[]",
+              image.file
+            );
+
+            payload.append(
+              "image_alt_texts[]",
+              ""
+            );
+
+          });
+
+          savedProduct =
+            await update(
+              product.uuid,
+              payload
+            );
+
+          router.push(
+            `/products/${product.uuid}/edit`
+          );
+
+        }
+
+      } catch {
+
+        toast.warning(
+          "Product created, but one or more variants failed."
         );
 
-    }
-
-} catch {
-
-    toast.warning(
-        "Product created, but one or more variants failed."
-    );
-
-}
-
-  
+      }
 
 
-    console.log(
-      "Created Product:",
-      product
-    );
+      console.log(
+        "Created Product:",
+        product
+      );
 
-    toast.success(
-    "Product created successfully."
-);
+      toast.success(
+        "Product created successfully."
+      );
 
-router.push(
-    `/products/${product.uuid}/edit`
-);
 
-return product;
 
-  } catch (error: any) {
+      return product;
 
-    console.error(error);
+    } catch (error: any) {
 
-    if (
+      console.error(error);
+
+      if (
         error.response?.data?.message
-    ) {
+      ) {
 
         toast.error(
-            error.response.data.message
+          error.response.data.message
         );
 
-    } else {
+      } else {
 
         toast.error(
-            "Something went wrong while creating the product."
+          "Something went wrong while creating the product."
         );
+
+      }
 
     }
-
-}
-};
+  };
 
   return (
     <div className="space-y-6">
@@ -678,15 +876,15 @@ return product;
       />
 
       <OrganizationCard
-    form={form}
-    onChange={updateField}
-    categories={categories}
-    brands={brands}
-    units={units}
-    suppliers={suppliers}
-    loading={lookupsLoading}
-    errors={errors}
-/>
+        form={form}
+        onChange={updateField}
+        categories={categories}
+        brands={brands}
+        units={units}
+        suppliers={suppliers}
+        loading={lookupsLoading}
+        errors={errors}
+      />
 
       <PricingCard
         form={form}
@@ -704,19 +902,32 @@ return product;
       />
 
       <ProductImagesCard
-  images={images}
-  onImagesChange={setImages}
-/>
+        existingImages={existingImages}
+        onExistingImagesChange={
+          setExistingImages
+        }
+        onDeletedImagesChange={
+          (ids) =>
+            setDeletedImageIds(
+              (prev) => [
+                ...prev,
+                ...ids,
+              ]
+            )
+        }
+        images={images}
+        onImagesChange={setImages}
+      />
 
       <AttributesCard
-  items={attributes}
-  onChange={setAttributes}
-/>
+        items={attributes}
+        onChange={setAttributes}
+      />
 
       <VariantsCard
-  variants={variants}
-  onChange={setVariants}
-/>
+        variants={variants}
+        onChange={setVariants}
+      />
 
       <SeoCard
         form={form}
@@ -724,21 +935,21 @@ return product;
       />
 
       <PublishCard
-  featured={form.featured}
-  status={form.status}
-  loading={loading}
-  onFeaturedChange={(value) =>
-    updateField("featured", value)
-  }
-  onStatusChange={(value) =>
-    updateField("status", value)
-  }
-  onSubmit={submit}
-  onSaveDraft={() =>
-    updateField("status", "draft")
-  }
-  onCancel={() => history.back()}
-/>
+        featured={form.featured}
+        status={form.status}
+        loading={loading}
+        onFeaturedChange={(value) =>
+          updateField("featured", value)
+        }
+        onStatusChange={(value) =>
+          updateField("status", value)
+        }
+        onSubmit={submit}
+        onSaveDraft={() =>
+          updateField("status", "draft")
+        }
+        onCancel={() => history.back()}
+      />
 
     </div>
   );

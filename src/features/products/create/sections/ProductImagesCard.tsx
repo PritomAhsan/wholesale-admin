@@ -3,6 +3,20 @@
 import Image from "next/image";
 import { Upload, X } from "lucide-react";
 
+export interface ExistingImage {
+  id: number;
+
+  uuid: string;
+
+  image: string;
+
+  alt_text: string | null;
+
+  is_primary: boolean;
+
+  sort_order: number;
+}
+
 interface LocalImage {
   file: File;
   preview: string;
@@ -10,16 +24,35 @@ interface LocalImage {
 }
 
 interface Props {
+  existingImages?: ExistingImage[];
+
   images?: LocalImage[];
 
   onImagesChange?: (
     images: LocalImage[]
   ) => void;
+
+  onExistingImagesChange?: (
+    images: ExistingImage[]
+  ) => void;
+
+  onDeletedImagesChange?: (
+    ids: number[]
+  ) => void;
 }
 
 export default function ProductImagesCard({
+
+  existingImages = [],
+
   images = [],
+
   onImagesChange,
+
+  onExistingImagesChange,
+
+  onDeletedImagesChange,
+
 }: Props) {
   const handleFiles = (
     files: FileList | null
@@ -92,6 +125,60 @@ export default function ProductImagesCard({
 
         </label>
 
+        {/* Existing Images */}
+
+{existingImages.length > 0 && (
+
+  <div className="mt-8">
+
+    <h4 className="mb-4 text-sm font-semibold">
+      Existing Images
+    </h4>
+
+    <div className="grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-5">
+
+      {existingImages.map((image) => (
+
+        <div
+          key={image.id}
+          className="group relative overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700"
+        >
+
+          <div className="relative aspect-square">
+
+            <Image
+              src={image.image}
+              alt={
+                image.alt_text ??
+                "Product Image"
+              }
+              fill
+              unoptimized
+              className="object-cover"
+            />
+
+          </div>
+
+          {image.is_primary && (
+
+            <span className="absolute left-2 top-2 rounded-full bg-brand-500 px-2 py-1 text-xs font-medium text-white">
+
+              Primary
+
+            </span>
+
+          )}
+
+        </div>
+
+      ))}
+
+    </div>
+
+  </div>
+
+)}
+
                 {images.length > 0 && (
           <div className="mt-8 grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-5">
 
@@ -116,19 +203,25 @@ export default function ProductImagesCard({
                   {/* Remove */}
 
                   <button
-                    type="button"
-                    onClick={() => {
-                      onImagesChange?.(
-                        images.filter(
-                          (_, i) =>
-                            i !== index
-                        )
-                      );
-                    }}
-                    className="absolute right-2 top-2 rounded-full bg-red-500 p-1 text-white opacity-0 shadow transition group-hover:opacity-100"
-                  >
-                    <X size={16} />
-                  </button>
+  type="button"
+  onClick={() => {
+
+    onDeletedImagesChange?.([
+      image.id,
+    ]);
+
+    onExistingImagesChange?.(
+      existingImages.filter(
+        (img) =>
+          img.id !== image.id
+      )
+    );
+
+  }}
+  className="absolute right-2 top-2 rounded-full bg-red-500 p-1 text-white opacity-0 transition group-hover:opacity-100"
+>
+  <X size={16} />
+</button>
 
                   {/* Primary Badge */}
 
@@ -140,29 +233,36 @@ export default function ProductImagesCard({
 
                   {/* Set Primary */}
 
-                  {!image.isPrimary && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        onImagesChange?.(
-                          images.map(
-                            (
-                              img,
-                              i
-                            ) => ({
-                              ...img,
-                              isPrimary:
-                                i ===
-                                index,
-                            })
-                          )
-                        );
-                      }}
-                      className="absolute bottom-2 left-2 right-2 rounded-lg bg-white/90 px-3 py-2 text-xs font-medium transition hover:bg-white dark:bg-gray-900/90 dark:hover:bg-gray-900"
-                    >
-                      Set Primary
-                    </button>
-                  )}
+                  {!image.is_primary && (
+
+  <button
+    type="button"
+    onClick={() => {
+
+      onExistingImagesChange?.(
+
+        existingImages.map(
+          (img) => ({
+
+            ...img,
+
+            is_primary:
+              img.id === image.id,
+
+          })
+        )
+
+      );
+
+    }}
+    className="absolute bottom-2 left-2 right-2 rounded-lg bg-white/90 px-3 py-2 text-xs font-medium"
+  >
+
+    Set Primary
+
+  </button>
+
+)}
 
                 </div>
               )
