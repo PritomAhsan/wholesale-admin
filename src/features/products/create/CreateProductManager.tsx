@@ -322,6 +322,20 @@ export default function CreateProductManager({
 
     }));
 
+    setAttributes(
+      (product.attributes ?? []).map(
+        (item: any) => ({
+          attribute_id:
+            item.attribute?.id ??
+            null,
+
+          attribute_value_id:
+            item.value?.id ??
+            null,
+        })
+      )
+    );
+
   }, [mode, product]);
 
   useEffect(() => {
@@ -334,7 +348,7 @@ export default function CreateProductManager({
     setDeletedImageIds([]);
   }, [mode, product]);
 
-  console.log(form);
+  console.log('form', form);
 
   const updateField = <
     K extends keyof ProductFormData
