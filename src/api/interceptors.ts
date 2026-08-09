@@ -1,4 +1,5 @@
 import { AxiosError } from "axios";
+import { Token } from "@/lib/token";
 
 export function handleRequest(config: any) {
 
@@ -20,9 +21,21 @@ export function handleResponse(response: any) {
 
 export function handleResponseError(error: AxiosError) {
 
-  if (error.response?.status === 401) {
+  if (
+    error.response?.status === 401 &&
+    typeof window !== "undefined"
+  ) {
 
-    console.log("Unauthorized");
+    Token.remove();
+
+    // Hard redirect (not a router push) so every bit of in-memory
+    // auth state is dropped along with the stale token, and so
+    // this works even for requests fired outside the React tree.
+    if (window.location.pathname !== "/signin") {
+
+      window.location.href = "/signin";
+
+    }
 
   }
 

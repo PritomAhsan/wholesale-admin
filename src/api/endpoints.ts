@@ -2,11 +2,13 @@ export const API = {
 
   AUTH: {
 
-    LOGIN: "/login",
+    LOGIN: "/v1/auth/login",
 
-    LOGOUT: "/logout",
+    LOGOUT: "/v1/auth/logout",
 
-    ME: "/me",
+    ME: "/v1/auth/me",
+
+    REGISTER: "/v1/auth/register",
 
   },
 

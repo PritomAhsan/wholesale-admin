@@ -146,7 +146,7 @@ export default function useProductLookups() {
 
       valueOptions[attributeId].push({
         value: String(item.id),
-        label: item.value,
+        label: item.label,
       });
     }
   );
