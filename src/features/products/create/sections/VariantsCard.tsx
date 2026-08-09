@@ -79,21 +79,21 @@ export default function VariantsCard({
   };
 
   const updateVariant = <
-  K extends keyof ProductVariant
->(
-  index: number,
-  field: K,
-  value: ProductVariant[K]
-) => {
-  const updated = [...variants];
+    K extends keyof ProductVariant
+  >(
+    index: number,
+    field: K,
+    value: ProductVariant[K]
+  ) => {
+    const updated = [...variants];
 
-  updated[index] = {
-    ...updated[index],
-    [field]: value,
+    updated[index] = {
+      ...updated[index],
+      [field]: value,
+    };
+
+    onChange?.(updated);
   };
-
-  onChange?.(updated);
-};
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
@@ -131,7 +131,7 @@ export default function VariantsCard({
           </div>
         )}
 
-                {variants.map((variant, index) => (
+        {variants.map((variant, index) => (
           <div
             key={index}
             className="mb-6 rounded-xl border border-gray-200 dark:border-gray-700"
@@ -171,12 +171,12 @@ export default function VariantsCard({
                   className="w-full rounded-lg border border-gray-300 px-4 py-2 dark:border-gray-700 dark:bg-transparent"
                   value={variant.sku}
                   onChange={(e) =>
-  updateVariant(
-    index,
-    "sku",
-    e.target.value
-  )
-}
+                    updateVariant(
+                      index,
+                      "sku",
+                      e.target.value
+                    )
+                  }
                 />
               </div>
 
@@ -193,12 +193,12 @@ export default function VariantsCard({
                     variant.barcode
                   }
                   onChange={(e) =>
-  updateVariant(
-    index,
-    "barcode",
-    e.target.value
-  )
-}
+                    updateVariant(
+                      index,
+                      "barcode",
+                      e.target.value
+                    )
+                  }
                 />
               </div>
 
@@ -216,12 +216,12 @@ export default function VariantsCard({
                     variant.cost_price
                   }
                   onChange={(e) =>
-  updateVariant(
-    index,
-    "cost_price",
-    e.target.value
-  )
-}
+                    updateVariant(
+                      index,
+                      "cost_price",
+                      e.target.value
+                    )
+                  }
                 />
               </div>
 
@@ -239,12 +239,12 @@ export default function VariantsCard({
                     variant.selling_price
                   }
                   onChange={(e) =>
-  updateVariant(
-    index,
-    "selling_price",
-    e.target.value
-  )
-}
+                    updateVariant(
+                      index,
+                      "selling_price",
+                      e.target.value
+                    )
+                  }
                 />
               </div>
 
@@ -262,12 +262,12 @@ export default function VariantsCard({
                     variant.wholesale_price
                   }
                   onChange={(e) =>
-  updateVariant(
-    index,
-    "wholesale_price",
-    e.target.value
-  )
-}
+                    updateVariant(
+                      index,
+                      "wholesale_price",
+                      e.target.value
+                    )
+                  }
                 />
               </div>
 
@@ -285,16 +285,16 @@ export default function VariantsCard({
                     variant.compare_at_price
                   }
                   onChange={(e) =>
-  updateVariant(
-    index,
-    "compare_at_price",
-    e.target.value
-  )
-}
+                    updateVariant(
+                      index,
+                      "compare_at_price",
+                      e.target.value
+                    )
+                  }
                 />
               </div>
 
-                            {/* Stock Quantity */}
+              {/* Stock Quantity */}
 
               <div>
                 <label className="mb-2 block text-sm font-medium">
@@ -306,12 +306,12 @@ export default function VariantsCard({
                   className="w-full rounded-lg border border-gray-300 px-4 py-2 dark:border-gray-700 dark:bg-transparent"
                   value={variant.stock_quantity}
                   onChange={(e) =>
-  updateVariant(
-    index,
-    "stock_quantity",
-    e.target.value
-  )
-}
+                    updateVariant(
+                      index,
+                      "stock_quantity",
+                      e.target.value
+                    )
+                  }
                 />
               </div>
 
@@ -327,12 +327,12 @@ export default function VariantsCard({
                   className="w-full rounded-lg border border-gray-300 px-4 py-2 dark:border-gray-700 dark:bg-transparent"
                   value={variant.low_stock_quantity}
                   onChange={(e) =>
-  updateVariant(
-    index,
-    "low_stock_quantity",
-    e.target.value
-  )
-}
+                    updateVariant(
+                      index,
+                      "low_stock_quantity",
+                      e.target.value
+                    )
+                  }
                 />
               </div>
 
@@ -348,12 +348,12 @@ export default function VariantsCard({
                   className="w-full rounded-lg border border-gray-300 px-4 py-2 dark:border-gray-700 dark:bg-transparent"
                   value={variant.min_order_quantity}
                   onChange={(e) =>
-  updateVariant(
-    index,
-    "min_order_quantity",
-    e.target.value
-  )
-}
+                    updateVariant(
+                      index,
+                      "min_order_quantity",
+                      e.target.value
+                    )
+                  }
                 />
               </div>
 
@@ -369,12 +369,12 @@ export default function VariantsCard({
                   className="w-full rounded-lg border border-gray-300 px-4 py-2 dark:border-gray-700 dark:bg-transparent"
                   value={variant.max_order_quantity}
                   onChange={(e) =>
-  updateVariant(
-    index,
-    "max_order_quantity",
-    e.target.value
-  )
-}
+                    updateVariant(
+                      index,
+                      "max_order_quantity",
+                      e.target.value
+                    )
+                  }
                 />
               </div>
 
@@ -392,18 +392,18 @@ export default function VariantsCard({
                     type="checkbox"
                     checked={variant.is_default}
                     onChange={(e) => {
-  const updated = variants.map(
-    (variant, i) => ({
-      ...variant,
-      is_default:
-        i === index
-          ? e.target.checked
-          : false,
-    })
-  );
+                      const updated = variants.map(
+                        (variant, i) => ({
+                          ...variant,
+                          is_default:
+                            i === index
+                              ? e.target.checked
+                              : false,
+                        })
+                      );
 
-  onChange?.(updated);
-}}
+                      onChange?.(updated);
+                    }}
                   />
 
                   <span className="text-sm">
@@ -418,12 +418,12 @@ export default function VariantsCard({
                     type="checkbox"
                     checked={variant.is_active}
                     onChange={(e) =>
-  updateVariant(
-    index,
-    "is_active",
-    e.target.checked
-  )
-}
+                      updateVariant(
+                        index,
+                        "is_active",
+                        e.target.checked
+                      )
+                    }
                   />
 
                   <span className="text-sm">

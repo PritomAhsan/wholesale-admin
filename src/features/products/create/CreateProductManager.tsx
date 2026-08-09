@@ -355,13 +355,15 @@ export default function CreateProductManager({
 */
 
   const {
-    categories,
-    brands,
-    units,
-    suppliers,
-    loading: lookupsLoading,
-    errors,
-  } = useProductLookups();
+  categories,
+  brands,
+  units,
+  suppliers,
+  attributes: attributeOptions,
+  valueOptions,
+  loading: lookupsLoading,
+  errors,
+} = useProductLookups();
 
   console.log({
     existingImages,
@@ -369,9 +371,8 @@ export default function CreateProductManager({
     newImages: images,
   });
 
-  const submit = async () => {
-    try {
-      const payload =
+  const buildPayload = () => {
+    const payload =
         new FormData();
 
       /*
@@ -637,64 +638,110 @@ export default function CreateProductManager({
         }
       );
 
-      // const product =
-      //   await create(payload);
+    return payload;
+  };
 
+  const saveProduct = async (
+      payload: FormData
+  ) => {
 
+      if (mode === "create") {
 
-      /*
-      |--------------------------------------------------------------------------
-      | Upload Images
-      |--------------------------------------------------------------------------
-      */
+          return await create(payload);
 
-      if (images.length > 0) {
-        const imagePayload =
+      }
+
+      payload.append("_method", "PUT");
+
+      deletedImageIds.forEach((id) => {
+
+          payload.append(
+              "deleted_image_ids[]",
+              String(id)
+          );
+
+      });
+
+      const primaryImage =
+          existingImages.find(
+              (img) => img.is_primary
+          );
+
+      if (primaryImage) {
+
+          payload.append(
+              "primary_image_id",
+              String(primaryImage.id)
+          );
+
+      }
+
+      images.forEach((image) => {
+
+          payload.append(
+              "images[]",
+              image.file
+          );
+
+          payload.append(
+              "image_alt_texts[]",
+              ""
+          );
+
+      });
+
+      return await update(
+          product.uuid,
+          payload
+      );
+
+  };
+
+  const uploadProductImages =
+  async (
+      product: Product
+  ) => {
+
+      if (
+          mode !== "create" ||
+          images.length === 0
+      ) {
+          return;
+      }
+
+      const payload =
           new FormData();
 
-        images.forEach((image) => {
-          imagePayload.append(
-            "images[]",
-            image.file
+      images.forEach((image) => {
+
+          payload.append(
+              "images[]",
+              image.file
           );
 
-          imagePayload.append(
-            "alt_text[]",
-            form.name
-          );
-        });
-
-        try {
-
-          if (images.length) {
-
-            await ProductService.uploadImages(
-              product.uuid,
-              imagePayload
-            );
-
-          }
-
-        } catch {
-
-          toast.warning(
-            "Product created, but image upload failed."
+          payload.append(
+              "alt_text[]",
+              form.name
           );
 
-        }
-      }
-      /*
-      |--------------------------------------------------------------------------
-      | Create Variants
-      |--------------------------------------------------------------------------
-      */
+      });
 
-      try {
+      await ProductService.uploadImages(
+          product.uuid,
+          payload
+      );
 
-        for (const variant of variants) {
+  };
+
+  const saveVariants =
+  async (
+      product: Product
+  ) => {
+
+      for (const variant of variants) {
 
           await ProductService.createVariant(
-            product.uuid,
+              product.uuid,
             {
               product_id: product.id,
 
@@ -737,134 +784,61 @@ export default function CreateProductManager({
             }
           );
 
-        }
-
-        let savedProduct;
-
-        if (mode === "create") {
-
-          savedProduct =
-            await create(payload);
-
-        } else {
-
-          payload.append(
-            "_method",
-            "PUT"
-          );
-
-          /*
-          |--------------------------------------------------------------------------
-          | Deleted Images
-          |--------------------------------------------------------------------------
-          */
-
-          deletedImageIds.forEach((id) => {
-
-            payload.append(
-              "deleted_image_ids[]",
-              String(id)
-            );
-
-          });
-
-          /*
-          |--------------------------------------------------------------------------
-          | Primary Image
-          |--------------------------------------------------------------------------
-          */
-
-          const primaryImage =
-            existingImages.find(
-              (image) =>
-                image.is_primary
-            );
-
-          if (primaryImage) {
-
-            payload.append(
-              "primary_image_id",
-              String(primaryImage.id)
-            );
-
-          }
-
-          /*
-          |--------------------------------------------------------------------------
-          | New Images
-          |--------------------------------------------------------------------------
-          */
-
-          images.forEach((image) => {
-
-            payload.append(
-              "images[]",
-              image.file
-            );
-
-            payload.append(
-              "image_alt_texts[]",
-              ""
-            );
-
-          });
-
-          savedProduct =
-            await update(
-              product.uuid,
-              payload
-            );
-
-          router.push(
-            `/products/${product.uuid}/edit`
-          );
-
-        }
-
-      } catch {
-
-        toast.warning(
-          "Product created, but one or more variants failed."
-        );
-
       }
 
+  };
 
-      console.log(
-        "Created Product:",
-        product
-      );
+  const submit = async () => {
 
-      toast.success(
-        "Product created successfully."
-      );
+    try {
 
+        const payload =
+            buildPayload();
 
+        const savedProduct =
+            await saveProduct(
+                payload
+            );
 
-      return product;
+        await uploadProductImages(
+            savedProduct
+        );
+
+        await saveVariants(
+            savedProduct
+        );
+
+        toast.success(
+
+            mode === "create"
+                ? "Product created successfully."
+                : "Product updated successfully."
+
+        );
+
+        router.push(
+            `/products/${savedProduct.uuid}/edit`
+        );
+
+        console.log('saved product', savedProduct);
 
     } catch (error: any) {
 
-      console.error(error);
-
-      if (
-        error.response?.data?.message
-      ) {
+        console.error(error);
 
         toast.error(
-          error.response.data.message
+
+            error.response?.data
+                ?.message ??
+            "Something went wrong."
+
         );
-
-      } else {
-
-        toast.error(
-          "Something went wrong while creating the product."
-        );
-
-      }
 
     }
+
   };
+
+  
 
   return (
     <div className="space-y-6">
@@ -920,9 +894,11 @@ export default function CreateProductManager({
       />
 
       <AttributesCard
-        items={attributes}
-        onChange={setAttributes}
-      />
+  items={attributes}
+  attributeOptions={attributeOptions}
+  valueOptions={valueOptions}
+  onChange={setAttributes}
+/>
 
       <VariantsCard
         variants={variants}
