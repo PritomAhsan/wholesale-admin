@@ -127,6 +127,58 @@ async uploadImages(
 }
 
 /**
+ * Upload Variant Images
+ */
+async uploadVariantImages(
+  productUuid: string,
+  variantId: number,
+  payload: FormData
+) {
+  const { data } = await api.post(
+    `/v1/admin/products/${productUuid}/variants/${variantId}/images`,
+    payload,
+    {
+      headers: {
+        "Content-Type":
+          "multipart/form-data",
+      },
+    }
+  );
+
+  return data;
+}
+
+/**
+ * Delete Variant Image
+ */
+async deleteVariantImage(
+  productUuid: string,
+  variantId: number,
+  imageUuid: string
+) {
+  const { data } = await api.delete(
+    `/v1/admin/products/${productUuid}/variants/${variantId}/images/${imageUuid}`
+  );
+
+  return data;
+}
+
+/**
+ * Set Primary Variant Image
+ */
+async setPrimaryVariantImage(
+  productUuid: string,
+  variantId: number,
+  imageUuid: string
+) {
+  const { data } = await api.patch(
+    `/v1/admin/products/${productUuid}/variants/${variantId}/images/${imageUuid}/primary`
+  );
+
+  return data;
+}
+
+/**
  * Create Variant
  */
 async createVariant(
@@ -136,6 +188,126 @@ async createVariant(
   const { data } = await api.post(
     `/v1/admin/products/${uuid}/variants`,
     payload
+  );
+
+  return data;
+}
+
+/**
+ * Update Variant
+ */
+async updateVariant(
+  productUuid: string,
+  variantId: number,
+  payload: any
+) {
+  const { data } = await api.patch(
+    `/v1/admin/products/${productUuid}/variants/${variantId}`,
+    payload
+  );
+
+  return data;
+}
+
+/**
+ * Delete Variant
+ */
+async deleteVariant(
+  productUuid: string,
+  variantId: number
+) {
+  const { data } = await api.delete(
+    `/v1/admin/products/${productUuid}/variants/${variantId}`
+  );
+
+  return data;
+}
+
+/**
+ * Approve
+ */
+async approve(uuid: string) {
+  const { data } = await api.patch(
+    `/v1/admin/products/${uuid}/approve`
+  );
+
+  return data;
+}
+
+/**
+ * Reject
+ */
+async reject(uuid: string, reason?: string) {
+  const { data } = await api.patch(
+    `/v1/admin/products/${uuid}/reject`,
+    { reason }
+  );
+
+  return data;
+}
+
+/**
+ * Publish
+ */
+async publish(uuid: string) {
+  const { data } = await api.patch(
+    `/v1/admin/products/${uuid}/publish`
+  );
+
+  return data;
+}
+
+/**
+ * Archive
+ */
+async archive(uuid: string) {
+  const { data } = await api.patch(
+    `/v1/admin/products/${uuid}/archive`
+  );
+
+  return data;
+}
+
+/**
+ * Toggle Featured
+ */
+async toggleFeatured(uuid: string) {
+  const { data } = await api.patch(
+    `/v1/admin/products/${uuid}/featured`
+  );
+
+  return data;
+}
+
+/**
+ * Update Stock
+ */
+async updateStock(uuid: string, stock_quantity: number) {
+  const { data } = await api.patch(
+    `/v1/admin/products/${uuid}/stock`,
+    { stock_quantity }
+  );
+
+  return data;
+}
+
+/**
+ * Restore
+ */
+async restore(uuid: string) {
+  const { data } = await api.patch(
+    `/v1/admin/products/${uuid}/restore`
+  );
+
+  return data;
+}
+
+/**
+ * Force Delete
+ */
+async forceDelete(uuid: string) {
+  const { data } = await api.delete(
+    `/v1/admin/products/${uuid}/force-delete`
   );
 
   return data;

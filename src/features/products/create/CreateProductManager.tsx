@@ -201,6 +201,37 @@ export default function CreateProductManager({
     setDeletedImageIds,
   ] = useState<number[]>([]);
 
+  const [
+    deletedVariantIds,
+    setDeletedVariantIds,
+  ] = useState<number[]>([]);
+
+  const handleVariantsChange = (
+    next: ProductVariant[]
+  ) => {
+
+    // Any existing (persisted) variant present in the old state
+    // but missing from the new state was just removed by the user —
+    // queue it for deletion on save.
+    const removed = variants.filter(
+      (existing) =>
+        existing.id &&
+        !next.some((v) => v.id === existing.id)
+    );
+
+    if (removed.length > 0) {
+
+      setDeletedVariantIds((prev) => [
+        ...prev,
+        ...removed.map((v) => v.id as number),
+      ]);
+
+    }
+
+    setVariants(next);
+
+  };
+
   //   const [errors, setErrors] =
   //     useState<
   //       Record<string, string[]>
@@ -322,20 +353,6 @@ export default function CreateProductManager({
 
     }));
 
-    setAttributes(
-      (product.attributes ?? []).map(
-        (item: any) => ({
-          attribute_id:
-            item.attribute?.id ??
-            null,
-
-          attribute_value_id:
-            item.value?.id ??
-            null,
-        })
-      )
-    );
-
   }, [mode, product]);
 
   useEffect(() => {
@@ -346,9 +363,107 @@ export default function CreateProductManager({
     );
 
     setDeletedImageIds([]);
-  }, [mode, product]);
 
-  console.log('form', form);
+    setVariants(
+      (product?.variants ?? []).map(
+        (v: any): ProductVariant => ({
+  id: v.id,
+
+  uuid: v.uuid,
+
+  sku: v.sku ?? "",
+  barcode: v.barcode ?? "",
+
+  cost_price:
+    String(v.cost_price ?? ""),
+
+  selling_price:
+    String(v.selling_price ?? ""),
+
+  compare_at_price:
+    String(
+      v.compare_at_price ?? ""
+    ),
+
+  wholesale_price:
+    String(
+      v.wholesale_price ?? ""
+    ),
+
+  stock_quantity:
+    String(
+      v.stock_quantity ?? ""
+    ),
+
+  low_stock_quantity:
+    String(
+      v.low_stock_quantity ?? ""
+    ),
+
+  min_order_quantity:
+    String(
+      v.minimum_order_quantity ?? ""
+    ),
+
+  max_order_quantity:
+    String(
+      v.maximum_order_quantity ?? ""
+    ),
+
+  is_default:
+    !!v.is_default,
+
+  is_active:
+    !!v.is_active,
+
+  attributes:
+    (v.attributes ?? []).map(
+      (a: any) => ({
+        attribute_id:
+          a.attribute_id,
+
+        attribute_value_id:
+          a.attribute_value_id,
+      })
+    ),
+
+  images:
+    (v.images ?? []).map(
+      (image: any) => ({
+        uuid: image.uuid,
+
+        image:
+          image.image,
+
+        image_url:
+          image.image_url ??
+          image.image,
+
+        is_primary:
+          !!image.is_primary,
+
+        sort_order:
+          image.sort_order ?? 0,
+      })
+    ),
+
+  localImages: [],
+})
+      )
+    );
+
+    setDeletedVariantIds([]);
+
+    setAttributes(
+      (product?.attributes ?? []).map(
+        (a: any): ProductAttributeRow => ({
+          attribute_id: a.attribute?.id ?? null,
+          attribute_value_id: a.value?.id ?? null,
+        })
+      )
+    );
+
+  }, [mode, product]);
 
   const updateField = <
     K extends keyof ProductFormData
@@ -378,12 +493,6 @@ export default function CreateProductManager({
   loading: lookupsLoading,
   errors,
 } = useProductLookups();
-
-  console.log({
-    existingImages,
-    deletedImageIds,
-    newImages: images,
-  });
 
   const buildPayload = () => {
     const payload =
@@ -754,9 +863,7 @@ export default function CreateProductManager({
 
       for (const variant of variants) {
 
-          await ProductService.createVariant(
-              product.uuid,
-            {
+          const payload = {
               product_id: product.id,
 
               sku: variant.sku,
@@ -795,10 +902,44 @@ export default function CreateProductManager({
 
               attributes:
                 variant.attributes,
-            }
+          };
+
+          console.log("UPDATE VARIANT", {
+  productUuid: product.uuid,
+  variantId: variant.id,
+  variantUuid: variant.uuid,
+  payload,
+});
+
+          if (variant.id) {
+
+              await ProductService.updateVariant(
+                  product.uuid,
+                  variant.id,
+                  payload
+              );
+
+          } else {
+
+              await ProductService.createVariant(
+                  product.uuid,
+                  payload
+              );
+
+          }
+
+      }
+
+      for (const variantId of deletedVariantIds) {
+
+          await ProductService.deleteVariant(
+              product.uuid,
+              variantId
           );
 
       }
+
+      setDeletedVariantIds([]);
 
   };
 
@@ -833,8 +974,6 @@ export default function CreateProductManager({
         router.push(
             `/products/${savedProduct.uuid}/edit`
         );
-
-        console.log('saved product', savedProduct);
 
     } catch (error: any) {
 
@@ -915,9 +1054,13 @@ export default function CreateProductManager({
 />
 
       <VariantsCard
-        variants={variants}
-        onChange={setVariants}
-      />
+  variants={variants}
+  onChange={setVariants}
+  productAttributes={attributes}
+  attributeOptions={attributeOptions}
+  valueOptions={valueOptions}
+  productUuid={product?.uuid}
+/>
 
       <SeoCard
         form={form}
