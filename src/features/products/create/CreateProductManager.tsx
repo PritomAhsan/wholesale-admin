@@ -232,6 +232,102 @@ export default function CreateProductManager({
 
   };
 
+  const handleDeleteExistingImage = async (
+    image: { id: number; uuid: string }
+  ) => {
+
+    if (!product?.uuid) return;
+
+    try {
+
+      await ProductService.deleteImage(
+        product.uuid,
+        image.uuid
+      );
+
+      setExistingImages((prev: any[]) =>
+        prev.filter((img) => img.uuid !== image.uuid)
+      );
+
+      toast.success("Image deleted.");
+
+    } catch (error: any) {
+
+      toast.error(
+        error.response?.data?.message ??
+          "Failed to delete image."
+      );
+
+    }
+
+  };
+
+  const handleSetPrimaryExistingImage = async (
+    image: { id: number; uuid: string }
+  ) => {
+
+    if (!product?.uuid) return;
+
+    try {
+
+      await ProductService.setPrimaryImage(
+        product.uuid,
+        image.uuid
+      );
+
+      setExistingImages((prev: any[]) =>
+        prev.map((img) => ({
+          ...img,
+          is_primary: img.uuid === image.uuid,
+        }))
+      );
+
+    } catch (error: any) {
+
+      toast.error(
+        error.response?.data?.message ??
+          "Failed to set primary image."
+      );
+
+    }
+
+  };
+
+  const handleReorderExistingImages = async (
+    images: { uuid: string; sort_order: number }[]
+  ) => {
+
+    if (!product?.uuid) return;
+
+    // Optimistic — the drag interaction already shows the new
+    // order; roll back only if the API call fails.
+    const previous = existingImages;
+
+    setExistingImages(images);
+
+    try {
+
+      await ProductService.reorderImages(
+        product.uuid,
+        images.map((img) => ({
+          uuid: img.uuid,
+          sort_order: img.sort_order,
+        }))
+      );
+
+    } catch (error: any) {
+
+      setExistingImages(previous);
+
+      toast.error(
+        error.response?.data?.message ??
+          "Failed to reorder images."
+      );
+
+    }
+
+  };
+
   //   const [errors, setErrors] =
   //     useState<
   //       Record<string, string[]>
@@ -904,26 +1000,46 @@ export default function CreateProductManager({
                 variant.attributes,
           };
 
-          console.log("UPDATE VARIANT", {
-  productUuid: product.uuid,
-  variantId: variant.id,
-  variantUuid: variant.uuid,
-  payload,
-});
+          let variantId = variant.id;
 
-          if (variant.id) {
+          
+
+          if (variantId) {
 
               await ProductService.updateVariant(
                   product.uuid,
-                  variant.id,
+                  variantId,
                   payload
               );
 
           } else {
 
-              await ProductService.createVariant(
+              const response = await ProductService.createVariant(
                   product.uuid,
                   payload
+              );
+
+              variantId = response?.data?.variant?.id;
+
+          }
+
+          // A brand-new variant can't have images uploaded until it
+          // exists on the server — any files staged while it was
+          // still a draft are sent now that we have its id.
+          if (variantId && variant.localImages && variant.localImages.length > 0) {
+
+              const imagePayload = new FormData();
+
+              variant.localImages.forEach((image) => {
+
+                  imagePayload.append("images[]", image.file);
+
+              });
+
+              await ProductService.uploadVariantImages(
+                  product.uuid,
+                  variantId,
+                  imagePayload
               );
 
           }
@@ -1030,17 +1146,14 @@ export default function CreateProductManager({
 
       <ProductImagesCard
         existingImages={existingImages}
-        onExistingImagesChange={
-          setExistingImages
+        onDeleteExisting={
+          handleDeleteExistingImage
         }
-        onDeletedImagesChange={
-          (ids) =>
-            setDeletedImageIds(
-              (prev) => [
-                ...prev,
-                ...ids,
-              ]
-            )
+        onSetPrimaryExisting={
+          handleSetPrimaryExistingImage
+        }
+        onReorderExisting={
+          handleReorderExistingImages
         }
         images={images}
         onImagesChange={setImages}

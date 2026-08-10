@@ -127,6 +127,49 @@ async uploadImages(
 }
 
 /**
+ * Delete Product Image
+ */
+async deleteImage(
+  productUuid: string,
+  imageUuid: string
+) {
+  const { data } = await api.delete(
+    `/v1/admin/products/${productUuid}/images/${imageUuid}`
+  );
+
+  return data;
+}
+
+/**
+ * Set Primary Product Image
+ */
+async setPrimaryImage(
+  productUuid: string,
+  imageUuid: string
+) {
+  const { data } = await api.patch(
+    `/v1/admin/products/${productUuid}/images/${imageUuid}/primary`
+  );
+
+  return data;
+}
+
+/**
+ * Reorder Product Images
+ */
+async reorderImages(
+  productUuid: string,
+  images: { uuid: string; sort_order: number }[]
+) {
+  const { data } = await api.patch(
+    `/v1/admin/products/${productUuid}/images/reorder`,
+    { images }
+  );
+
+  return data;
+}
+
+/**
  * Upload Variant Images
  */
 async uploadVariantImages(
@@ -205,6 +248,8 @@ async updateVariant(
     `/v1/admin/products/${productUuid}/variants/${variantId}`,
     payload
   );
+
+  console.log("updateVariant data:", data);
 
   return data;
 }

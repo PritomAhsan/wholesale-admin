@@ -263,6 +263,17 @@ export default function VariantsCard({
     };
 
     onChange?.(updated);
+
+    // This variant already exists on the server — upload right
+    // away instead of waiting for the parent form's Save, matching
+    // how delete/set-primary already behave for persisted images.
+    // For a variant that doesn't have an id yet (still being
+    // drafted), the files stay staged in localImages and are sent
+    // once CreateProductManager creates the variant and calls
+    // uploadPendingVariantImages().
+    if (variant.id) {
+      uploadVariantImages(variantIndex);
+    }
   };
 
   const removeLocalVariantImage = (
