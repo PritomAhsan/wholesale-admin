@@ -29,6 +29,39 @@ export interface NavigationGroup {
   items: NavigationItem[];
 }
 
+export const SUPPLIER_NAVIGATION: NavigationGroup[] = [
+  {
+    title: "Dashboard",
+    items: [
+      {
+        name: "Dashboard",
+        icon: GridIcon,
+        path: "/",
+      },
+    ],
+  },
+
+  {
+    title: "Catalog",
+    items: [
+      {
+        name: "My Products",
+        icon: BoxCubeIcon,
+        path: "/products",
+      },
+    ],
+  },
+];
+
+// Route prefixes a supplier-only account may access. Anything not
+// under one of these gets redirected — this is defense-in-depth on
+// top of the backend's own authorization checks, not a replacement
+// for them.
+export const SUPPLIER_ALLOWED_PATH_PREFIXES = [
+  "/",
+  "/products",
+];
+
 export const OWNER_NAVIGATION: NavigationGroup[] = [
   {
     title: "Dashboard",

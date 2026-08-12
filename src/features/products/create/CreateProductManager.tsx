@@ -26,6 +26,7 @@ import useUpdateProduct from "../hooks/useUpdateProduct";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import ProductService from "@/api/services/product.service";
+import { useAuthContext } from "@/context/AuthContext";
 
 export interface ProductFormData {
   name: string;
@@ -163,6 +164,13 @@ export default function CreateProductManager({
   product,
 }: Props) {
   const router = useRouter();
+
+  const { hasRole } = useAuthContext();
+
+  const isSupplierOnly =
+    hasRole("Supplier") &&
+    !hasRole("Admin") &&
+    !hasRole("Super Admin");
 
   const [form, setForm] =
     useState<ProductFormData>(
@@ -1002,13 +1010,11 @@ export default function CreateProductManager({
 
           let variantId = variant.id;
 
-          
-
-          if (variantId) {
+          if (variant.id) {
 
               await ProductService.updateVariant(
                   product.uuid,
-                  variantId,
+                  variant.id,
                   payload
               );
 
@@ -1126,6 +1132,7 @@ export default function CreateProductManager({
         units={units}
         suppliers={suppliers}
         loading={lookupsLoading}
+        hideSupplierField={isSupplierOnly}
         errors={errors}
       />
 

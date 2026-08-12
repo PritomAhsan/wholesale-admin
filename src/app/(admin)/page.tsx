@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import DashboardGrid from "@/components/dashboard/DashboardGrid";
+import DashboardRouter from "@/features/dashboard/DashboardRouter";
 
 export const metadata: Metadata = {
   title: {
@@ -12,6 +12,6 @@ export const metadata: Metadata = {
 
 export default function Ecommerce() {
   return (
-    <DashboardGrid />
+    <DashboardRouter />
   );
 }

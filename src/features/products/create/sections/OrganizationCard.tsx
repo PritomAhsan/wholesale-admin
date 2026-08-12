@@ -28,6 +28,8 @@ interface Props {
 
   loading?: boolean;
 
+  hideSupplierField?: boolean;
+
   errors?: {
 
       categories?: string | null;
@@ -49,17 +51,9 @@ export default function OrganizationCard({
     units = [],
     suppliers = [],
     loading = false,
+    hideSupplierField = false,
     errors,
 }: Props) {
-
-  console.log("BRANDS", brands);
-
-console.log("SUPPLIERS", suppliers);
-
-console.log("UNITS", units);
-
-console.log("CATEGORIES", categories);
-
   if (loading) {
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
@@ -173,6 +167,7 @@ if (
 
         {/* Supplier */}
 
+        {!hideSupplierField && (
         <div>
           <Label>Supplier</Label>
 
@@ -202,6 +197,7 @@ if (
             }
           />
         </div>
+        )}
 
         {/* Unit */}
 

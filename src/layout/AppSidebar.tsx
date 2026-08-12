@@ -11,7 +11,9 @@ import {
 
 import {
   OWNER_NAVIGATION,
+  SUPPLIER_NAVIGATION,
 } from "@/config/navigation";
+import { useAuthContext } from "@/context/AuthContext";
 import SidebarWidget from "./SidebarWidget";
 import Logo from "@/components/branding/Logo";
 
@@ -32,6 +34,16 @@ type NavItem = {
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
+  const { hasRole } = useAuthContext();
+
+  const isSupplierOnly =
+    hasRole("Supplier") &&
+    !hasRole("Admin") &&
+    !hasRole("Super Admin");
+
+  const navigation = isSupplierOnly
+    ? SUPPLIER_NAVIGATION
+    : OWNER_NAVIGATION;
   
 
   const renderMenuItems = (
@@ -182,8 +194,8 @@ const AppSidebar: React.FC = () => {
     ["main", "others"].forEach((menuType) => {
       const items =
   menuType === "main"
-    ? OWNER_NAVIGATION[0].items
-    : OWNER_NAVIGATION
+    ? navigation[0].items
+    : navigation
         .slice(1)
         .flatMap((g) => g.items);
       items.forEach((nav, index) => {
@@ -279,7 +291,7 @@ const AppSidebar: React.FC = () => {
                 )}
               </h2>
               {renderMenuItems(
-                OWNER_NAVIGATION[0].items,
+                navigation[0].items,
                 "main"
               )}
             </div>
@@ -299,7 +311,7 @@ const AppSidebar: React.FC = () => {
                 )}
               </h2>
               <>
-                {OWNER_NAVIGATION.slice(1).map(
+                {navigation.slice(1).map(
                   (group, index) => (
                     <div key={group.title}>
                       <h2
