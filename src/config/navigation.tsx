@@ -5,6 +5,7 @@ import {
   ListIcon,
   TableIcon,
   PieChartIcon,
+  TaskIcon,
 } from "@/icons";
 
 export interface NavigationSubItem {
@@ -68,6 +69,17 @@ export const OWNER_NAVIGATION: NavigationGroup[] = [
             path: "/attributes",
           },
         ],
+      },
+    ],
+  },
+
+  {
+    title: "Approvals",
+    items: [
+      {
+        name: "Approvals",
+        icon: TaskIcon,
+        path: "/approvals",
       },
     ],
   },
