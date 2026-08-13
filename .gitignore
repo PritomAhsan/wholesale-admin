@@ -7,6 +7,10 @@
 .pnp.js
 .yarn/install-state.gz
 
+# claude
+.claude
+launch.json
+
 # testing
 /coverage
 
