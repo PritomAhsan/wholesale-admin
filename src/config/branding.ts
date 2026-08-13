@@ -1,7 +1,7 @@
 export const BRANDING = {
-  appName: "B2B Marketplace Admin",
-  shortName: "Marketplace",
-  company: "B2B Marketplace",
+  appName: "BULKARE Admin",
+  shortName: "BULKARE",
+  company: "BULKARE.com",
 
   logo: {
     light: "/images/logo/bulkare-demo-logo-2.png",

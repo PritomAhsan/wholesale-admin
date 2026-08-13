@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-
 import {
   Table,
   TableBody,
@@ -10,12 +8,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { suppliers } from "../data/suppliers";
+import { Supplier } from "@/types/supplier";
 import SupplierActions from "./SupplierActions";
 import SupplierStatusBadge from "./SupplierStatusBadge";
-import SupplierVerificationBadge from "./SupplierVerificationBadge";
 
-export default function SupplierTable() {
+interface Props {
+  suppliers: Supplier[];
+  loading: boolean;
+  error: string | null;
+  onChanged: () => void;
+}
+
+export default function SupplierTable({
+  suppliers,
+  loading,
+  error,
+  onChanged,
+}: Props) {
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
       <div className="overflow-x-auto">
@@ -26,13 +35,9 @@ export default function SupplierTable() {
 
               <TableCell isHeader>Contact</TableCell>
 
-              <TableCell isHeader>Email</TableCell>
-
-              <TableCell isHeader>Country</TableCell>
+              <TableCell isHeader>Business Type</TableCell>
 
               <TableCell isHeader>Products</TableCell>
-
-              <TableCell isHeader>Verification</TableCell>
 
               <TableCell isHeader>Status</TableCell>
 
@@ -46,56 +51,61 @@ export default function SupplierTable() {
           </TableHeader>
 
           <TableBody>
-            {suppliers.map((supplier) => (
-              <TableRow key={supplier.id}>
+            {loading && (
+              <TableRow>
+                <TableCell colSpan={6} className="py-10 text-center text-gray-400">
+                  Loading suppliers...
+                </TableCell>
+              </TableRow>
+            )}
+
+            {!loading && error && (
+              <TableRow>
+                <TableCell colSpan={6} className="py-10 text-center text-error-500">
+                  {error}
+                </TableCell>
+              </TableRow>
+            )}
+
+            {!loading && !error && suppliers.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={6} className="py-10 text-center text-gray-400">
+                  No suppliers found.
+                </TableCell>
+              </TableRow>
+            )}
+
+            {!loading && !error && suppliers.map((supplier) => (
+              <TableRow key={supplier.uuid}>
                 {/* Company */}
                 <TableCell>
-                  <div className="flex items-center gap-3">
-                    <Image
-                      src={supplier.logo}
-                      alt={supplier.companyName}
-                      width={44}
-                      height={44}
-                      className="rounded-lg border border-gray-200 object-cover"
-                    />
+                  <div>
+                    <p className="font-medium text-gray-800 dark:text-white/90">
+                      {supplier.company_name}
+                    </p>
 
-                    <div>
-                      <p className="font-medium text-gray-800 dark:text-white/90">
-                        {supplier.companyName}
-                      </p>
-
-                      <p className="text-sm text-gray-500">
-                        {supplier.slug}
-                      </p>
-                    </div>
+                    <p className="text-sm text-gray-500">
+                      {supplier.email}
+                    </p>
                   </div>
                 </TableCell>
 
                 {/* Contact */}
                 <TableCell>
-                  {supplier.contactPerson}
+                  <div>
+                    <p>{supplier.contact_person}</p>
+                    <p className="text-sm text-gray-500">{supplier.phone}</p>
+                  </div>
                 </TableCell>
 
-                {/* Email */}
-                <TableCell>
-                  {supplier.email}
-                </TableCell>
-
-                {/* Country */}
-                <TableCell>
-                  {supplier.country}
+                {/* Business Type */}
+                <TableCell className="capitalize">
+                  {supplier.business_type}
                 </TableCell>
 
                 {/* Products */}
                 <TableCell>
-                  {supplier.productCount}
-                </TableCell>
-
-                {/* Verification */}
-                <TableCell>
-                  <SupplierVerificationBadge
-                    status={supplier.verificationStatus}
-                  />
+                  {supplier.products_count}
                 </TableCell>
 
                 {/* Status */}
@@ -108,7 +118,8 @@ export default function SupplierTable() {
                 {/* Actions */}
                 <TableCell className="text-right">
                   <SupplierActions
-                    id={supplier.id}
+                    supplier={supplier}
+                    onChanged={onChanged}
                   />
                 </TableCell>
               </TableRow>

@@ -1,16 +1,21 @@
 import api from "../axios";
-import { API } from "../endpoints";
 
-import { DashboardResponse } from "@/types/dashboard";
+import {
+  AdminDashboardResponse,
+  SupplierDashboardResponse,
+} from "@/types/dashboard";
 
 class DashboardService {
-  async getDashboard() {
-    const { data } =
-      await api.get<DashboardResponse>(
-        API.DASHBOARD
-      );
+  async getAdminDashboard(): Promise<AdminDashboardResponse> {
+    const { data } = await api.get("/v1/admin/dashboard");
 
-    return data;
+    return data.data;
+  }
+
+  async getSupplierDashboard(): Promise<SupplierDashboardResponse> {
+    const { data } = await api.get("/v1/supplier/dashboard");
+
+    return data.data;
   }
 }
 

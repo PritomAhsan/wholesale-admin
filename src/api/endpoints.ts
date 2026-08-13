@@ -20,6 +20,4 @@ export const API = {
 
   SUPPLIERS: "/suppliers",
 
-  DASHBOARD: "/dashboard",
-
 };

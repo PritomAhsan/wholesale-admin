@@ -6,15 +6,15 @@ import { RefreshCw } from "lucide-react";
 import ComponentCard from "@/components/common/ComponentCard";
 import Button from "@/components/ui/button/Button";
 
-import SupplierService from "@/api/services/supplier.service";
-import { Supplier } from "@/types/supplier";
+import OrderService from "@/api/services/order.service";
+import { Order } from "@/types/order";
 import { ServerPagination } from "@/types/server-table";
 
-import SupplierToolbar from "./components/SupplierToolbar";
-import SupplierTable from "./components/SupplierTable";
+import OrderToolbar from "./components/OrderToolbar";
+import OrderTable from "./components/OrderTable";
 
-export default function SupplierManager() {
-  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+export default function OrderManager() {
+  const [orders, setOrders] = useState<Order[]>([]);
   const [pagination, setPagination] = useState<ServerPagination>({
     current_page: 1,
     last_page: 1,
@@ -33,18 +33,18 @@ export default function SupplierManager() {
     try {
       setLoading(true);
 
-      const response = await SupplierService.getAll({
+      const response = await OrderService.getAll({
         page,
         search: search || undefined,
         status: status || undefined,
       });
 
-      setSuppliers(response.items);
+      setOrders(response.items);
       setPagination(response.pagination);
       setError(null);
     } catch (err) {
       console.error(err);
-      setError("Unable to load suppliers.");
+      setError("Unable to load orders.");
     } finally {
       setLoading(false);
     }
@@ -56,12 +56,12 @@ export default function SupplierManager() {
 
   return (
     <ComponentCard
-      title="Suppliers"
-      desc="Review supplier applications and manage marketplace sellers."
+      title="Orders"
+      desc="View and manage marketplace orders across all sellers."
     >
       <div className="mb-4 flex items-center justify-between">
         <h4 className="text-base font-semibold text-gray-800 dark:text-white/90">
-          {pagination.total} Suppliers
+          {pagination.total} Orders
         </h4>
 
         <Button variant="outline" onClick={load}>
@@ -70,7 +70,7 @@ export default function SupplierManager() {
         </Button>
       </div>
 
-      <SupplierToolbar
+      <OrderToolbar
         search={search}
         status={status}
         onSearchChange={(value) => {
@@ -83,12 +83,7 @@ export default function SupplierManager() {
         }}
       />
 
-      <SupplierTable
-        suppliers={suppliers}
-        loading={loading}
-        error={error}
-        onChanged={load}
-      />
+      <OrderTable orders={orders} loading={loading} error={error} />
     </ComponentCard>
   );
 }

@@ -51,6 +51,17 @@ export const SUPPLIER_NAVIGATION: NavigationGroup[] = [
       },
     ],
   },
+
+  {
+    title: "Sales",
+    items: [
+      {
+        name: "My Orders",
+        icon: TableIcon,
+        path: "/supplier-orders",
+      },
+    ],
+  },
 ];
 
 // Route prefixes a supplier-only account may access. Anything not
@@ -60,6 +71,7 @@ export const SUPPLIER_NAVIGATION: NavigationGroup[] = [
 export const SUPPLIER_ALLOWED_PATH_PREFIXES = [
   "/",
   "/products",
+  "/supplier-orders",
 ];
 
 export const OWNER_NAVIGATION: NavigationGroup[] = [

@@ -1,0 +1,139 @@
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+
+import ComponentCard from "@/components/common/ComponentCard";
+
+import OrderService from "@/api/services/order.service";
+import { Order } from "@/types/order";
+
+import OrderStatusBadge from "./components/OrderStatusBadge";
+import SellerOrderCard from "./components/SellerOrderCard";
+
+interface Props {
+  uuid: string;
+}
+
+export default function OrderDetail({ uuid }: Props) {
+  const [order, setOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await OrderService.get(uuid);
+      setOrder(data);
+      setError(null);
+    } catch (err) {
+      console.error(err);
+      setError("Unable to load order.");
+    } finally {
+      setLoading(false);
+    }
+  }, [uuid]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  return (
+    <ComponentCard title="Order Details" desc="">
+      <Link
+        href="/orders"
+        className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-brand-600 dark:text-gray-400"
+      >
+        <ArrowLeft size={16} />
+        Back to Orders
+      </Link>
+
+      {loading && (
+        <p className="py-10 text-center text-gray-400">Loading order...</p>
+      )}
+
+      {!loading && error && (
+        <p className="py-10 text-center text-error-500">{error}</p>
+      )}
+
+      {!loading && !error && order && (
+        <div className="space-y-6">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white/90">
+                  {order.order_number}
+                </h2>
+                <p className="text-sm text-gray-500">
+                  Placed {new Date(order.placed_at).toLocaleString()}
+                </p>
+              </div>
+
+              <OrderStatusBadge status={order.status} />
+            </div>
+
+            <div className="mt-6 grid gap-6 md:grid-cols-2">
+              <div>
+                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                  Buyer
+                </h3>
+                <p className="font-medium text-gray-800 dark:text-white/90">
+                  {order.buyer?.full_name}
+                </p>
+                <p className="text-sm text-gray-500">{order.buyer?.email}</p>
+                {order.buyer?.phone && (
+                  <p className="text-sm text-gray-500">{order.buyer.phone}</p>
+                )}
+              </div>
+
+              <div>
+                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                  Shipping Address
+                </h3>
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  {order.shipping.name}
+                  <br />
+                  {order.shipping.address}
+                  <br />
+                  {order.shipping.city}, {order.shipping.country}{" "}
+                  {order.shipping.postal_code}
+                  <br />
+                  {order.shipping.phone}
+                </p>
+              </div>
+            </div>
+
+            {order.notes && (
+              <div className="mt-6 rounded-xl bg-gray-50 p-4 text-sm text-gray-600 dark:bg-white/5 dark:text-gray-300">
+                <span className="font-semibold">Notes: </span>
+                {order.notes}
+              </div>
+            )}
+
+            <div className="mt-6 flex justify-end border-t border-gray-100 pt-4 dark:border-gray-800">
+              <span className="text-gray-500">Order Total:</span>
+              <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white/90">
+                ${order.total}
+              </span>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold text-gray-800 dark:text-white/90">
+              Seller Orders ({order.seller_orders.length})
+            </h3>
+
+            {order.seller_orders.map((sellerOrder) => (
+              <SellerOrderCard
+                key={sellerOrder.uuid}
+                sellerOrder={sellerOrder}
+                onUpdated={setOrder}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </ComponentCard>
+  );
+}

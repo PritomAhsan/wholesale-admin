@@ -6,7 +6,19 @@ import { Plus, Search } from "lucide-react";
 import InputField from "@/components/form/input/InputField";
 import Select from "@/components/form/Select";
 
-export default function SupplierToolbar() {
+interface Props {
+  search: string;
+  status: string;
+  onSearchChange: (value: string) => void;
+  onStatusChange: (value: string) => void;
+}
+
+export default function SupplierToolbar({
+  search,
+  status,
+  onSearchChange,
+  onStatusChange,
+}: Props) {
   return (
     <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex flex-1 flex-col gap-4 sm:flex-row">
@@ -20,6 +32,8 @@ export default function SupplierToolbar() {
           <InputField
             placeholder="Search suppliers..."
             className="pl-11"
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
           />
         </div>
 
@@ -27,43 +41,15 @@ export default function SupplierToolbar() {
         <div className="w-full sm:w-48">
           <Select
             placeholder="Status"
+            value={status}
             options={[
-              {
-                value: "",
-                label: "All Status",
-              },
-              {
-                value: "active",
-                label: "Active",
-              },
-              {
-                value: "inactive",
-                label: "Inactive",
-              },
+              { value: "", label: "All Status" },
+              { value: "pending", label: "Pending" },
+              { value: "approved", label: "Approved" },
+              { value: "rejected", label: "Rejected" },
+              { value: "suspended", label: "Suspended" },
             ]}
-            onChange={() => {}}
-          />
-        </div>
-
-        {/* Verification Filter */}
-        <div className="w-full sm:w-52">
-          <Select
-            placeholder="Verification"
-            options={[
-              {
-                value: "",
-                label: "All Verification",
-              },
-              {
-                value: "verified",
-                label: "Verified",
-              },
-              {
-                value: "pending",
-                label: "Pending",
-              },
-            ]}
-            onChange={() => {}}
+            onChange={onStatusChange}
           />
         </div>
       </div>

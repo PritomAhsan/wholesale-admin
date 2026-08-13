@@ -1,51 +1,80 @@
-export interface DashboardStatistics {
+export interface AdminDashboardStatistics {
   totalProducts: number;
+  pendingProducts: number;
   totalCategories: number;
   totalBrands: number;
   totalSuppliers: number;
-  totalOrders: number;
+  pendingSuppliers: number;
   totalCustomers: number;
+  totalOrders: number;
   totalRevenue: number;
-  pendingProducts: number;
+  totalRfqs: number;
 }
 
 export interface DashboardProduct {
-  id: number;
+  uuid: string;
   name: string;
-  supplier: string;
-  price: number;
+  supplier?: string;
+  price: string;
   status: string;
-  image?: string;
+  image: string | null;
+}
+
+export interface DashboardPendingProduct {
+  uuid: string;
+  name: string;
+  supplier: string | null;
+  submitted: string;
 }
 
 export interface DashboardSupplier {
-  id: number;
+  uuid: string;
   companyName: string;
-  country: string;
+  businessType: string;
   status: string;
-  logo?: string;
 }
 
 export interface DashboardRFQ {
-  id: number;
-  title: string;
+  uuid: string;
+  productName: string;
   buyer: string;
-  quantity: number;
+  quantity: string;
+  unit: string;
   status: string;
 }
 
 export interface DashboardOrder {
-  id: number;
-  orderNumber: string;
-  customer: string;
-  total: number;
+  uuid: string;
+  orderNumber?: string;
+  sellerOrderNumber?: string;
+  buyer?: string;
+  shipTo?: string;
+  sellerCount?: number;
+  total: string;
   status: string;
+  placedAt: string;
 }
 
-export interface DashboardResponse {
-  statistics: DashboardStatistics;
+export interface AdminDashboardResponse {
+  statistics: AdminDashboardStatistics;
   latestProducts: DashboardProduct[];
+  pendingProducts: DashboardPendingProduct[];
   latestSuppliers: DashboardSupplier[];
-  latestRFQs: DashboardRFQ[];
+  latestRfqs: DashboardRFQ[];
+  recentOrders: DashboardOrder[];
+}
+
+export interface SupplierDashboardStatistics {
+  totalProducts: number;
+  publishedProducts: number;
+  pendingProducts: number;
+  totalOrders: number;
+  pendingOrders: number;
+  totalRevenue: number;
+}
+
+export interface SupplierDashboardResponse {
+  statistics: SupplierDashboardStatistics;
+  latestProducts: DashboardProduct[];
   recentOrders: DashboardOrder[];
 }
