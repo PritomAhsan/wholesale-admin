@@ -14,7 +14,6 @@ import {
   SUPPLIER_NAVIGATION,
 } from "@/config/navigation";
 import { useAuthContext } from "@/context/AuthContext";
-import SidebarWidget from "./SidebarWidget";
 import Logo from "@/components/branding/Logo";
 
 type NavItem = {

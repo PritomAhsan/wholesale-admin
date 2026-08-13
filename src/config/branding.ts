@@ -4,9 +4,9 @@ export const BRANDING = {
   company: "B2B Marketplace",
 
   logo: {
-    light: "/images/logo/logo.svg",
-    dark: "/images/logo/logo-dark.svg",
-    icon: "/images/logo/logo-icon.svg",
+    light: "/images/logo/bulkare-demo-logo-2.png",
+    dark: "/images/logo/bulkare-demo-logo-2.png",
+    icon: "/images/logo/bulkare-demo-logo-2.png",
   },
 
   dashboardTitle: "Marketplace Dashboard",
