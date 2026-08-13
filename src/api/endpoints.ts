@@ -10,6 +10,10 @@ export const API = {
 
     REGISTER: "/v1/auth/register",
 
+    FORGOT_PASSWORD: "/v1/auth/forgot-password",
+
+    RESET_PASSWORD: "/v1/auth/reset-password",
+
   },
 
   PRODUCTS: "/products",

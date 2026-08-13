@@ -5,6 +5,8 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import ComponentCard from "@/components/common/ComponentCard";
+import Button from "@/components/ui/button/Button";
+import TextArea from "@/components/form/input/TextArea";
 
 import OrderService from "@/api/services/order.service";
 import { Order } from "@/types/order";
@@ -20,6 +22,10 @@ export default function OrderDetail({ uuid }: Props) {
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [cancelling, setCancelling] = useState(false);
+  const [showCancelForm, setShowCancelForm] = useState(false);
+  const [cancelReason, setCancelReason] = useState("");
+  const [cancelError, setCancelError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -38,6 +44,22 @@ export default function OrderDetail({ uuid }: Props) {
   useEffect(() => {
     load();
   }, [load]);
+
+  async function handleCancel() {
+    setCancelling(true);
+    setCancelError(null);
+
+    try {
+      const updated = await OrderService.cancel(uuid, cancelReason || undefined);
+      setOrder(updated);
+      setShowCancelForm(false);
+    } catch (err) {
+      console.error(err);
+      setCancelError("Failed to cancel order.");
+    } finally {
+      setCancelling(false);
+    }
+  }
 
   return (
     <ComponentCard title="Order Details" desc="">
@@ -70,8 +92,59 @@ export default function OrderDetail({ uuid }: Props) {
                 </p>
               </div>
 
-              <OrderStatusBadge status={order.status} />
+              <div className="flex items-center gap-3">
+                <OrderStatusBadge status={order.status} />
+
+                {order.can_cancel && !showCancelForm && (
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowCancelForm(true)}
+                  >
+                    Cancel Order
+                  </Button>
+                )}
+              </div>
             </div>
+
+            {order.status === "cancelled" && order.cancellation_reason && (
+              <div className="mt-4 rounded-xl bg-error-50 p-4 text-sm text-error-600 dark:bg-error-500/10">
+                <span className="font-semibold">Cancellation reason: </span>
+                {order.cancellation_reason}
+              </div>
+            )}
+
+            {order.can_cancel && showCancelForm && (
+              <div className="mt-4 rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-white/5">
+                <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                  Reason for cancelling (optional)
+                </label>
+
+                <TextArea
+                  value={cancelReason}
+                  onChange={setCancelReason}
+                  rows={3}
+                  placeholder="Why is this order being cancelled?"
+                />
+
+                {cancelError && (
+                  <p className="mt-2 text-sm text-error-500">{cancelError}</p>
+                )}
+
+                <div className="mt-3 flex justify-end gap-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowCancelForm(false)}
+                    disabled={cancelling}
+                  >
+                    Never mind
+                  </Button>
+
+                  <Button onClick={handleCancel} disabled={cancelling}>
+                    {cancelling ? "Cancelling..." : "Confirm Cancellation"}
+                  </Button>
+                </div>
+              </div>
+            )}
 
             <div className="mt-6 grid gap-6 md:grid-cols-2">
               <div>

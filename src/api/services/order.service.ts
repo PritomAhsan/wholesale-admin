@@ -39,6 +39,14 @@ class OrderService {
 
     return data.data.order;
   }
+
+  async cancel(uuid: string, reason?: string): Promise<Order> {
+    const { data } = await api.patch(`/v1/admin/orders/${uuid}/cancel`, {
+      reason,
+    });
+
+    return data.data.order;
+  }
 }
 
 export default new OrderService();

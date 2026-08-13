@@ -32,6 +32,7 @@ export interface SellerOrder {
   shipping_carrier: string | null;
   shipped_at: string | null;
   delivered_at: string | null;
+  cancelled_at: string | null;
   order?: {
     order_number: string;
     placed_at: string;
@@ -51,6 +52,9 @@ export interface Order {
   uuid: string;
   order_number: string;
   status: OrderStatus;
+  cancellation_reason: string | null;
+  cancelled_at: string | null;
+  can_cancel: boolean;
   subtotal: string;
   total: string;
   currency: string;

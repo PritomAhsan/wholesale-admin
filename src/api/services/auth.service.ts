@@ -28,6 +28,26 @@ class AuthService {
 
     return data.data.user;
   }
+
+  async forgotPassword(email: string): Promise<{ debug_token?: string }> {
+    const { data } = await api.post<
+      ApiEnvelope<{ debug_token?: string }>
+    >(API.AUTH.FORGOT_PASSWORD, {
+      email,
+      redirect_url: `${window.location.origin}/reset-password`,
+    });
+
+    return data.data;
+  }
+
+  async resetPassword(payload: {
+    token: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+  }): Promise<void> {
+    await api.post(API.AUTH.RESET_PASSWORD, payload);
+  }
 }
 
 export default new AuthService();
