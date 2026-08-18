@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
         hostname: "localhost",
         pathname: "/wholesale-api/public/storage/**",
       },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+      },
     ],
     // The API backend resolves to a private IP in local dev, which
     // Next's image optimizer refuses to fetch from as an SSRF
