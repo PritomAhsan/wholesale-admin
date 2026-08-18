@@ -67,8 +67,8 @@ export default function CategoryToolbar({
 
   return (
     <div className="mb-6 flex flex-col gap-4">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-1 flex-col gap-4 md:flex-row">
+      <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+        <div className="flex flex-1 flex-col gap-4 md:flex-row md:flex-wrap">
           {/* Search */}
           <div className="relative w-full md:max-w-md">
             <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
@@ -217,7 +217,7 @@ const order = value.substring(index + 1) as
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button
             variant="outline"
             onClick={() =>
