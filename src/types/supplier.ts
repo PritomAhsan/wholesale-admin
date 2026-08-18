@@ -33,6 +33,10 @@ export interface Supplier {
 
   typical_lead_time: string | null;
 
+  commission_rate: number | null;
+
+  effective_commission_rate: number;
+
   logo: string | null;
 
   banner: string | null;

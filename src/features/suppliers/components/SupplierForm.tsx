@@ -51,6 +51,8 @@ export default function SupplierForm({ supplier }: Props) {
     description: supplier.description ?? "",
     fulfillment_region: supplier.fulfillment_region ?? "",
     typical_lead_time: supplier.typical_lead_time ?? "",
+    commission_rate:
+      supplier.commission_rate !== null ? String(supplier.commission_rate) : "",
     status: supplier.status,
   });
 
@@ -304,6 +306,31 @@ export default function SupplierForm({ supplier }: Props) {
         <p className="mt-3 text-xs text-gray-500">
           Shown to buyers on the seller profile. Left blank until the
           supplier or an admin sets it — never inferred or guessed.
+        </p>
+      </div>
+
+      {/* Commission */}
+      <div className="rounded-xl border border-gray-200 p-6 dark:border-gray-800">
+        <h3 className="mb-6 text-lg font-semibold">Commission</h3>
+
+        <div className="max-w-xs">
+          <Label>Commission Rate (%)</Label>
+          <InputField
+            type="number"
+            step={0.01}
+            min="0"
+            max="100"
+            placeholder={`Default ${supplier.effective_commission_rate}%`}
+            defaultValue={form.commission_rate}
+            onChange={(e) => update("commission_rate", e.target.value)}
+          />
+        </div>
+
+        <p className="mt-2 text-sm text-gray-500">
+          Percentage the platform keeps from each of this seller&apos;s
+          delivered orders before payout. Leave blank to use the platform
+          default ({supplier.effective_commission_rate}%) instead of a
+          per-seller rate.
         </p>
       </div>
 

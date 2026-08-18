@@ -6,7 +6,7 @@ import {
   TableIcon,
   TaskIcon,
 } from "@/icons";
-import { Mail, MessageSquare, Tag } from "lucide-react";
+import { Mail, MessageSquare, Tag, Wallet } from "lucide-react";
 
 export interface NavigationSubItem {
   name: string;
@@ -60,6 +60,11 @@ export const SUPPLIER_NAVIGATION: NavigationGroup[] = [
         icon: TableIcon,
         path: "/supplier-orders",
       },
+      {
+        name: "Payouts",
+        icon: Wallet,
+        path: "/payouts",
+      },
     ],
   },
 ];
@@ -72,6 +77,7 @@ export const SUPPLIER_ALLOWED_PATH_PREFIXES = [
   "/",
   "/products",
   "/supplier-orders",
+  "/payouts",
 ];
 
 export const OWNER_NAVIGATION: NavigationGroup[] = [
@@ -156,6 +162,11 @@ export const OWNER_NAVIGATION: NavigationGroup[] = [
         name: "Deals",
         icon: Tag,
         path: "/deals",
+      },
+      {
+        name: "Payouts",
+        icon: Wallet,
+        path: "/payouts",
       },
     ],
   },
