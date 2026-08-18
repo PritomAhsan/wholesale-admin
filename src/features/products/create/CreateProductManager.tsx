@@ -28,6 +28,7 @@ import useUpdateProduct from "../hooks/useUpdateProduct";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import ProductService from "@/api/services/product.service";
+import ApprovalService from "@/api/services/approval.service";
 import { useAuthContext } from "@/context/AuthContext";
 
 export interface ProductFormData {
@@ -580,6 +581,24 @@ export default function CreateProductManager({
     );
 
   }, [mode, product]);
+
+  const [rejectionRemarks, setRejectionRemarks] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (mode !== "edit" || !isSupplierOnly || !product?.uuid) return;
+    if (product.status !== "rejected") {
+      setRejectionRemarks(null);
+      return;
+    }
+
+    ApprovalService.timeline(product.uuid)
+      .then((entries) => {
+        const latestRejection = entries.find((entry) => entry.action === "rejected");
+        setRejectionRemarks(latestRejection?.remarks ?? null);
+      })
+      .catch(() => setRejectionRemarks(null));
+
+  }, [mode, isSupplierOnly, product?.uuid, product?.status]);
 
   const updateField = <
     K extends keyof ProductFormData
@@ -1252,6 +1271,7 @@ export default function CreateProductManager({
         }
         onSubmitForReview={submitForReview}
         submittingForReview={submittingForReview}
+        rejectionRemarks={rejectionRemarks}
       />
 
     </div>

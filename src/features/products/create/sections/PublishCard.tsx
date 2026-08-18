@@ -54,6 +54,14 @@ interface Props {
   onSubmitForReview?: () => void;
 
   submittingForReview?: boolean;
+
+  /**
+   * The admin's remarks from the most recent rejection, fetched from
+   * the product's own approval timeline. Only meaningful when
+   * status === "rejected" — a supplier otherwise has no way to know
+   * why their listing didn't go through.
+   */
+  rejectionRemarks?: string | null;
 }
 
 export default function PublishCard({
@@ -69,6 +77,7 @@ export default function PublishCard({
   canSubmitForReview = false,
   onSubmitForReview,
   submittingForReview = false,
+  rejectionRemarks = null,
 }: Props) {
   return (
     <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
@@ -158,6 +167,17 @@ export default function PublishCard({
               {status === "draft" || status === "rejected"
                 ? "Save your changes, then submit for review when the listing is ready. An admin will approve or reject it before it goes live."
                 : "This listing is with the marketplace team. You can keep editing it — changes are saved as a draft copy of its current details."}
+            </p>
+          </div>
+        )}
+
+        {isSupplierOnly && status === "rejected" && (
+          <div className="rounded-lg border border-error-200 bg-error-50 p-4 text-sm dark:border-error-500/30 dark:bg-error-500/10">
+            <p className="font-medium text-error-700 dark:text-error-400">
+              Why this was rejected
+            </p>
+            <p className="mt-1 text-error-600 dark:text-error-400/90">
+              {rejectionRemarks ?? "No reason was recorded for this rejection."}
             </p>
           </div>
         )}
