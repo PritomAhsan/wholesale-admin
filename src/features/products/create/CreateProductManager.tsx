@@ -1077,6 +1077,37 @@ export default function CreateProductManager({
 
   };
 
+  const [submittingForReview, setSubmittingForReview] = useState(false);
+
+  const submitForReview = async () => {
+
+    if (!product?.uuid) return;
+
+    setSubmittingForReview(true);
+
+    try {
+
+      await ProductService.submitForApproval(product.uuid);
+
+      toast.success("Product submitted for review.");
+
+      router.refresh();
+
+    } catch (error: any) {
+
+      toast.error(
+        error.response?.data?.message ??
+          "Failed to submit product for review."
+      );
+
+    } finally {
+
+      setSubmittingForReview(false);
+
+    }
+
+  };
+
   const submit = async () => {
 
     try {
@@ -1202,7 +1233,7 @@ export default function CreateProductManager({
       <PublishCard
         featured={form.featured}
         status={form.status}
-        loading={loading}
+        loading={loading || updating}
         onFeaturedChange={(value) =>
           updateField("featured", value)
         }
@@ -1214,6 +1245,13 @@ export default function CreateProductManager({
           updateField("status", "draft")
         }
         onCancel={() => history.back()}
+        isSupplierOnly={isSupplierOnly}
+        canSubmitForReview={
+          mode === "edit" &&
+          (form.status === "draft" || form.status === "rejected")
+        }
+        onSubmitForReview={submitForReview}
+        submittingForReview={submittingForReview}
       />
 
     </div>

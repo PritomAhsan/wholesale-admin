@@ -337,6 +337,18 @@ async updateStock(uuid: string, stock_quantity: number) {
 }
 
 /**
+ * Submit For Review
+ */
+async submitForApproval(uuid: string, remarks?: string) {
+  const { data } = await api.post(
+    `/v1/admin/products/${uuid}/approval/submit`,
+    { remarks }
+  );
+
+  return data;
+}
+
+/**
  * Restore
  */
 async restore(uuid: string) {
