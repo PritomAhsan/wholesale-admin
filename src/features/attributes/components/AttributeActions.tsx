@@ -39,14 +39,14 @@ export default function AttributeActions({ id, name, onDeleted }: Props) {
       <Link
         href={`/attributes/${id}/values`}
         title="Manage values"
-        className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-brand-600 dark:hover:bg-gray-800"
+        className="rounded-lg p-2 text-gray-500 dark:text-gray-400 transition hover:bg-gray-100 hover:text-brand-600 dark:hover:bg-gray-800"
       >
         <ListTree size={18} />
       </Link>
 
       <Link
         href={`/attributes/${id}/edit`}
-        className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-warning-600 dark:hover:bg-gray-800"
+        className="rounded-lg p-2 text-gray-500 dark:text-gray-400 transition hover:bg-gray-100 hover:text-warning-600 dark:hover:bg-gray-800"
       >
         <Pencil size={18} />
       </Link>
@@ -54,7 +54,7 @@ export default function AttributeActions({ id, name, onDeleted }: Props) {
       <button
         type="button"
         onClick={handleDelete}
-        className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-error-600 dark:hover:bg-gray-800"
+        className="rounded-lg p-2 text-gray-500 dark:text-gray-400 transition hover:bg-gray-100 hover:text-error-600 dark:hover:bg-gray-800"
       >
         <Trash2 size={18} />
       </button>

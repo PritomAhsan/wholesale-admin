@@ -77,7 +77,7 @@ export default function AttributeValuesManager({ uuid }: Props) {
     >
       <Link
         href="/attributes"
-        className="mb-6 inline-flex items-center gap-2 text-sm text-gray-500 hover:text-brand-600"
+        className="mb-6 inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600"
       >
         <ArrowLeft size={16} />
         Back to attributes
@@ -86,7 +86,7 @@ export default function AttributeValuesManager({ uuid }: Props) {
       <AddAttributeValueForm attributeUuid={uuid} onAdded={load} />
 
       {values.length === 0 ? (
-        <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-500 dark:border-gray-800 dark:bg-white/[0.03]">
+        <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-500 dark:text-gray-400 dark:border-gray-800 dark:bg-white/[0.03]">
           No values yet. Add the first one above.
         </div>
       ) : (

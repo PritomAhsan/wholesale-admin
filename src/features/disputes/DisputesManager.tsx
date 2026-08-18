@@ -69,7 +69,7 @@ export default function DisputesManager() {
           {table.error}
         </div>
       ) : table.items.length === 0 ? (
-        <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-500 dark:border-gray-800 dark:bg-white/[0.03]">
+        <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-500 dark:text-gray-400 dark:border-gray-800 dark:bg-white/[0.03]">
           No disputes found.
         </div>
       ) : (
@@ -100,7 +100,7 @@ export default function DisputesManager() {
                       <p className="text-gray-800 dark:text-white/90">
                         {dispute.seller_order?.seller_order_number}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         {dispute.seller_order?.seller_id}
                       </p>
                     </TableCell>
@@ -109,7 +109,7 @@ export default function DisputesManager() {
                       {DISPUTE_REASON_LABELS[dispute.reason] ?? dispute.reason}
                     </TableCell>
 
-                    <TableCell className="text-gray-500">
+                    <TableCell className="text-gray-500 dark:text-gray-400">
                       {new Date(dispute.created_at).toLocaleDateString()}
                     </TableCell>
 
@@ -143,7 +143,7 @@ export default function DisputesManager() {
 
           {table.pagination.last_page > 1 && (
             <div className="flex items-center justify-between border-t border-gray-200 px-6 py-4 dark:border-gray-800">
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-gray-500 dark:text-gray-400">
                 Page {table.pagination.current_page} of{" "}
                 {table.pagination.last_page} ({table.pagination.total} disputes)
               </div>
@@ -153,7 +153,7 @@ export default function DisputesManager() {
                   type="button"
                   disabled={table.pagination.current_page === 1}
                   onClick={() => table.changePage(table.pagination.current_page - 1)}
-                  className="rounded-lg border border-gray-300 px-4 py-2 text-sm transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:hover:bg-gray-800"
+                  className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
                 >
                   Previous
                 </button>
@@ -162,7 +162,7 @@ export default function DisputesManager() {
                   type="button"
                   disabled={table.pagination.current_page === table.pagination.last_page}
                   onClick={() => table.changePage(table.pagination.current_page + 1)}
-                  className="rounded-lg border border-gray-300 px-4 py-2 text-sm transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:hover:bg-gray-800"
+                  className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
                 >
                   Next
                 </button>

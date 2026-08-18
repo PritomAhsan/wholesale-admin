@@ -84,11 +84,11 @@ export default function PublishCard({
 
       <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
 
-        <h3 className="text-lg font-semibold">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
           Publish
         </h3>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Configure product visibility before saving.
         </p>
 
@@ -111,7 +111,7 @@ export default function PublishCard({
                 label="Featured Product"
               />
 
-              <p className="mt-2 text-sm text-gray-500">
+              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                 Featured products appear in
                 highlighted marketplace sections.
               </p>
@@ -150,7 +150,7 @@ export default function PublishCard({
         }
       />
 
-      <p className="mt-2 text-sm text-gray-500">
+      <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
         Choose the publication status for this product.
       </p>
     </div>
@@ -215,7 +215,7 @@ export default function PublishCard({
               type="button"
               onClick={onSaveDraft}
               disabled={loading}
-              className="rounded-lg border border-gray-300 px-5 py-3 text-sm font-medium transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-700 dark:hover:bg-gray-800"
+              className="rounded-lg border border-gray-300 px-5 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               Save as Draft
             </button>

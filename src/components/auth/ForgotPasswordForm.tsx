@@ -69,7 +69,7 @@ export default function ForgotPasswordForm() {
 
               {debugToken && (
                 <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm dark:border-gray-800 dark:bg-white/5">
-                  <p className="mb-2 text-gray-500">
+                  <p className="mb-2 text-gray-500 dark:text-gray-400">
                     Dev mode — mail isn&apos;t configured, so here&apos;s a
                     direct link:
                   </p>

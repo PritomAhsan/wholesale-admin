@@ -168,7 +168,7 @@ export default function RfqManager() {
                   <TableCell>
                     <div>
                       <p>{rfq.contact_name}</p>
-                      <p className="text-sm text-gray-500">{rfq.contact_email}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{rfq.contact_email}</p>
                     </div>
                   </TableCell>
 
@@ -182,7 +182,7 @@ export default function RfqManager() {
                     <RfqStatusBadge status={rfq.status} />
                   </TableCell>
 
-                  <TableCell className="text-gray-500">
+                  <TableCell className="text-gray-500 dark:text-gray-400">
                     {new Date(rfq.created_at).toLocaleDateString()}
                   </TableCell>
 

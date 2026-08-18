@@ -111,7 +111,7 @@ export default function RfqDetail({ uuid }: Props) {
                 <h2 className="text-xl font-bold text-gray-800 dark:text-white/90">
                   {rfq.product_name}
                 </h2>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Submitted {new Date(rfq.created_at).toLocaleString()}
                 </p>
               </div>
@@ -121,20 +121,20 @@ export default function RfqDetail({ uuid }: Props) {
 
             <div className="mt-6 grid gap-6 md:grid-cols-2">
               <div>
-                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                   Buyer
                 </h3>
                 <p className="font-medium text-gray-800 dark:text-white/90">
                   {rfq.contact_name}
                 </p>
-                <p className="text-sm text-gray-500">{rfq.contact_email}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{rfq.contact_email}</p>
                 {rfq.contact_phone && (
-                  <p className="text-sm text-gray-500">{rfq.contact_phone}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{rfq.contact_phone}</p>
                 )}
               </div>
 
               <div>
-                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                   Requirements
                 </h3>
                 <p className="text-sm text-gray-700 dark:text-gray-300">
@@ -163,7 +163,7 @@ export default function RfqDetail({ uuid }: Props) {
             </div>
 
             <div className="mt-6 border-t border-gray-100 pt-6 dark:border-gray-800">
-              <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
+              <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                 Message
               </h3>
               <p className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300">
@@ -175,7 +175,7 @@ export default function RfqDetail({ uuid }: Props) {
                   href={rfq.attachment_url}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-3 inline-flex items-center gap-2 text-sm text-brand-600 hover:underline"
+                  className="mt-3 inline-flex items-center gap-2 text-sm text-brand-600 hover:underline dark:text-brand-400"
                 >
                   <Paperclip className="h-4 w-4" />
                   View attachment
@@ -185,7 +185,7 @@ export default function RfqDetail({ uuid }: Props) {
 
             {rfq.admin_response && (
               <div className="mt-6 rounded-xl bg-gray-50 p-4 dark:bg-white/5">
-                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                   Previous Response
                 </h3>
                 <p className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300">

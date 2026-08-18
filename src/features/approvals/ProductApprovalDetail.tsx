@@ -75,7 +75,7 @@ export default function ProductApprovalDetail({ uuid }: Props) {
     >
       <Link
         href="/approvals"
-        className="mb-6 inline-flex items-center gap-2 text-sm text-gray-500 hover:text-brand-600"
+        className="mb-6 inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600"
       >
         <ArrowLeft size={16} />
         Back to approvals
@@ -105,7 +105,7 @@ export default function ProductApprovalDetail({ uuid }: Props) {
               <ProductStatusBadge status={product.status} />
             </div>
 
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               SKU: {product.sku}
               {product.supplier?.name && (
                 <> &middot; Supplier: {product.supplier.name}</>
@@ -116,7 +116,7 @@ export default function ProductApprovalDetail({ uuid }: Props) {
 
         <Link
           href={`/products/${product.uuid}/edit`}
-          className="text-sm text-brand-600 hover:underline"
+          className="text-sm text-brand-600 hover:underline dark:text-brand-400"
         >
           Edit product details
         </Link>

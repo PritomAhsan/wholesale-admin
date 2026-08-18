@@ -111,7 +111,7 @@ export default function SupplierOrderDetail({ uuid }: Props) {
                   {order.seller_order_number}
                 </h2>
                 {order.order && (
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     Part of {order.order.order_number} — placed{" "}
                     {new Date(order.order.placed_at).toLocaleString()}
                   </p>
@@ -123,7 +123,7 @@ export default function SupplierOrderDetail({ uuid }: Props) {
 
             {order.order && (
               <div className="mt-6">
-                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                   Ship To
                 </h3>
                 <p className="text-sm text-gray-700 dark:text-gray-300">
@@ -157,7 +157,7 @@ export default function SupplierOrderDetail({ uuid }: Props) {
                       <p className="font-medium text-gray-800 dark:text-white/90">
                         {item.product_name}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
                         {item.quantity} × ${item.unit_price}
                       </p>
                     </div>
@@ -171,7 +171,7 @@ export default function SupplierOrderDetail({ uuid }: Props) {
             )}
 
             <div className="mt-6 flex justify-end border-t border-gray-100 pt-4 dark:border-gray-800">
-              <span className="text-gray-500">Subtotal:</span>
+              <span className="text-gray-500 dark:text-gray-400">Subtotal:</span>
               <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white/90">
                 ${order.subtotal}
               </span>

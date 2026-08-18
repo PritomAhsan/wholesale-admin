@@ -59,7 +59,7 @@ export default function BrandTable({
 
   if (brands.length === 0) {
     return (
-      <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-500 dark:border-gray-800 dark:bg-white/[0.03]">
+      <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-500 dark:text-gray-400 dark:border-gray-800 dark:bg-white/[0.03]">
         No brands found.
       </div>
     );
@@ -136,7 +136,7 @@ export default function BrandTable({
                         {brand.name}
                       </p>
 
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         {brand.uuid}
                       </p>
                     </div>
@@ -155,7 +155,7 @@ export default function BrandTable({
                       }
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-brand-600 hover:underline"
+                      className="text-brand-600 hover:underline dark:text-brand-400"
                     >
                       Visit
                     </a>
@@ -209,7 +209,7 @@ export default function BrandTable({
 
             {pagination.last_page > 1 && (
         <div className="flex items-center justify-between border-t border-gray-200 px-6 py-4 dark:border-gray-800">
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-gray-500 dark:text-gray-400">
             Showing page{" "}
             <span className="font-medium">
               {pagination.current_page}
@@ -234,7 +234,7 @@ export default function BrandTable({
                     1
                 )
               }
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:hover:bg-gray-800"
+              className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               Previous
             </button>
@@ -251,7 +251,7 @@ export default function BrandTable({
                     1
                 )
               }
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:hover:bg-gray-800"
+              className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               Next
             </button>

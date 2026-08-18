@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { useAuthContext } from "@/context/AuthContext";
+import { UserCircleIcon } from "@/icons";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,13 +34,18 @@ function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         onClick={toggleDropdown} 
         className="flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle"
       >
-        <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
-          <Image
-            width={44}
-            height={44}
-            src={user?.avatar || "/images/user/owner.jpg"}
-            alt={displayName}
-          />
+        <span className="mr-3 flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-white/5">
+          {user?.avatar ? (
+            <Image
+              width={44}
+              height={44}
+              src={user.avatar}
+              alt={displayName}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <UserCircleIcon className="h-7 w-7 text-gray-400 dark:text-gray-500" />
+          )}
         </span>
 
         <span className="block mr-1 font-medium text-theme-sm">{displayName}</span>

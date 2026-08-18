@@ -88,11 +88,11 @@ export default function ProductImagesCard({
 
       <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
 
-        <h3 className="text-lg font-semibold">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
           Product Images
         </h3>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Upload product gallery images.
         </p>
 
@@ -107,11 +107,11 @@ export default function ProductImagesCard({
             className="mb-3 text-gray-400"
           />
 
-          <p className="font-medium">
+          <p className="font-medium text-gray-700 dark:text-gray-300">
             Click to upload
           </p>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             JPG, PNG, WEBP
           </p>
 
@@ -287,7 +287,7 @@ export default function ProductImagesCard({
 
                 {/* Footer */}
 
-        <div className="mt-6 flex flex-col gap-2 border-t border-gray-200 pt-4 text-sm text-gray-500 dark:border-gray-700">
+        <div className="mt-6 flex flex-col gap-2 border-t border-gray-200 pt-4 text-sm text-gray-500 dark:text-gray-400 dark:border-gray-700">
 
           <div className="flex items-center justify-between">
 

@@ -104,7 +104,7 @@ export default function BrandLogoUpload({
               unoptimized
             />
           ) : (
-            <div className="text-center text-gray-500">
+            <div className="text-center text-gray-500 dark:text-gray-400">
               <ImagePlus
                 size={42}
                 className="mx-auto mb-3"
@@ -153,7 +153,7 @@ export default function BrandLogoUpload({
           )}
         </div>
 
-        <p className="text-center text-sm text-gray-500">
+        <p className="text-center text-sm text-gray-500 dark:text-gray-400">
           Recommended size:
           600 × 600 px
           <br />

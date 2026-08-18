@@ -87,7 +87,7 @@ export default function OrderDetail({ uuid }: Props) {
                 <h2 className="text-xl font-bold text-gray-800 dark:text-white/90">
                   {order.order_number}
                 </h2>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Placed {new Date(order.placed_at).toLocaleString()}
                 </p>
               </div>
@@ -148,20 +148,20 @@ export default function OrderDetail({ uuid }: Props) {
 
             <div className="mt-6 grid gap-6 md:grid-cols-2">
               <div>
-                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                   Buyer
                 </h3>
                 <p className="font-medium text-gray-800 dark:text-white/90">
                   {order.buyer?.full_name}
                 </p>
-                <p className="text-sm text-gray-500">{order.buyer?.email}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{order.buyer?.email}</p>
                 {order.buyer?.phone && (
-                  <p className="text-sm text-gray-500">{order.buyer.phone}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{order.buyer.phone}</p>
                 )}
               </div>
 
               <div>
-                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                   Shipping Address
                 </h3>
                 <p className="text-sm text-gray-700 dark:text-gray-300">
@@ -185,7 +185,7 @@ export default function OrderDetail({ uuid }: Props) {
             )}
 
             <div className="mt-6 flex justify-end border-t border-gray-100 pt-4 dark:border-gray-800">
-              <span className="text-gray-500">Order Total:</span>
+              <span className="text-gray-500 dark:text-gray-400">Order Total:</span>
               <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white/90">
                 ${order.total}
               </span>

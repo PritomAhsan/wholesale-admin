@@ -18,14 +18,14 @@ export default function SupplierRecentOrders({ orders }: Props) {
             Recent Orders
           </h2>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Orders containing your products
           </p>
         </div>
 
         <Link
           href="/supplier-orders"
-          className="text-sm font-medium text-brand-600 hover:underline"
+          className="text-sm font-medium text-brand-600 hover:underline dark:text-brand-400"
         >
           View All Orders
         </Link>
@@ -47,12 +47,12 @@ export default function SupplierRecentOrders({ orders }: Props) {
                   {order.sellerOrderNumber}
                 </h3>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                   Ship to {order.shipTo}
                 </p>
 
                 <div className="mt-2 flex items-center gap-3">
-                  <span className="font-semibold text-brand-600">
+                  <span className="font-semibold text-brand-600 dark:text-brand-400">
                     ${order.total}
                   </span>
 

@@ -18,7 +18,7 @@ export default function LatestSuppliers({ suppliers }: Props) {
             Latest Suppliers
           </h2>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Recently registered supplier companies
           </p>
         </div>
@@ -49,7 +49,7 @@ export default function LatestSuppliers({ suppliers }: Props) {
                     {supplier.companyName}
                   </h3>
 
-                  <p className="mt-1 text-sm capitalize text-gray-500">
+                  <p className="mt-1 text-sm capitalize text-gray-500 dark:text-gray-400">
                     {supplier.businessType}
                   </p>
 
@@ -74,7 +74,7 @@ export default function LatestSuppliers({ suppliers }: Props) {
       <div className="border-t border-gray-200 dark:border-gray-800 p-4 text-center">
         <Link
           href="/suppliers"
-          className="text-sm font-medium text-brand-600 hover:underline"
+          className="text-sm font-medium text-brand-600 hover:underline dark:text-brand-400"
         >
           View All Suppliers →
         </Link>

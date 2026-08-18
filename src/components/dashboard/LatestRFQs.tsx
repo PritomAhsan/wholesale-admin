@@ -18,7 +18,7 @@ export default function LatestRFQs({ rfqs }: Props) {
             Latest RFQs
           </h2>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Recent buyer quotation requests
           </p>
         </div>
@@ -49,9 +49,9 @@ export default function LatestRFQs({ rfqs }: Props) {
                     {rfq.productName}
                   </h3>
 
-                  <p className="mt-1 text-sm text-gray-500">{rfq.buyer}</p>
+                  <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{rfq.buyer}</p>
 
-                  <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-gray-500">
+                  <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
                     <span>
                       {rfq.quantity} {rfq.unit}
                     </span>
@@ -87,7 +87,7 @@ export default function LatestRFQs({ rfqs }: Props) {
       <div className="border-t border-gray-200 dark:border-gray-800 p-4 text-center">
         <Link
           href="/rfqs"
-          className="text-sm font-medium text-brand-600 hover:underline"
+          className="text-sm font-medium text-brand-600 hover:underline dark:text-brand-400"
         >
           View All RFQs →
         </Link>

@@ -523,11 +523,11 @@ export default function VariantsCard({
       <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-800">
 
         <div>
-          <h3 className="text-lg font-semibold">
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
             Product Variants
           </h3>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Create multiple variants such as
             Color, Size or Material.
           </p>
@@ -548,7 +548,7 @@ export default function VariantsCard({
       <div className="p-6">
 
         {variants.length === 0 && (
-          <div className="rounded-lg border border-dashed border-gray-300 p-10 text-center text-sm text-gray-500 dark:border-gray-700">
+          <div className="rounded-lg border border-dashed border-gray-300 p-10 text-center text-sm text-gray-500 dark:text-gray-400 dark:border-gray-700">
             No variants added yet.
           </div>
         )}
@@ -876,7 +876,7 @@ export default function VariantsCard({
                     Variant Attributes
                   </h5>
 
-                  <p className="mt-1 text-sm text-gray-500">
+                  <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                     Select the attribute values for this variant.
                   </p>
                 </div>
@@ -899,7 +899,7 @@ export default function VariantsCard({
               </div>
 
               {productAttributes.length === 0 && (
-                <div className="rounded-lg border border-dashed border-gray-300 p-5 text-center text-sm text-gray-500 dark:border-gray-700">
+                <div className="rounded-lg border border-dashed border-gray-300 p-5 text-center text-sm text-gray-500 dark:text-gray-400 dark:border-gray-700">
                   Add product attributes first before configuring variant attributes.
                 </div>
               )}
@@ -1071,7 +1071,7 @@ export default function VariantsCard({
       Variant Images
     </h5>
 
-    <p className="mt-1 text-sm text-gray-500">
+    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
       Upload images specific to this variant.
     </p>
   </div>
@@ -1087,7 +1087,7 @@ export default function VariantsCard({
       Click to upload
     </p>
 
-    <p className="mt-1 text-xs text-gray-500">
+    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
       JPG, PNG, WEBP — max 5 MB each
     </p>
 

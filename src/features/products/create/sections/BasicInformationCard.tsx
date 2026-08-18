@@ -29,7 +29,7 @@ export default function BasicInformationCard({
           Basic Information
         </h3>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Enter the basic details of the product.
         </p>
       </div>

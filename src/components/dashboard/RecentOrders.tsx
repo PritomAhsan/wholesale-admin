@@ -18,14 +18,14 @@ export default function RecentOrders({ orders }: Props) {
             Recent Orders
           </h2>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Latest marketplace orders
           </p>
         </div>
 
         <Link
           href="/orders"
-          className="text-sm font-medium text-brand-600 hover:underline"
+          className="text-sm font-medium text-brand-600 hover:underline dark:text-brand-400"
         >
           View All Orders
         </Link>
@@ -40,22 +40,22 @@ export default function RecentOrders({ orders }: Props) {
           <table className="min-w-full">
             <thead className="bg-gray-50 dark:bg-gray-800/50">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
                   Order
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
                   Buyer
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
                   Sellers
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
                   Total
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
                   Status
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
                   Placed
                 </th>
                 <th className="px-6 py-4"></th>
@@ -80,7 +80,7 @@ export default function RecentOrders({ orders }: Props) {
                     {order.sellerCount}
                   </td>
 
-                  <td className="px-6 py-5 font-semibold text-brand-600">
+                  <td className="px-6 py-5 font-semibold text-brand-600 dark:text-brand-400">
                     ${order.total}
                   </td>
 
@@ -90,7 +90,7 @@ export default function RecentOrders({ orders }: Props) {
                     </span>
                   </td>
 
-                  <td className="px-6 py-5 text-gray-500">
+                  <td className="px-6 py-5 text-gray-500 dark:text-gray-400">
                     {new Date(order.placedAt).toLocaleDateString()}
                   </td>
 

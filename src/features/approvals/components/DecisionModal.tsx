@@ -66,7 +66,7 @@ export default function DecisionModal({
           {title}
         </h4>
 
-        <p className="mb-5 text-sm text-gray-500">{description}</p>
+        <p className="mb-5 text-sm text-gray-500 dark:text-gray-400">{description}</p>
 
         <Label>
           Remarks{" "}

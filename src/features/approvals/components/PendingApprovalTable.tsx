@@ -76,7 +76,7 @@ export default function PendingApprovalTable({
 
   if (products.length === 0) {
     return (
-      <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-500 dark:border-gray-800 dark:bg-white/[0.03]">
+      <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-500 dark:text-gray-400 dark:border-gray-800 dark:bg-white/[0.03]">
         Nothing waiting for review right now.
       </div>
     );
@@ -144,7 +144,7 @@ export default function PendingApprovalTable({
                         <Link
                           href={`/approvals/${product.uuid}`}
                           title="View details"
-                          className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-brand-600 dark:hover:bg-gray-800"
+                          className="rounded-lg p-2 text-gray-500 dark:text-gray-400 transition hover:bg-gray-100 hover:text-brand-600 dark:hover:bg-gray-800"
                         >
                           <Eye size={18} />
                         </Link>
@@ -155,7 +155,7 @@ export default function PendingApprovalTable({
                           onClick={() =>
                             setDecision({ product, type: "approve" })
                           }
-                          className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-success-600 dark:hover:bg-gray-800"
+                          className="rounded-lg p-2 text-gray-500 dark:text-gray-400 transition hover:bg-gray-100 hover:text-success-600 dark:hover:bg-gray-800"
                         >
                           <Check size={18} />
                         </button>
@@ -166,7 +166,7 @@ export default function PendingApprovalTable({
                           onClick={() =>
                             setDecision({ product, type: "reject" })
                           }
-                          className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-error-600 dark:hover:bg-gray-800"
+                          className="rounded-lg p-2 text-gray-500 dark:text-gray-400 transition hover:bg-gray-100 hover:text-error-600 dark:hover:bg-gray-800"
                         >
                           <X size={18} />
                         </button>
@@ -181,7 +181,7 @@ export default function PendingApprovalTable({
 
         {pagination.last_page > 1 && (
           <div className="flex items-center justify-between border-t border-gray-200 px-6 py-4 dark:border-gray-800">
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-500 dark:text-gray-400">
               Showing page{" "}
               <span className="font-medium">{pagination.current_page}</span>{" "}
               of{" "}
@@ -194,7 +194,7 @@ export default function PendingApprovalTable({
                 type="button"
                 disabled={pagination.current_page === 1}
                 onClick={() => onPageChange(pagination.current_page - 1)}
-                className="rounded-lg border border-gray-300 px-4 py-2 text-sm transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:hover:bg-gray-800"
+                className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 Previous
               </button>
@@ -203,7 +203,7 @@ export default function PendingApprovalTable({
                 type="button"
                 disabled={pagination.current_page === pagination.last_page}
                 onClick={() => onPageChange(pagination.current_page + 1)}
-                className="rounded-lg border border-gray-300 px-4 py-2 text-sm transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:hover:bg-gray-800"
+                className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 Next
               </button>

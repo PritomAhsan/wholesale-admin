@@ -73,7 +73,7 @@ export default function OrderTable({ orders, loading, error }: Props) {
                 <TableCell>
                   <div>
                     <p>{order.buyer?.full_name}</p>
-                    <p className="text-sm text-gray-500">{order.buyer?.email}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{order.buyer?.email}</p>
                   </div>
                 </TableCell>
 
@@ -90,7 +90,7 @@ export default function OrderTable({ orders, loading, error }: Props) {
                   <OrderStatusBadge status={order.status} />
                 </TableCell>
 
-                <TableCell className="text-gray-500">
+                <TableCell className="text-gray-500 dark:text-gray-400">
                   {new Date(order.placed_at).toLocaleDateString()}
                 </TableCell>
 

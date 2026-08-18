@@ -16,11 +16,11 @@ export default async function EditProductPage({
 
       <div>
 
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white/90">
           Edit Product
         </h1>
 
-        <p className="text-gray-500">
+        <p className="text-gray-500 dark:text-gray-400">
           Update marketplace product.
         </p>
 

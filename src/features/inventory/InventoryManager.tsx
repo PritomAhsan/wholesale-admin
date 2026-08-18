@@ -108,7 +108,7 @@ function StatTile({ icon, label, value }: { icon: React.ReactNode; label: string
       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-100 dark:bg-white/5">
         {icon}
       </div>
-      <p className="mt-3 text-sm text-gray-500">{label}</p>
+      <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">{label}</p>
       <p className="mt-1 text-2xl font-bold text-gray-800 dark:text-white/90">{value}</p>
     </div>
   );
@@ -140,7 +140,7 @@ function TabButton({
 function VariantsTable({ variants }: { variants: InventoryVariantSummary[] }) {
   if (variants.length === 0) {
     return (
-      <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-500 dark:border-gray-800 dark:bg-white/[0.03]">
+      <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-500 dark:text-gray-400 dark:border-gray-800 dark:bg-white/[0.03]">
         Nothing here.
       </div>
     );
@@ -184,7 +184,7 @@ function VariantsTable({ variants }: { variants: InventoryVariantSummary[] }) {
 function TransactionsTable({ transactions }: { transactions: InventoryTransaction[] }) {
   if (transactions.length === 0) {
     return (
-      <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-500 dark:border-gray-800 dark:bg-white/[0.03]">
+      <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-500 dark:text-gray-400 dark:border-gray-800 dark:bg-white/[0.03]">
         No recent transactions.
       </div>
     );

@@ -55,7 +55,7 @@ export default function PendingProducts({ products, onChanged }: Props) {
             Pending Product Approvals
           </h2>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Products waiting for review
           </p>
         </div>
@@ -81,7 +81,7 @@ export default function PendingProducts({ products, onChanged }: Props) {
                   {product.name}
                 </h3>
 
-                <p className="text-sm text-gray-500">{product.supplier}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{product.supplier}</p>
 
                 <div className="mt-2 flex items-center gap-1 text-xs text-gray-400">
                   <Clock className="h-3 w-3" />
@@ -116,7 +116,7 @@ export default function PendingProducts({ products, onChanged }: Props) {
       <div className="border-t border-gray-200 dark:border-gray-800 p-4 text-center">
         <Link
           href="/approvals"
-          className="text-sm font-medium text-brand-600 hover:underline"
+          className="text-sm font-medium text-brand-600 hover:underline dark:text-brand-400"
         >
           View All Pending Products →
         </Link>

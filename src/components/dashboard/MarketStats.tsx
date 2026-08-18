@@ -47,7 +47,7 @@ export default function MarketStats({ statistics }: Props) {
             className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
           >
             <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-brand-50 dark:bg-brand-500/10">
-              <Icon className="h-7 w-7 text-brand-600" />
+              <Icon className="h-7 w-7 text-brand-600 dark:text-brand-400" />
             </div>
 
             <div className="mt-6">

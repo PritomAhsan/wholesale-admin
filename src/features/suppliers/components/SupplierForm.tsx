@@ -303,7 +303,7 @@ export default function SupplierForm({ supplier }: Props) {
           </div>
         </div>
 
-        <p className="mt-3 text-xs text-gray-500">
+        <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
           Shown to buyers on the seller profile. Left blank until the
           supplier or an admin sets it — never inferred or guessed.
         </p>
@@ -326,7 +326,7 @@ export default function SupplierForm({ supplier }: Props) {
           />
         </div>
 
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
           Percentage the platform keeps from each of this seller&apos;s
           delivered orders before payout. Leave blank to use the platform
           default ({supplier.effective_commission_rate}%) instead of a
@@ -348,7 +348,7 @@ export default function SupplierForm({ supplier }: Props) {
           />
         </div>
 
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
           Setting status to Approved grants the Supplier role and unlocks
           seller-side access — same effect as the Approve action on the
           suppliers list.

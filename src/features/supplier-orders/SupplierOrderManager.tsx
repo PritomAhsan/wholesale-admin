@@ -154,7 +154,7 @@ export default function SupplierOrderManager() {
                     <OrderStatusBadge status={order.status} />
                   </TableCell>
 
-                  <TableCell className="text-gray-500">
+                  <TableCell className="text-gray-500 dark:text-gray-400">
                     {order.order
                       ? new Date(order.order.placed_at).toLocaleDateString()
                       : "—"}

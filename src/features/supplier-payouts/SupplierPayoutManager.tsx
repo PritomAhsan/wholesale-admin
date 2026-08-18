@@ -82,7 +82,7 @@ export default function SupplierPayoutManager() {
     >
       <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-6 sm:flex-row sm:items-center sm:justify-between dark:border-gray-800 dark:bg-white/[0.03]">
         <div>
-          <p className="text-sm text-gray-500">Available to request</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Available to request</p>
           <p className="text-2xl font-bold text-gray-800 dark:text-white/90">
             ${pendingAmount.toFixed(2)}
           </p>
@@ -145,7 +145,7 @@ export default function SupplierPayoutManager() {
 
                   <TableCell>{payout.seller_orders_count ?? "—"}</TableCell>
 
-                  <TableCell className="text-gray-500">
+                  <TableCell className="text-gray-500 dark:text-gray-400">
                     {payout.requested_at
                       ? new Date(payout.requested_at).toLocaleDateString()
                       : "—"}
@@ -162,7 +162,7 @@ export default function SupplierPayoutManager() {
                     </span>
                   </TableCell>
 
-                  <TableCell className="text-gray-500">
+                  <TableCell className="text-gray-500 dark:text-gray-400">
                     {payout.reference_note ?? "—"}
                   </TableCell>
                 </TableRow>
@@ -172,7 +172,7 @@ export default function SupplierPayoutManager() {
         </div>
 
         {pagination.total > 0 && (
-          <div className="border-t border-gray-200 px-6 py-4 text-sm text-gray-500 dark:border-gray-800">
+          <div className="border-t border-gray-200 px-6 py-4 text-sm text-gray-500 dark:text-gray-400 dark:border-gray-800">
             {pagination.total} payout{pagination.total === 1 ? "" : "s"} total
           </div>
         )}

@@ -65,7 +65,7 @@ export default function SellerOrderCard({ sellerOrder, onUpdated }: Props) {
     <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-sm text-gray-500">{sellerOrder.seller_order_number}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{sellerOrder.seller_order_number}</p>
           <h3 className="text-lg font-bold text-gray-800 dark:text-white/90">
             {sellerOrder.supplier?.company_name ?? sellerOrder.supplier?.display_name}
           </h3>
@@ -92,7 +92,7 @@ export default function SellerOrderCard({ sellerOrder, onUpdated }: Props) {
                 <p className="font-medium text-gray-800 dark:text-white/90">
                   {item.product_name}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   {item.quantity} × ${item.unit_price}
                 </p>
               </div>
@@ -106,7 +106,7 @@ export default function SellerOrderCard({ sellerOrder, onUpdated }: Props) {
       )}
 
       <div className="mt-4 flex justify-end border-t border-gray-100 pt-4 text-sm dark:border-gray-800">
-        <span className="text-gray-500">Subtotal:</span>
+        <span className="text-gray-500 dark:text-gray-400">Subtotal:</span>
         <span className="ml-2 font-bold text-gray-800 dark:text-white/90">
           ${sellerOrder.subtotal}
         </span>

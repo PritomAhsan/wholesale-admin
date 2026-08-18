@@ -88,7 +88,7 @@ export default function TagInput({
         />
       </div>
 
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-gray-500 dark:text-gray-400">
         Press <b>Enter</b>, <b>Tab</b>, or <b>,</b> to add tags.
       </p>
     </div>

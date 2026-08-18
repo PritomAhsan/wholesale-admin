@@ -86,14 +86,14 @@ export default function SupplierTable({
                       {supplier.company_name}
                     </p>
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       {supplier.email}
                     </p>
                   </div>
                 </TableCell>
 
                 {/* Seller ID */}
-                <TableCell className="font-mono text-xs text-gray-500">
+                <TableCell className="font-mono text-xs text-gray-500 dark:text-gray-400">
                   {supplier.seller_id ?? "-"}
                 </TableCell>
 
@@ -101,7 +101,7 @@ export default function SupplierTable({
                 <TableCell>
                   <div>
                     <p>{supplier.contact_person}</p>
-                    <p className="text-sm text-gray-500">{supplier.phone}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{supplier.phone}</p>
                   </div>
                 </TableCell>
 

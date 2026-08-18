@@ -132,7 +132,7 @@ export default function SupplierDashboard() {
               key={s.key}
               className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03]"
             >
-              <p className="text-xs text-gray-500">{s.label}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{s.label}</p>
 
               <p className="mt-1 text-2xl font-semibold text-gray-800 dark:text-white/90">
                 {countsLoading ? "-" : counts[s.key] ?? 0}
@@ -149,18 +149,18 @@ export default function SupplierDashboard() {
         <div className="mb-4 flex justify-end">
           <Link
             href="/products/create"
-            className="text-sm text-brand-600 hover:underline"
+            className="text-sm text-brand-600 hover:underline dark:text-brand-400"
           >
             + Add a new product
           </Link>
         </div>
 
         {recentLoading ? (
-          <div className="py-8 text-center text-sm text-gray-500">
+          <div className="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
             Loading...
           </div>
         ) : recent.length === 0 ? (
-          <div className="py-8 text-center text-sm text-gray-500">
+          <div className="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
             You haven't added any products yet.
           </div>
         ) : (
@@ -175,7 +175,7 @@ export default function SupplierDashboard() {
                   <p className="font-medium text-gray-800 dark:text-white/90">
                     {product.name}
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     SKU: {product.sku}
                   </p>
                 </div>
@@ -189,7 +189,7 @@ export default function SupplierDashboard() {
         <div className="mt-4 text-right">
           <Link
             href="/products"
-            className="text-sm text-brand-600 hover:underline"
+            className="text-sm text-brand-600 hover:underline dark:text-brand-400"
           >
             View all products →
           </Link>
@@ -202,21 +202,21 @@ export default function SupplierDashboard() {
       >
         <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-3">
           <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03]">
-            <p className="text-xs text-gray-500">Total Orders</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Total Orders</p>
             <p className="mt-1 text-2xl font-semibold text-gray-800 dark:text-white/90">
               {ordersLoading ? "-" : orderStats?.totalOrders ?? 0}
             </p>
           </div>
 
           <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03]">
-            <p className="text-xs text-gray-500">Need Fulfillment</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Need Fulfillment</p>
             <p className="mt-1 text-2xl font-semibold text-gray-800 dark:text-white/90">
               {ordersLoading ? "-" : orderStats?.pendingOrders ?? 0}
             </p>
           </div>
 
           <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03]">
-            <p className="text-xs text-gray-500">Revenue</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Revenue</p>
             <p className="mt-1 text-2xl font-semibold text-gray-800 dark:text-white/90">
               {ordersLoading ? "-" : `$${(orderStats?.totalRevenue ?? 0).toLocaleString()}`}
             </p>
@@ -224,11 +224,11 @@ export default function SupplierDashboard() {
         </div>
 
         {ordersLoading ? (
-          <div className="py-8 text-center text-sm text-gray-500">
+          <div className="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
             Loading...
           </div>
         ) : recentOrders.length === 0 ? (
-          <div className="py-8 text-center text-sm text-gray-500">
+          <div className="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
             No orders yet.
           </div>
         ) : (
@@ -243,7 +243,7 @@ export default function SupplierDashboard() {
                   <p className="font-medium text-gray-800 dark:text-white/90">
                     {order.sellerOrderNumber}
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     Ship to {order.shipTo} · ${order.total}
                   </p>
                 </div>
@@ -266,7 +266,7 @@ export default function SupplierDashboard() {
         <div className="mt-4 text-right">
           <Link
             href="/supplier-orders"
-            className="text-sm text-brand-600 hover:underline"
+            className="text-sm text-brand-600 hover:underline dark:text-brand-400"
           >
             View all orders →
           </Link>

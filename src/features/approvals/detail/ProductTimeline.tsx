@@ -90,12 +90,12 @@ export default function ProductTimeline({ productUuid, refreshKey }: Props) {
   }, [productUuid, refreshKey]);
 
   if (loading) {
-    return <div className="py-6 text-center text-sm text-gray-500">Loading history...</div>;
+    return <div className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">Loading history...</div>;
   }
 
   if (rows.length === 0) {
     return (
-      <div className="py-6 text-center text-sm text-gray-500">
+      <div className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">
         No activity yet.
       </div>
     );
@@ -124,7 +124,7 @@ export default function ProductTimeline({ productUuid, refreshKey }: Props) {
             </div>
 
             {row.actor && (
-              <p className="text-xs text-gray-500">by {row.actor}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">by {row.actor}</p>
             )}
 
             {row.remarks && (

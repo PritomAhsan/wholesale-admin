@@ -61,7 +61,7 @@ export default function OrganizationCard({
 
         <div className="h-5 w-5 animate-spin rounded-full border-2 border-brand-500 border-t-transparent" />
 
-        <span className="text-sm text-gray-500">
+        <span className="text-sm text-gray-500 dark:text-gray-400">
           Loading categories, brands,
           suppliers and units...
         </span>
@@ -128,7 +128,7 @@ if (
           Organization
         </h3>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Assign brand, supplier, unit and category.
         </p>
       </div>

@@ -19,7 +19,7 @@ export default function LatestProducts({ products }: Props) {
             Latest Products
           </h2>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Recently added marketplace products
           </p>
         </div>
@@ -60,11 +60,11 @@ export default function LatestProducts({ products }: Props) {
                   </h3>
 
                   {product.supplier && (
-                    <p className="text-sm text-gray-500">{product.supplier}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{product.supplier}</p>
                   )}
 
                   <div className="mt-2 flex items-center gap-3">
-                    <span className="font-semibold text-brand-600">
+                    <span className="font-semibold text-brand-600 dark:text-brand-400">
                       ${product.price}
                     </span>
 
@@ -90,7 +90,7 @@ export default function LatestProducts({ products }: Props) {
       <div className="border-t border-gray-200 dark:border-gray-800 p-4 text-center">
         <Link
           href="/products"
-          className="text-sm font-medium text-brand-600 hover:underline"
+          className="text-sm font-medium text-brand-600 hover:underline dark:text-brand-400"
         >
           View All Products →
         </Link>

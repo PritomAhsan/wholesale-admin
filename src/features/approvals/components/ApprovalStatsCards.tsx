@@ -27,7 +27,7 @@ export default function ApprovalStatsCards({ statistics, loading }: Props) {
           key={card.key}
           className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03]"
         >
-          <p className="text-xs text-gray-500">{card.label}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{card.label}</p>
 
           <p className="mt-1 text-2xl font-semibold text-gray-800 dark:text-white/90">
             {loading ? "-" : statistics?.[card.key] ?? 0}
