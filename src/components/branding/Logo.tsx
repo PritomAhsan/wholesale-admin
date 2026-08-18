@@ -26,7 +26,7 @@ export default function Logo({
             className="dark:hidden"
             src={BRANDING.logo.light}
             alt={BRANDING.appName}
-            width={170}
+            width={133}
             height={40}
           />
 
@@ -34,7 +34,7 @@ export default function Logo({
             className="hidden dark:block"
             src={BRANDING.logo.dark}
             alt={BRANDING.appName}
-            width={170}
+            width={133}
             height={40}
           />
         </>

@@ -23,7 +23,7 @@ export default function AuthLayout({
               <div className="flex flex-col items-center max-w-xs">
                 <Link href="/" className="block mb-4">
                   <Image
-                    width={335}
+                    width={300}
                     height={90}
                     className="h-14 w-auto"
                     src="/images/logo/bulkare-logo-dark.svg"
