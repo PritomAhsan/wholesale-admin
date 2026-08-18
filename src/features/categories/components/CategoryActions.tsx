@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
 
 import CategoryService from "@/api/services/category.service";
@@ -9,14 +8,14 @@ import CategoryService from "@/api/services/category.service";
 interface Props {
   id: string;
   name: string;
+  onDeleted?: () => void;
 }
 
 export default function CategoryActions({
   id,
   name,
+  onDeleted,
 }: Props) {
-  const router = useRouter();
-
   const handleDelete = async () => {
     const confirmed = window.confirm(
       `Are you sure you want to delete "${name}"?`
@@ -30,8 +29,7 @@ export default function CategoryActions({
 
       alert(response.message);
 
-      // router.refresh();
-      window.location.reload();
+      onDeleted?.();
     } catch (error: any) {
       console.error(error);
 

@@ -39,6 +39,34 @@ class SupplierService {
   }
 
   /**
+   * Single Supplier
+   */
+  async get(uuid: string): Promise<Supplier> {
+    const { data } = await api.get(
+      `/v1/admin/suppliers/${uuid}`
+    );
+
+    return data.data.supplier;
+  }
+
+  /**
+   * Update Supplier
+   */
+  async update(uuid: string, payload: FormData) {
+    const { data } = await api.post(
+      `/v1/admin/suppliers/${uuid}?_method=PUT`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    return data;
+  }
+
+  /**
    * Approve
    */
   async approve(uuid: string) {

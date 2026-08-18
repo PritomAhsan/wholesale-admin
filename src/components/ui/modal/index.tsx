@@ -93,3 +93,26 @@ export const Modal: React.FC<ModalProps> = ({
     </div>
   );
 };
+
+export const ModalHeader: React.FC<{ children: React.ReactNode; className?: string }> = ({
+  children,
+  className,
+}) => (
+  <div className={`border-b border-gray-200 px-6 py-4 text-lg font-semibold text-gray-800 dark:border-gray-800 dark:text-white/90 ${className ?? ""}`}>
+    {children}
+  </div>
+);
+
+export const ModalBody: React.FC<{ children: React.ReactNode; className?: string }> = ({
+  children,
+  className,
+}) => <div className={`px-6 py-4 ${className ?? ""}`}>{children}</div>;
+
+export const ModalFooter: React.FC<{ children: React.ReactNode; className?: string }> = ({
+  children,
+  className,
+}) => (
+  <div className={`flex justify-end gap-3 border-t border-gray-200 px-6 py-4 dark:border-gray-800 ${className ?? ""}`}>
+    {children}
+  </div>
+);

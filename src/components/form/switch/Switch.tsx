@@ -5,7 +5,9 @@ import React from "react";
 interface SwitchProps {
   label?: string;
 
-  checked: boolean;
+  checked?: boolean;
+
+  defaultChecked?: boolean;
 
   disabled?: boolean;
 
@@ -19,35 +21,43 @@ export default function Switch({
 
   checked,
 
+  defaultChecked = false,
+
   disabled = false,
 
   onChange,
 
   color = "blue",
 }: SwitchProps) {
+  const [internalChecked, setInternalChecked] = React.useState(defaultChecked);
+  const isControlled = checked !== undefined;
+  const currentChecked = isControlled ? checked : internalChecked;
+
   const handleToggle = () => {
     if (disabled) return;
 
-    onChange?.(!checked);
+    if (!isControlled) setInternalChecked(!currentChecked);
+
+    onChange?.(!currentChecked);
   };
 
   const switchColors =
     color === "blue"
       ? {
-          background: checked
+          background: currentChecked
             ? "bg-brand-500"
             : "bg-gray-200 dark:bg-white/10",
 
-          knob: checked
+          knob: currentChecked
             ? "translate-x-full bg-white"
             : "translate-x-0 bg-white",
         }
       : {
-          background: checked
+          background: currentChecked
             ? "bg-gray-800"
             : "bg-gray-200 dark:bg-white/10",
 
-          knob: checked
+          knob: currentChecked
             ? "translate-x-full bg-white"
             : "translate-x-0 bg-white",
         };

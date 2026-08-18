@@ -78,11 +78,11 @@ export default function InventoryCard({
             type="number"
             placeholder="1"
             value={
-              form.minimum_order_quantity
+              form.min_order_quantity
             }
             onChange={(e) =>
               onChange(
-                "minimum_order_quantity",
+                "min_order_quantity",
                 e.target.value
               )
             }

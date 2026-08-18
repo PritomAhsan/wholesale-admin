@@ -7,6 +7,8 @@ export type SupplierStatus =
 export interface Supplier {
   uuid: string;
 
+  seller_id: string | null;
+
   company_name: string;
 
   company_slug: string;
@@ -21,7 +23,15 @@ export interface Supplier {
 
   website: string | null;
 
+  registration_number: string | null;
+
+  tax_number: string | null;
+
   description: string | null;
+
+  fulfillment_region: string | null;
+
+  typical_lead_time: string | null;
 
   logo: string | null;
 

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import {
   Table,
@@ -33,6 +33,8 @@ export default function SupplierTable({
             <TableRow>
               <TableCell isHeader>Company</TableCell>
 
+              <TableCell isHeader>Seller ID</TableCell>
+
               <TableCell isHeader>Contact</TableCell>
 
               <TableCell isHeader>Business Type</TableCell>
@@ -53,7 +55,7 @@ export default function SupplierTable({
           <TableBody>
             {loading && (
               <TableRow>
-                <TableCell colSpan={6} className="py-10 text-center text-gray-400">
+                <TableCell colSpan={7} className="py-10 text-center text-gray-400">
                   Loading suppliers...
                 </TableCell>
               </TableRow>
@@ -61,7 +63,7 @@ export default function SupplierTable({
 
             {!loading && error && (
               <TableRow>
-                <TableCell colSpan={6} className="py-10 text-center text-error-500">
+                <TableCell colSpan={7} className="py-10 text-center text-error-500">
                   {error}
                 </TableCell>
               </TableRow>
@@ -69,7 +71,7 @@ export default function SupplierTable({
 
             {!loading && !error && suppliers.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} className="py-10 text-center text-gray-400">
+                <TableCell colSpan={7} className="py-10 text-center text-gray-400">
                   No suppliers found.
                 </TableCell>
               </TableRow>
@@ -88,6 +90,11 @@ export default function SupplierTable({
                       {supplier.email}
                     </p>
                   </div>
+                </TableCell>
+
+                {/* Seller ID */}
+                <TableCell className="font-mono text-xs text-gray-500">
+                  {supplier.seller_id ?? "-"}
                 </TableCell>
 
                 {/* Contact */}

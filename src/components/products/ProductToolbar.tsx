@@ -115,7 +115,7 @@ export default function ProductToolbar({
             },
           ]}
           placeholder="Featured"
-          onChange={onFeaturedChange}
+          onChange={onFeaturedChange ?? (() => {})}
         />
 
         <Select
@@ -134,7 +134,7 @@ export default function ProductToolbar({
             },
           ]}
           placeholder="Stock"
-          onChange={onStockChange}
+          onChange={onStockChange ?? (() => {})}
         />
 
         <Select
@@ -145,7 +145,7 @@ export default function ProductToolbar({
             },
           ]}
           placeholder="Brand"
-          onChange={onBrandChange}
+          onChange={onBrandChange ?? (() => {})}
         />
 
         <Select
@@ -156,7 +156,7 @@ export default function ProductToolbar({
             },
           ]}
           placeholder="Supplier"
-          onChange={onSupplierChange}
+          onChange={onSupplierChange ?? (() => {})}
         />
 
       </div>

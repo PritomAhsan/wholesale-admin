@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { Plus, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 import InputField from "@/components/form/input/InputField";
 import Select from "@/components/form/Select";
@@ -53,15 +52,6 @@ export default function SupplierToolbar({
           />
         </div>
       </div>
-
-      <Link
-        href="/suppliers/create"
-        className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-5 py-3 text-sm font-medium text-white transition hover:bg-brand-600"
-      >
-        <Plus size={18} />
-
-        Add Supplier
-      </Link>
     </div>
   );
 }

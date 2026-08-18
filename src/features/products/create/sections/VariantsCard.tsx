@@ -12,6 +12,8 @@ import {
 import Label from "@/components/form/Label";
 import Select from "@/components/form/Select";
 
+import ProductService from "@/api/services/product.service";
+
 import {
   ProductAttributeRow,
 } from "./AttributesCard";

@@ -4,9 +4,9 @@ export const BRANDING = {
   company: "BULKARE.com",
 
   logo: {
-    light: "/images/logo/bulkare-demo-logo-2.png",
-    dark: "/images/logo/bulkare-demo-logo-2.png",
-    icon: "/images/logo/bulkare-demo-logo-2.png",
+    light: "/images/logo/bulkare-logo.svg",
+    dark: "/images/logo/bulkare-logo-dark.svg",
+    icon: "/images/logo/bulkare-icon.svg",
   },
 
   dashboardTitle: "Marketplace Dashboard",

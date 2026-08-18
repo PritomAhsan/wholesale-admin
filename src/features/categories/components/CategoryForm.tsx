@@ -13,9 +13,8 @@ import Button from "@/components/ui/button/Button";
 import CategoryImageUpload from "./CategoryImageUpload";
 
 import CategoryService from "@/api/services/category.service";
-import { useCategories } from "@/hooks/useCategories";
 
-import { Category } from "../types";
+import { Category } from "@/types/category";
 
 interface Props {
   mode?: "create" | "edit";
@@ -33,10 +32,17 @@ export default function CategoryForm({
 }: Props) {
   const router = useRouter();
 
-  const {
-    categories,
-    loading: categoryLoading,
-  } = useCategories();
+  const [categories, setCategories] = useState<
+    { id: number; name: string }[]
+  >([]);
+  const [categoryLoading, setCategoryLoading] = useState(true);
+
+  useEffect(() => {
+    CategoryService.lookup()
+      .then(setCategories)
+      .catch(() => setCategories([]))
+      .finally(() => setCategoryLoading(false));
+  }, []);
 
   const [loading, setLoading] = useState(false);
 

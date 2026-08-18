@@ -12,7 +12,9 @@ class ProductService {
    * Product List
    */
   async getAll(
-    params?: ServerTableQuery
+    params?: Partial<Omit<ServerTableQuery, "status">> & {
+      status?: string;
+    }
   ): Promise<
     ServerTableResponse<ProductListItem>
   > {
@@ -248,8 +250,6 @@ async updateVariant(
     `/v1/admin/products/${productUuid}/variants/${variantId}`,
     payload
   );
-
-  console.log("updateVariant data:", data);
 
   return data;
 }

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import {
   useEffect,
@@ -12,7 +12,9 @@ import OrganizationCard from "./sections/OrganizationCard";
 import PricingCard from "./sections/PricingCard";
 import InventoryCard from "./sections/InventoryCard";
 import ShippingCard from "./sections/ShippingCard";
-import ProductImagesCard from "./sections/ProductImagesCard";
+import ProductImagesCard, {
+  ExistingImage,
+} from "./sections/ProductImagesCard";
 import AttributesCard, {
   ProductAttributeRow,
 } from "./sections/AttributesCard";
@@ -154,6 +156,11 @@ export interface ProductImageFile {
   isPrimary: boolean;
 }
 
+interface CreatedProduct {
+  id: number;
+  uuid: string;
+}
+
 interface Props {
   mode?: "create" | "edit";
   product?: any;
@@ -202,7 +209,7 @@ export default function CreateProductManager({
   const [
     existingImages,
     setExistingImages,
-  ] = useState(product?.images ?? []);
+  ] = useState<ExistingImage[]>(product?.images ?? []);
 
   const [
     deletedImageIds,
@@ -219,7 +226,7 @@ export default function CreateProductManager({
   ) => {
 
     // Any existing (persisted) variant present in the old state
-    // but missing from the new state was just removed by the user —
+    // but missing from the new state was just removed by the user â€”
     // queue it for deletion on save.
     const removed = variants.filter(
       (existing) =>
@@ -307,11 +314,16 @@ export default function CreateProductManager({
 
     if (!product?.uuid) return;
 
-    // Optimistic — the drag interaction already shows the new
+    // Optimistic â€” the drag interaction already shows the new
     // order; roll back only if the API call fails.
     const previous = existingImages;
 
-    setExistingImages(images);
+    const reordered = images
+      .map((img) => previous.find((existing) => existing.uuid === img.uuid))
+      .filter((img): img is ExistingImage => img !== undefined)
+      .map((img, index) => ({ ...img, sort_order: index }));
+
+    setExistingImages(reordered);
 
     try {
 
@@ -926,7 +938,7 @@ export default function CreateProductManager({
 
   const uploadProductImages =
   async (
-      product: Product
+      product: CreatedProduct
   ) => {
 
       if (
@@ -962,7 +974,7 @@ export default function CreateProductManager({
 
   const saveVariants =
   async (
-      product: Product
+      product: CreatedProduct
   ) => {
 
       for (const variant of variants) {
@@ -1030,7 +1042,7 @@ export default function CreateProductManager({
           }
 
           // A brand-new variant can't have images uploaded until it
-          // exists on the server — any files staged while it was
+          // exists on the server â€” any files staged while it was
           // still a draft are sent now that we have its id.
           if (variantId && variant.localImages && variant.localImages.length > 0) {
 

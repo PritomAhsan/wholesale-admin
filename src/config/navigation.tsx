@@ -4,9 +4,9 @@ import {
   UserCircleIcon,
   ListIcon,
   TableIcon,
-  PieChartIcon,
   TaskIcon,
 } from "@/icons";
+import { Mail, MessageSquare, Tag } from "lucide-react";
 
 export interface NavigationSubItem {
   name: string;
@@ -152,6 +152,27 @@ export const OWNER_NAVIGATION: NavigationGroup[] = [
         icon: TableIcon,
         path: "/orders",
       },
+      {
+        name: "Deals",
+        icon: Tag,
+        path: "/deals",
+      },
+    ],
+  },
+
+  {
+    title: "Engagement",
+    items: [
+      {
+        name: "Newsletter Subscribers",
+        icon: Mail,
+        path: "/newsletter",
+      },
+      {
+        name: "Contact Messages",
+        icon: MessageSquare,
+        path: "/contact-messages",
+      },
     ],
   },
 
@@ -162,28 +183,6 @@ export const OWNER_NAVIGATION: NavigationGroup[] = [
         name: "Inventory",
         icon: BoxCubeIcon,
         path: "/inventory",
-      },
-    ],
-  },
-
-  {
-    title: "Reports",
-    items: [
-      {
-        name: "Reports",
-        icon: PieChartIcon,
-        path: "/reports",
-      },
-    ],
-  },
-
-  {
-    title: "Settings",
-    items: [
-      {
-        name: "Settings",
-        icon: ListIcon,
-        path: "/settings",
       },
     ],
   },

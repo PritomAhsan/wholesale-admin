@@ -32,13 +32,17 @@ interface Props {
     images: LocalImage[]
   ) => void;
 
-  onExistingImagesChange?: (
-    images: ExistingImage[]
-  ) => void;
+  onDeleteExisting?: (
+    image: { id: number; uuid: string }
+  ) => Promise<void>;
 
-  onDeletedImagesChange?: (
-    ids: number[]
-  ) => void;
+  onSetPrimaryExisting?: (
+    image: { id: number; uuid: string }
+  ) => Promise<void>;
+
+  onReorderExisting?: (
+    images: { uuid: string; sort_order: number }[]
+  ) => Promise<void>;
 }
 
 export default function ProductImagesCard({
@@ -49,9 +53,9 @@ export default function ProductImagesCard({
 
   onImagesChange,
 
-  onExistingImagesChange,
+  onDeleteExisting,
 
-  onDeletedImagesChange,
+  onSetPrimaryExisting,
 
 }: Props) {
   const handleFiles = (
@@ -169,6 +173,24 @@ export default function ProductImagesCard({
 
           )}
 
+          <button
+            type="button"
+            onClick={() => onDeleteExisting?.(image)}
+            className="absolute right-2 top-2 rounded-full bg-red-500 p-1 text-white opacity-0 transition group-hover:opacity-100"
+          >
+            <X size={16} />
+          </button>
+
+          {!image.is_primary && (
+            <button
+              type="button"
+              onClick={() => onSetPrimaryExisting?.(image)}
+              className="absolute bottom-2 left-2 right-2 rounded-lg bg-white/90 px-3 py-2 text-xs font-medium opacity-0 transition group-hover:opacity-100"
+            >
+              Set Primary
+            </button>
+          )}
+
         </div>
 
       ))}
@@ -206,15 +228,8 @@ export default function ProductImagesCard({
   type="button"
   onClick={() => {
 
-    onDeletedImagesChange?.([
-      image.id,
-    ]);
-
-    onExistingImagesChange?.(
-      existingImages.filter(
-        (img) =>
-          img.id !== image.id
-      )
+    onImagesChange?.(
+      images.filter((_, i) => i !== index)
     );
 
   }}
@@ -233,21 +248,20 @@ export default function ProductImagesCard({
 
                   {/* Set Primary */}
 
-                  {!image.is_primary && (
+                  {!image.isPrimary && (
 
   <button
     type="button"
     onClick={() => {
 
-      onExistingImagesChange?.(
+      onImagesChange?.(
 
-        existingImages.map(
-          (img) => ({
+        images.map(
+          (img, i) => ({
 
             ...img,
 
-            is_primary:
-              img.id === image.id,
+            isPrimary: i === index,
 
           })
         )

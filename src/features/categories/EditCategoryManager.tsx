@@ -15,10 +15,6 @@ export default function EditCategoryManager() {
 
   const uuid = params.uuid as string;
 
-  console.log("params", params);
-
-  console.log("uuid", uuid);
-
   const [category, setCategory] =
     useState<Category | null>(null);
 
@@ -35,18 +31,6 @@ export default function EditCategoryManager() {
 
         const response =
           await CategoryService.get(uuid);
-
-          console.log("CATEGORY", response);
-
-        /**
-         * Laravel response:
-         *
-         * {
-         *   success:true,
-         *   message:"Success",
-         *   data:{...category}
-         * }
-         */
 
         setCategory(response);
       } catch (err) {

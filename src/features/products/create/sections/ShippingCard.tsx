@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
@@ -75,7 +75,7 @@ export default function ShippingCard({
 
             <Input
               type="number"
-              step="0.01"
+              step={0.01}
               placeholder="0.00"
               value={form.weight}
               onChange={(e) =>
@@ -94,7 +94,7 @@ export default function ShippingCard({
 
             <Input
               type="number"
-              step="0.01"
+              step={0.01}
               placeholder="0.00"
               value={form.length}
               onChange={(e) =>
@@ -113,7 +113,7 @@ export default function ShippingCard({
 
             <Input
               type="number"
-              step="0.01"
+              step={0.01}
               placeholder="0.00"
               value={form.width}
               onChange={(e) =>
@@ -132,7 +132,7 @@ export default function ShippingCard({
 
             <Input
               type="number"
-              step="0.01"
+              step={0.01}
               placeholder="0.00"
               value={form.height}
               onChange={(e) =>

@@ -6,6 +6,14 @@ export const metadata: Metadata = {
   title: "Edit Supplier",
 };
 
-export default function EditSupplierPage() {
-  return <EditSupplierManager />;
+interface Props {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default async function EditSupplierPage({ params }: Props) {
+  const { id } = await params;
+
+  return <EditSupplierManager uuid={id} />;
 }

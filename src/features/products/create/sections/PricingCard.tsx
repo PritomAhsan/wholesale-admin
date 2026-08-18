@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
@@ -40,7 +40,7 @@ export default function PricingCard({
 
           <Input
             type="number"
-            step="0.01"
+            step={0.01}
             placeholder="0.00"
             value={form.cost_price}
             onChange={(e) =>
@@ -59,7 +59,7 @@ export default function PricingCard({
 
           <Input
             type="number"
-            step="0.01"
+            step={0.01}
             placeholder="0.00"
             value={form.selling_price}
             onChange={(e) =>
@@ -78,7 +78,7 @@ export default function PricingCard({
 
           <Input
             type="number"
-            step="0.01"
+            step={0.01}
             placeholder="0.00"
             value={form.compare_at_price}
             onChange={(e) =>
@@ -97,7 +97,7 @@ export default function PricingCard({
 
           <Input
             type="number"
-            step="0.01"
+            step={0.01}
             placeholder="0.00"
             value={form.wholesale_price}
             onChange={(e) =>
