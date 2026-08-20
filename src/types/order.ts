@@ -65,6 +65,12 @@ export interface Order {
     city: string;
     country: string;
     postal_code: string | null;
+    // Live rate the buyer picked at checkout (Phase 18) — distinct from
+    // SellerOrder.shipping_carrier, which is the tracking carrier admin
+    // enters once a seller order actually ships.
+    cost: string | null;
+    carrier: string | null;
+    service: string | null;
   };
   notes: string | null;
   placed_at: string;

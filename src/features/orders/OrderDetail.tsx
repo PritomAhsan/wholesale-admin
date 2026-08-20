@@ -175,6 +175,20 @@ export default function OrderDetail({ uuid }: Props) {
                   {order.shipping.phone}
                 </p>
               </div>
+
+              {order.shipping.carrier && (
+                <div>
+                  <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    Shipping Method (buyer-selected)
+                  </h3>
+                  <p className="font-medium text-gray-800 dark:text-white/90">
+                    {order.shipping.carrier} {order.shipping.service}
+                  </p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    ${order.shipping.cost} — chosen by the buyer at checkout
+                  </p>
+                </div>
+              )}
             </div>
 
             {order.notes && (
@@ -184,11 +198,29 @@ export default function OrderDetail({ uuid }: Props) {
               </div>
             )}
 
-            <div className="mt-6 flex justify-end border-t border-gray-100 pt-4 dark:border-gray-800">
-              <span className="text-gray-500 dark:text-gray-400">Order Total:</span>
-              <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white/90">
-                ${order.total}
-              </span>
+            <div className="mt-6 border-t border-gray-100 pt-4 dark:border-gray-800">
+              {order.shipping.cost && (
+                <>
+                  <div className="flex justify-end text-sm">
+                    <span className="text-gray-500 dark:text-gray-400">Subtotal:</span>
+                    <span className="ml-2 font-medium text-gray-700 dark:text-gray-300">
+                      ${order.subtotal}
+                    </span>
+                  </div>
+                  <div className="mt-1 flex justify-end text-sm">
+                    <span className="text-gray-500 dark:text-gray-400">Shipping:</span>
+                    <span className="ml-2 font-medium text-gray-700 dark:text-gray-300">
+                      ${order.shipping.cost}
+                    </span>
+                  </div>
+                </>
+              )}
+              <div className="mt-2 flex justify-end">
+                <span className="text-gray-500 dark:text-gray-400">Order Total:</span>
+                <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white/90">
+                  ${order.total}
+                </span>
+              </div>
             </div>
           </div>
 
