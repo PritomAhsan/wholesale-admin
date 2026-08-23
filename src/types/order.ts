@@ -41,11 +41,30 @@ export interface SellerOrder {
       phone: string;
       address: string;
       city: string;
+      state: string | null;
       country: string;
       postal_code: string | null;
     };
   };
   items?: OrderItem[];
+}
+
+export interface TrackingEvent {
+  description: string;
+  location: string | null;
+  timestamp: string | null;
+}
+
+export interface TrackingInfo {
+  status: string;
+  statusDescription: string;
+  estimatedDelivery: string | null;
+  events: TrackingEvent[];
+}
+
+export interface TrackingResult {
+  available: boolean;
+  tracking: TrackingInfo | null;
 }
 
 export interface Order {
@@ -63,6 +82,7 @@ export interface Order {
     phone: string;
     address: string;
     city: string;
+    state: string | null;
     country: string;
     postal_code: string | null;
     // Live rate the buyer picked at checkout (Phase 18) — distinct from

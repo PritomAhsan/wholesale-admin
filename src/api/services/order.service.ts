@@ -1,7 +1,7 @@
 import api from "../axios";
 
 import { ServerTableResponse } from "@/types/server-table";
-import { Order, SellerOrderStatus } from "@/types/order";
+import { Order, SellerOrderStatus, TrackingResult } from "@/types/order";
 
 class OrderService {
   async getAll(params?: {
@@ -38,6 +38,12 @@ class OrderService {
     );
 
     return data.data.order;
+  }
+
+  async getTracking(uuid: string): Promise<TrackingResult> {
+    const { data } = await api.get(`/v1/admin/seller-orders/${uuid}/tracking`);
+
+    return data.data;
   }
 
   async cancel(uuid: string, reason?: string): Promise<Order> {

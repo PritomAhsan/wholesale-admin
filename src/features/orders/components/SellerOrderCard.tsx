@@ -8,7 +8,7 @@ import Select from "@/components/form/Select";
 import Button from "@/components/ui/button/Button";
 
 import OrderService from "@/api/services/order.service";
-import { Order, SellerOrder, SellerOrderStatus } from "@/types/order";
+import { Order, SellerOrder, SellerOrderStatus, TrackingResult } from "@/types/order";
 import OrderStatusBadge from "./OrderStatusBadge";
 
 interface Props {
@@ -34,6 +34,10 @@ export default function SellerOrderCard({ sellerOrder, onUpdated }: Props) {
   );
   const [saving, setSaving] = useState(false);
 
+  const [tracking, setTracking] = useState<TrackingResult | null>(null);
+  const [trackingLoading, setTrackingLoading] = useState(false);
+  const [trackingError, setTrackingError] = useState<string | null>(null);
+
   const dirty =
     status !== sellerOrder.status ||
     trackingNumber !== (sellerOrder.tracking_number ?? "") ||
@@ -58,6 +62,22 @@ export default function SellerOrderCard({ sellerOrder, onUpdated }: Props) {
       alert("Failed to update seller order.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleTrack() {
+    setTrackingLoading(true);
+    setTrackingError(null);
+    setTracking(null);
+
+    try {
+      const result = await OrderService.getTracking(sellerOrder.uuid);
+      setTracking(result);
+    } catch (error) {
+      console.error(error);
+      setTrackingError("Unable to fetch tracking status right now.");
+    } finally {
+      setTrackingLoading(false);
     }
   }
 
@@ -147,11 +167,66 @@ export default function SellerOrderCard({ sellerOrder, onUpdated }: Props) {
         </div>
       </div>
 
-      <div className="mt-4 flex justify-end">
+      <div className="mt-4 flex flex-wrap justify-end gap-3">
+        {sellerOrder.tracking_number && sellerOrder.shipping_carrier && (
+          <Button
+            variant="outline"
+            onClick={handleTrack}
+            disabled={trackingLoading}
+          >
+            {trackingLoading ? "Tracking..." : "Track Package"}
+          </Button>
+        )}
+
         <Button onClick={handleSave} disabled={!dirty || saving}>
           {saving ? "Saving..." : "Save Changes"}
         </Button>
       </div>
+
+      {trackingError && (
+        <p className="mt-3 text-right text-sm text-error-500">
+          {trackingError}
+        </p>
+      )}
+
+      {tracking && !tracking.available && (
+        <div className="mt-4 rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-500 dark:border-gray-800 dark:bg-white/5 dark:text-gray-400">
+          Live tracking isn&apos;t available for this carrier/tracking number
+          right now.
+        </div>
+      )}
+
+      {tracking?.available && tracking.tracking && (
+        <div className="mt-4 rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-white/5">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="font-semibold text-gray-800 dark:text-white/90">
+              {tracking.tracking.statusDescription}
+            </p>
+            {tracking.tracking.estimatedDelivery && (
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Est. delivery: {tracking.tracking.estimatedDelivery}
+              </p>
+            )}
+          </div>
+
+          {tracking.tracking.events.length > 0 && (
+            <ol className="mt-4 space-y-3 border-t border-gray-200 pt-4 dark:border-gray-800">
+              {tracking.tracking.events.map((event, i) => (
+                <li key={i} className="text-sm">
+                  <p className="font-medium text-gray-700 dark:text-gray-300">
+                    {event.description}
+                  </p>
+                  <p className="text-gray-500 dark:text-gray-400">
+                    {[event.location, event.timestamp]
+                      .filter(Boolean)
+                      .join(" — ")}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      )}
     </div>
   );
 }

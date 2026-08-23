@@ -169,8 +169,9 @@ export default function OrderDetail({ uuid }: Props) {
                   <br />
                   {order.shipping.address}
                   <br />
-                  {order.shipping.city}, {order.shipping.country}{" "}
-                  {order.shipping.postal_code}
+                  {order.shipping.city}
+                  {order.shipping.state ? `, ${order.shipping.state}` : ""},{" "}
+                  {order.shipping.country} {order.shipping.postal_code}
                   <br />
                   {order.shipping.phone}
                 </p>
