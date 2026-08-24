@@ -10,6 +10,11 @@ export type SellerOrderStatus =
 export interface OrderItem {
   uuid: string;
   product: { uuid: string; slug: string } | null;
+  variant: {
+    uuid: string;
+    sku: string;
+    attributes: { attribute_name: string | null; value: string | null }[];
+  } | null;
   product_name: string;
   product_sku: string | null;
   product_image: string | null;

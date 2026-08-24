@@ -1,7 +1,7 @@
 import api from "../axios";
 
 import { ServerTableQuery, ServerTableResponse } from "@/types/server-table";
-import { Customer } from "@/types/customer";
+import { Customer, CustomerDetailResponse } from "@/types/customer";
 
 class CustomerService {
   async getAll(
@@ -15,6 +15,12 @@ class CustomerService {
       items: data.data.customers,
       pagination: data.data.pagination,
     };
+  }
+
+  async get(uuid: string): Promise<CustomerDetailResponse> {
+    const { data } = await api.get(`/v1/admin/customers/${uuid}`);
+
+    return data.data;
   }
 }
 

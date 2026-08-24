@@ -51,6 +51,7 @@ export default function CategoryForm({
     slug: "",
     parent_id: "",
     description: "",
+    sort_order: "0",
     status: true,
     image: null as File | null,
   });
@@ -71,6 +72,8 @@ export default function CategoryForm({
         initialData.parent_id ?? "",
       description:
         initialData.description ?? "",
+      sort_order:
+        String(initialData.sort_order ?? 0),
       status:
         initialData.status ?? true,
       image: null,
@@ -123,6 +126,11 @@ export default function CategoryForm({
     formData.append(
       "description",
       form.description
+    );
+
+    formData.append(
+      "sort_order",
+      form.sort_order || "0"
     );
 
     formData.append(
@@ -306,6 +314,28 @@ export default function CategoryForm({
               })
             }
           />
+        </div>
+
+        <div>
+          <Label>Sort Order</Label>
+
+          <InputField
+            type="number"
+            value={form.sort_order}
+            placeholder="0"
+            onChange={(e) =>
+              setForm({
+                ...form,
+                sort_order: e.target.value,
+              })
+            }
+          />
+
+          <p className="mt-1 text-xs text-gray-400">
+            Lower numbers appear first — controls category order sitewide,
+            including which categories show in the homepage &quot;Shop by
+            category&quot; section (the first 8, by this order).
+          </p>
         </div>
 
                 <div className="lg:col-span-2">

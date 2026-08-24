@@ -1,5 +1,8 @@
 "use client";
 
+import Link from "next/link";
+import { Eye } from "lucide-react";
+
 import ComponentCard from "@/components/common/ComponentCard";
 import InputField from "@/components/form/input/InputField";
 import {
@@ -55,6 +58,7 @@ export default function CustomersManager() {
                   <TableCell isHeader>Phone</TableCell>
                   <TableCell isHeader>Orders</TableCell>
                   <TableCell isHeader>Joined</TableCell>
+                  <TableCell isHeader className="text-right">Actions</TableCell>
                 </TableRow>
               </TableHeader>
 
@@ -69,6 +73,16 @@ export default function CustomersManager() {
                     <TableCell>{customer.orders_count}</TableCell>
                     <TableCell>
                       {new Date(customer.created_at).toLocaleDateString()}
+                    </TableCell>
+
+                    <TableCell className="text-right">
+                      <Link
+                        href={`/customers/${customer.uuid}`}
+                        className="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                      >
+                        <Eye className="h-4 w-4" />
+                        View
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))}

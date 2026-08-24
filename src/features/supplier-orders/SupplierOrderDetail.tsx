@@ -158,6 +158,11 @@ export default function SupplierOrderDetail({ uuid }: Props) {
                       <p className="font-medium text-gray-800 dark:text-white/90">
                         {item.product_name}
                       </p>
+                      {item.variant && item.variant.attributes.length > 0 && (
+                        <p className="text-xs font-medium text-brand-600 dark:text-brand-400">
+                          {item.variant.attributes.map((a) => a.value).join(" / ")}
+                        </p>
+                      )}
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         {item.quantity} × ${item.unit_price}
                       </p>
